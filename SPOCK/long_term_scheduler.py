@@ -1382,6 +1382,14 @@ class Schedules:
                                                    self.date_range[0] + dt_1day * (t + 1),
                                                    which='nearest')).value) / 2,
                                               format='jd')
+            if self.telescope == "Artemis":
+                start_between_civil_nautical = Time(self.observatory.sun_set_time(self.date_range[0] + dt_1day * t,
+                                                                                  which='next',
+                                                                                  horizon=-12 * u.degree).iso)
+                end_between_nautical_civil = Time(self.observatory.sun_rise_time(self.date_range[0] + dt_1day * t,
+                                                                                 which='next',
+                                                                                 horizon=-12 * u.degree).iso)
+
             start_saint_ex = Time(self.observatory.sun_set_time(self.date_range[0] + dt_1day * t, which='next',
                                                                 horizon=-8.19 * u.degree).iso)
             end_saint_ex = Time(self.observatory.sun_rise_time(self.date_range[0] + dt_1day * t, which='next',
@@ -1480,7 +1488,7 @@ class Schedules:
         if self.idx_second_target is None:
             print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' no second target available')
 
-    def table_priority_prio(self,day):
+    def table_priority_prio(self, day):
 
         self.priority=Table(names=('priority','target name','set or rise','alt set start',
                                    'alt rise start','alt set end','alt rise end'),
@@ -1565,9 +1573,10 @@ class Schedules:
             idx_texp_too_long = np.where((texp > 120))
             self.priority['priority'][idx_texp_too_long] = -1000
             if self.telescope == 'Callisto':
-                texp = read_exposure_time_table['SSO_texp']
+                texp = self.target_table_spc['texp_spirit']
                 idx_texp_too_short = np.where((texp < 6))
                 self.priority['priority'][idx_texp_too_short] = -1000
+                print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'For '+self.telescope+' the minimal exposure time is set to 6s')
         if self.observatory.name == 'SNO':
             texp = read_exposure_time_table['SNO_texp']
             idx_texp_too_long = np.where((texp > 120))
@@ -1601,6 +1610,7 @@ class Schedules:
             dataframe_ranking_months = pd.read_csv(name_file, delimiter=',')
             self.priority = Table.from_pandas(dataframe_ranking_months)
         else:
+            nb_reso_grid = 30
             if self.telescope == 'Saint-Ex':
                 start_night_start_saint_ex = Time(self.observatory.sun_set_time(day, which='next',
                                                                                 horizon=-8.19 * u.degree).iso)
@@ -1610,7 +1620,7 @@ class Schedules:
                                                                                      horizon=-8.19 * u.degree).jd -
                                                    self.observatory.sun_set_time(day, which='nearest',
                                                                                  horizon=-8.19 * u.degree).jd,
-                                                   100)*u.day  # Delta at the first day of schedule
+                                                   nb_reso_grid)*u.day  # Delta at the first day of schedule
                 frame_start = AltAz(obstime=start_night_start_saint_ex + delta_midnight_start,
                                     location=self.observatory.location)
 
@@ -1623,14 +1633,14 @@ class Schedules:
                                                  - self.observatory.sun_set_time(day + self.date_range_in_days,
                                                                                  which='nearest',
                                                                                  horizon=-8.19 * u.degree).jd,
-                                                 100)*u.day  # Delta at the first day of schedule
+                                                 nb_reso_grid)*u.day  # Delta at the first day of schedule
                 frame_end = AltAz(obstime=start_night_end_saint_ex + delta_midnight_end,
                                   location=self.observatory.location)
             else:
                 start_night_start = self.observatory.twilight_evening_nautical(day, which='nearest')  # * u.hour
                 delta_midnight_start = np.linspace(0, self.observatory.twilight_morning_nautical(day, which='next').jd -
                                                    self.observatory.twilight_evening_nautical(day, which='nearest').jd,
-                                                   100) * u.day  # Delta at the first day of schedule
+                                                   nb_reso_grid) * u.day  # Delta at the first day of schedule
                 frame_start = AltAz(obstime=start_night_start + delta_midnight_start,
                                     location=self.observatory.location)
 
@@ -1642,8 +1652,29 @@ class Schedules:
                                                  - self.observatory.twilight_evening_nautical(day +
                                                                                               self.date_range_in_days,
                                                                                               which='nearest').jd,
-                                                 100) * u.day  # Delta at the first day of schedule
+                                                 nb_reso_grid) * u.day  # Delta at the first day of schedule
                 frame_end = AltAz(obstime=start_night_end + delta_midnight_end, location=self.observatory.location)
+
+                if self.telescope == "Artemis":
+                    start_night_start = Time(self.observatory.sun_set_time(day, which='next',
+                                                                           horizon=-12 * u.degree).iso)
+                    delta_midnight_start = np.linspace(0, self.observatory.sun_rise_time(day, which='next',
+                                                                                         horizon=-12 * u.degree).jd -
+                                                       self.observatory.sun_set_time(day, which='nearest',
+                                                                                     horizon=-12 * u.degree).jd,
+                                                       nb_reso_grid)*u.day  # Delta at the first day of schedule
+                    frame_start = AltAz(obstime=start_night_start + delta_midnight_start,
+                                        location=self.observatory.location)
+                    start_night_end = Time(self.observatory.sun_set_time(day + self.date_range_in_days,
+                                                                         which='nearest',horizon=-12 * u.degree).iso)
+                    delta_midnight_end = np.linspace(0, self.observatory.sun_rise_time(day + self.date_range_in_days,
+                                                                                       which='next',
+                                                                                       horizon=-12 * u.degree).jd
+                                                     - self.observatory.sun_set_time(day + self.date_range_in_days,
+                                                                                     which='nearest',
+                                                                                     horizon=-12 * u.degree).jd,
+                                                     nb_reso_grid)*u.day  # Delta at the first day of schedule
+                    frame_end = AltAz(obstime=start_night_end + delta_midnight_end, location=self.observatory.location)
 
             target_alt = [[target.coord.transform_to(frame_start).alt,
                            target.coord.transform_to(frame_end).alt] for target in self.targets]  # This line takes time
@@ -1764,6 +1795,12 @@ class Schedules:
                                                day + dt_1day * (0 + 1),
                                                which='nearest')).value) / 2,
                                           format='jd')
+        if self.telescope == "Artemis":
+            start_between_civil_nautical = Time(self.observatory.sun_set_time(day, which='next',
+                                                                              horizon=-12 * u.degree).iso)
+            end_between_nautical_civil = Time(self.observatory.sun_rise_time(day, which='next',
+                                                                             horizon=-12 * u.degree).iso)
+
         start_saint_ex = Time(self.observatory.sun_set_time(day, which='next',
                                                             horizon=-8.19*u.degree).iso)
         end_saint_ex = Time(self.observatory.sun_rise_time(day, which='next',
@@ -1913,6 +1950,12 @@ class Schedules:
                                                day+1,
                                                which='nearest')).value) / 2,
                                           format='jd')
+        if self.telescope == "Artemis":
+            start_between_civil_nautical = Time(self.observatory.sun_set_time(day, which='next',
+                                                                              horizon=-12 * u.degree).iso)
+            end_between_nautical_civil = Time(self.observatory.sun_rise_time(day, which='next',
+                                                                             horizon=-12 * u.degree).iso)
+
         start_saint_ex = Time(self.observatory.sun_set_time(day, which='next',
                                                             horizon=-8.19 * u.degree).iso)
         end_saint_ex = Time(self.observatory.sun_rise_time(day, which='next',
@@ -1997,6 +2040,11 @@ class Schedules:
                                                day+dt_1day,
                                                which='nearest')).value) / 2,
                                           format='jd')
+        if self.telescope == "Artemis":
+            start_between_civil_nautical = Time(self.observatory.sun_set_time(day, which='next',
+                                                                              horizon=-12 * u.degree).iso)
+            end_between_nautical_civil = Time(self.observatory.sun_rise_time(day, which='next',
+                                                                             horizon=-12 * u.degree).iso)
 
         start_saint_ex = Time(self.observatory.sun_set_time(day, which='next',
                                                             horizon=-8.19 * u.degree).iso)

@@ -179,6 +179,11 @@ def change_fmt_stargate_TL(file_name):
     idx_list1_in_list2, idx_list2_in_list1 = index_list1_list2(df_spirit["Sp_ID"], df["Sp_ID"])
     df["SNR_SPIRIT"][idx_list1_in_list2] = df_spirit["SNR_1"][idx_list2_in_list1]
     df["texp_spirit"][idx_list1_in_list2] = df_spirit["exp_time_2"][idx_list2_in_list1]
+    df_observable_field = pd.read_csv(path_spock + "/SPIRIT/observable_fields.csv", sep=',')
+    idx_targets_in_notobsfield, idx_notobsfield_in_targets = index_list1_list2(df["Sp_ID"],
+                         np.array(df_observable_field["Sp_ID"][~np.array(df_observable_field["enough_comparisons"])]))
+    df["SNR_SPIRIT"][idx_notobsfield_in_targets] = 0
+
     path = path_spock + "/target_lists/www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/"
     os.makedirs(path, exist_ok=True)
     resp = requests.get('https://www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/get_hours.php', auth=(user_portal, pwd_portal))

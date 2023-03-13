@@ -387,7 +387,7 @@ def target(t_now,name,date_start,date_end,waitlimit,afinterval,autofocus,count,f
             out.write(str22)
             if telescope == 'Artemis':
                 out.write('#chill -60\n')
-            if telescope == 'Saint-Ex':
+            elif telescope == 'Saint-Ex':
                 out.write(';#chill -70\n')
             else:
                 out.write('#chill -60\n')
@@ -530,10 +530,10 @@ def target(t_now,name,date_start,date_end,waitlimit,afinterval,autofocus,count,f
                 out.write('#dir'+ '\n')
             out.write(str9 + str(hour1) + ':' + str(minute1) + '\n' )
             if name_2 is None:
-                if telescope == 'Artemis':
-                    out.write(str10 + 'Cal_biasdark.txt' + '\n')
-                else:
-                    out.write(str10 + 'Cal_flatdawn' + '.txt' + '\n')
+                #if telescope == 'Artemis':
+                #    out.write(str10 + 'Cal_biasdark.txt' + '\n')
+                #else:
+                out.write(str10 + 'Cal_flatdawn' + '.txt' + '\n')
             else:
                 out.write(str10 + 'Obj_' + name_2 + '.txt' + '\n')
             out.write(str00 + '\n')
@@ -829,7 +829,7 @@ def first_target(t_now,name,date_start,date_end,waitlimit,afinterval,autofocus,c
             out.write(str22)
             if telescope == 'Artemis':
                 out.write('#chill -60\n')
-            if telescope == 'Saint-Ex':
+            elif telescope == 'Saint-Ex':
                 out.write(';#chill -70\n')
             else:
                 out.write('#chill -60\n')
@@ -911,7 +911,7 @@ def first_target(t_now,name,date_start,date_end,waitlimit,afinterval,autofocus,c
             out.write(str22)
             if telescope == 'Artemis':
                 out.write('#chill -60\n')
-            if telescope == 'Saint-Ex':
+            elif telescope == 'Saint-Ex':
                 out.write(';#chill -70\n')
             else:
                 out.write('#chill -60\n')
@@ -1775,7 +1775,8 @@ def biasdark(t_now, Path, telescope, texps=None,bining_2=False):
             out.write(str00 + '\n')
             out.write(str00 + str9 + '\n')
             out.write(str00 + '\n')
-    elif telescope != 'Saint-Ex' and texps is not None:
+
+    elif np.any(telescope in ['Io','Europa','Ganymede','Callisto','Artemis']):
         with open(os.path.join(Path, str(t_now), 'Cal_biasdark.txt'), 'w') as out:
             str00 = ';'
             str1 = '#domeclose \n'
@@ -1787,7 +1788,7 @@ def biasdark(t_now, Path, telescope, texps=None,bining_2=False):
             str7 = '#dark \n'
             str8 = '#shutdown \n'
             str9 = 'END'
-            counts = ['9']*(len(texps)+1)
+            counts = ['7']*(len(texps)+1)
             binnings = ['1'] * (len(texps)+1)
             out.write(str1)
             out.write(str2)
@@ -1802,6 +1803,33 @@ def biasdark(t_now, Path, telescope, texps=None,bining_2=False):
             out.write(str00 + '\n')
             out.write(str00 + str9 + '\n')
             out.write(str00 + '\n')
+    # elif telescope != 'Saint-Ex' and texps is not None:
+    #     with open(os.path.join(Path, str(t_now), 'Cal_biasdark.txt'), 'w') as out:
+    #         str00 = ';'
+    #         str1 = '#domeclose \n'
+    #         str2 = '#nopreview \n'
+    #         str3 = ' == bias dark exoplanet =='
+    #         str4 = '#count '
+    #         str5 = '#binning '
+    #         str6 = '#interval '
+    #         str7 = '#dark \n'
+    #         str8 = '#shutdown \n'
+    #         str9 = 'END'
+    #         counts = ['9']*(len(texps)+1)
+    #         binnings = ['1'] * (len(texps)+1)
+    #         out.write(str1)
+    #         out.write(str2)
+    #         out.write(str00 + '\n')
+    #         out.write(str00 + str3 + '\n')
+    #         out.write(str00 + '\n')
+    #         out.write(str4 + ','.join([str(counts) for counts in counts]) + '\n')
+    #         out.write(str5 + ','.join([str(binnings) for binnings in binnings]) + '\n')
+    #         out.write(str6 + '0,' + ','.join([str(texps) for texps in texps]) + '\n')
+    #         out.write(str7)
+    #         out.write(str8)
+    #         out.write(str00 + '\n')
+    #         out.write(str00 + str9 + '\n')
+    #         out.write(str00 + '\n')
     else:
         with open(os.path.join(Path, str(t_now), 'Cal_biasdark.txt'), 'w') as out:
             str00=';'
