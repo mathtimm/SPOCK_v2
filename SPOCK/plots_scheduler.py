@@ -1,4 +1,4 @@
-from astroplan import Observer,FixedTarget
+from astroplan import Observer, FixedTarget
 from astroplan.plots import plot_airmass
 from astroplan.utils import time_grid_from_range
 from astropy.coordinates import SkyCoord, EarthLocation, get_moon
@@ -44,34 +44,38 @@ def charge_observatories(Name):
     """
 
     observatories = []
-    #Oservatories
+    # Oservatories
     if 'SSO' in str(Name):
-        location = EarthLocation.from_geodetic(-70.40300000000002*u.deg, -24.625199999999996*u.deg,2635.0000000009704*u.m)
+        location = EarthLocation.from_geodetic(-70.40300000000002 * u.deg, -24.625199999999996 * u.deg,
+                                               2635.0000000009704 * u.m)
         observatories.append(Observer(location=location, name="SSO", timezone="UTC"))
 
     if 'SNO' in str(Name):
-        location_SNO = EarthLocation.from_geodetic(-16.50583131*u.deg, 28.2999988*u.deg, 2390*u.m)
+        location_SNO = EarthLocation.from_geodetic(-16.50583131 * u.deg, 28.2999988 * u.deg, 2390 * u.m)
         observatories.append(Observer(location=location_SNO, name="SNO", timezone="UTC"))
 
     if 'Saint-Ex' in str(Name):
-        location_saintex = EarthLocation.from_geodetic(-115.48694444444445*u.deg, 31.029166666666665*u.deg, 2829.9999999997976*u.m)
+        location_saintex = EarthLocation.from_geodetic(-115.48694444444445 * u.deg, 31.029166666666665 * u.deg,
+                                                       2829.9999999997976 * u.m)
         observatories.append(Observer(location=location_saintex, name="saintex", timezone="UTC"))
 
     if 'TS_La_Silla' in str(Name):
-        location_TSlasilla = EarthLocation.from_geodetic(-70.73000000000002*u.deg, -29.25666666666666*u.deg, 2346.9999999988418*u.m)
+        location_TSlasilla = EarthLocation.from_geodetic(-70.73000000000002 * u.deg, -29.25666666666666 * u.deg,
+                                                         2346.9999999988418 * u.m)
         observatories.append(Observer(location=location_TSlasilla, name="TSlasilla", timezone="UTC"))
 
     if 'TN_Oukaimeden' in str(Name):
-        location_TNOuka = EarthLocation.from_geodetic( -7.862263*u.deg,31.20516*u.deg, 2751*u.m)
+        location_TNOuka = EarthLocation.from_geodetic(-7.862263 * u.deg, 31.20516 * u.deg, 2751 * u.m)
         observatories.append(Observer(location=location_TNOuka, name="TNOuka", timezone="UTC"))
 
     if 'Munich' in str(Name):
-        location_munich= EarthLocation.from_geodetic(48.2*u.deg, -11.6*u.deg, 600*u.m)
+        location_munich = EarthLocation.from_geodetic(48.2 * u.deg, -11.6 * u.deg, 600 * u.m)
         observatories.append(Observer(location=location_munich, name="Munich", timezone="UTC"))
 
     return observatories
 
-def airmass_plot_saved(name_observatory,telescope,day):
+
+def airmass_plot_saved(name_observatory, telescope, day):
     """
 
     Parameters
@@ -91,32 +95,37 @@ def airmass_plot_saved(name_observatory,telescope,day):
 
     """
     night_block = pd.read_csv(os.path.join(path_spock + '/DATABASE/', telescope,
-                                              'Archive_night_blocks','night_blocks_' + telescope + '_' + day.tt.datetime.strftime("%Y-%m-%d") + '.txt'),\
+                                           'Archive_night_blocks',
+                                           'night_blocks_' + telescope + '_' + day.tt.datetime.strftime(
+                                               "%Y-%m-%d") + '.txt'), \
                               sep=' ', skipinitialspace=True)
     observatory = charge_observatories(name_observatory)[0]
-    day = Time(night_block['start time (UTC)'][0]) - 5 *u.hour
-    delta_midnight = Time(np.linspace(observatory.twilight_evening_nautical(day,which='next').jd - 0.07, \
-                                      observatory.twilight_morning_nautical(day+1,which='nearest').jd + 0.07, 100),format='jd')
+    day = Time(night_block['start time (UTC)'][0]) - 5 * u.hour
+    delta_midnight = Time(np.linspace(observatory.twilight_evening_nautical(day, which='next').jd - 0.07, \
+                                      observatory.twilight_morning_nautical(day + 1, which='nearest').jd + 0.07, 100),
+                          format='jd')
     colors_start_new_target = ['black', 'darkgray', 'lightgray']
-    sun_set =observatory.twilight_evening_nautical(day,which='next').iso
-    sun_rise = observatory.twilight_morning_nautical(day+1,which='nearest').iso
+    sun_set = observatory.twilight_evening_nautical(day, which='next').iso
+    sun_rise = observatory.twilight_morning_nautical(day + 1, which='nearest').iso
     for i in range(len(night_block)):
-
         dec = str(int(float(night_block['dec (d)'][i]))) + ' ' + str(
             int(abs(float(night_block['dec (m)'][i])))) + ' ' + str(int(abs(float(night_block['dec (s)'][i]))))
         ra = str(int(float(night_block['ra (h)'][i]))) + ' ' + str(
             int(abs(float(night_block['ra (m)'][i])))) + ' ' + str(int(abs(float(night_block['ra (s)'][i]))))
-        plot_airmass(FixedTarget(coord=SkyCoord(ra=ra,dec=dec,unit=(u.hourangle, u.deg)),\
+        plot_airmass(FixedTarget(coord=SkyCoord(ra=ra, dec=dec, unit=(u.hourangle, u.deg)), \
                                  name=night_block['target'][i]), observatory, delta_midnight)
         t = Time(night_block['start time (UTC)'][i])
-        plt.vlines(t.iso, 3, 1,linestyle='--',color=colors_start_new_target[i],alpha = 0.8,label='start ' + str(night_block['target'][i]))
+        plt.vlines(t.iso, 3, 1, linestyle='--', color=colors_start_new_target[i], alpha=0.8,
+                   label='start ' + str(night_block['target'][i]))
         plt.vlines(sun_set, 3, 1, linestyle=':', color='yellow', alpha=0.9)
         plt.vlines(sun_rise, 3, 1, linestyle=':', color='yellow', alpha=0.9)
-        plt.grid(color='gainsboro', linestyle='-', linewidth=1,alpha=0.3)
-        plt.title('Visibility plot for the night of the ' + str(day.tt.datetime.strftime("%Y-%m-%d")) + ' on ' + str(telescope))
+        plt.grid(color='gainsboro', linestyle='-', linewidth=1, alpha=0.3)
+        plt.title('Visibility plot for the night of the ' + str(day.tt.datetime.strftime("%Y-%m-%d")) + ' on ' + str(
+            telescope))
         plt.legend(loc=2)
 
-def airmass_plot_proposition(name_observatory,telescope,day):
+
+def airmass_plot_proposition(name_observatory, telescope, day):
     """
 
     Parameters
@@ -135,32 +144,37 @@ def airmass_plot_proposition(name_observatory,telescope,day):
          visibility plot on telescope at a given day
 
     """
-    night_block = pd.read_csv(os.path.join(path_spock + 'night_blocks_propositions/','night_blocks_' + telescope + '_' + day.tt.datetime.strftime("%Y-%m-%d") + '.txt'),\
+    night_block = pd.read_csv(os.path.join(path_spock + 'night_blocks_propositions/',
+                                           'night_blocks_' + telescope + '_' + day.tt.datetime.strftime(
+                                               "%Y-%m-%d") + '.txt'), \
                               sep=' ', skipinitialspace=True)
     observatory = charge_observatories(name_observatory)[0]
-    day = Time(night_block['start time (UTC)'][0]) - 5 *u.hour
-    delta_midnight = Time(np.linspace(observatory.twilight_evening_nautical(day,which='next').jd - 0.07,\
-                                      observatory.twilight_morning_nautical(day+1,which='nearest').jd + 0.07, 100),format='jd')
+    day = Time(night_block['start time (UTC)'][0]) - 5 * u.hour
+    delta_midnight = Time(np.linspace(observatory.twilight_evening_nautical(day, which='next').jd - 0.07, \
+                                      observatory.twilight_morning_nautical(day + 1, which='nearest').jd + 0.07, 100),
+                          format='jd')
     colors_start_new_target = ['black', 'darkgray', 'lightgray']
-    sun_set =observatory.twilight_evening_nautical(day,which='next').iso
-    sun_rise = observatory.twilight_morning_nautical(day+1,which='nearest').iso
+    sun_set = observatory.twilight_evening_nautical(day, which='next').iso
+    sun_rise = observatory.twilight_morning_nautical(day + 1, which='nearest').iso
     for i in range(len(night_block)):
-
         dec = str(int(float(night_block['dec (d)'][i]))) + ' ' + str(
             int(abs(float(night_block['dec (m)'][i])))) + ' ' + str(int(abs(float(night_block['dec (s)'][i]))))
         ra = str(int(float(night_block['ra (h)'][i]))) + ' ' + str(
             int(abs(float(night_block['ra (m)'][i])))) + ' ' + str(int(abs(float(night_block['ra (s)'][i]))))
-        plot_airmass(FixedTarget(coord=SkyCoord(ra=ra,dec=dec,unit=(u.hourangle, u.deg)),\
+        plot_airmass(FixedTarget(coord=SkyCoord(ra=ra, dec=dec, unit=(u.hourangle, u.deg)), \
                                  name=night_block['target'][i]), observatory, delta_midnight)
         t = Time(night_block['start time (UTC)'][i])
-        plt.vlines(t.iso, 3, 1,linestyle='--',color=colors_start_new_target[i],alpha = 0.8,label='start ' + str(night_block['target'][i]))
+        plt.vlines(t.iso, 3, 1, linestyle='--', color=colors_start_new_target[i], alpha=0.8,
+                   label='start ' + str(night_block['target'][i]))
         plt.vlines(sun_set, 3, 1, linestyle=':', color='yellow', alpha=0.9)
         plt.vlines(sun_rise, 3, 1, linestyle=':', color='yellow', alpha=0.9)
-        plt.grid(color='gainsboro', linestyle='-', linewidth=1,alpha=0.3)
-        plt.title('Visibility plot for the night of the ' + str(day.tt.datetime.strftime("%Y-%m-%d")) + ' on ' + str(telescope))
+        plt.grid(color='gainsboro', linestyle='-', linewidth=1, alpha=0.3)
+        plt.title('Visibility plot for the night of the ' + str(day.tt.datetime.strftime("%Y-%m-%d")) + ' on ' + str(
+            telescope))
         plt.legend(shadow=True, loc=2)
 
-def airmass_altitude_plot_saved(name_observatory,telescope,day):
+
+def airmass_altitude_plot_saved(name_observatory, telescope, day):
     """
 
     Parameters
@@ -180,14 +194,17 @@ def airmass_altitude_plot_saved(name_observatory,telescope,day):
 
     """
     night_block = pd.read_csv(os.path.join(path_spock + '/DATABASE/', telescope,
-                                              'Archive_night_blocks','night_blocks_' + telescope + '_' + day.tt.datetime.strftime("%Y-%m-%d") + '.txt'),\
+                                           'Archive_night_blocks',
+                                           'night_blocks_' + telescope + '_' + day.tt.datetime.strftime(
+                                               "%Y-%m-%d") + '.txt'), \
                               sep=' ', skipinitialspace=True)
     observatory = charge_observatories(name_observatory)[0]
-    day = Time(night_block['start time (UTC)'][0]) - 5 *u.hour
-    delta_midnight = Time(np.linspace(observatory.twilight_evening_nautical(day,which='next').jd - 0.07,\
-                                      observatory.twilight_morning_nautical(day+1,which='nearest').jd + 0.07, 100),format='jd')
-    sun_set =observatory.twilight_evening_nautical(day,which='next').iso
-    sun_rise = observatory.twilight_morning_nautical(day+1,which='nearest').iso
+    day = Time(night_block['start time (UTC)'][0]) - 5 * u.hour
+    delta_midnight = Time(np.linspace(observatory.twilight_evening_nautical(day, which='next').jd - 0.07, \
+                                      observatory.twilight_morning_nautical(day + 1, which='nearest').jd + 0.07, 100),
+                          format='jd')
+    sun_set = observatory.twilight_evening_nautical(day, which='next').iso
+    sun_rise = observatory.twilight_morning_nautical(day + 1, which='nearest').iso
     fig, axs = plt.subplots(1)
     colors_start_new_target = ['black', 'darkgray', 'lightgray']
     for i in range(len(night_block)):
@@ -195,18 +212,21 @@ def airmass_altitude_plot_saved(name_observatory,telescope,day):
             int(abs(float(night_block['dec (m)'][i])))) + ' ' + str(int(abs(float(night_block['dec (s)'][i]))))
         ra = str(int(float(night_block['ra (h)'][i]))) + ' ' + str(
             int(abs(float(night_block['ra (m)'][i])))) + ' ' + str(int(abs(float(night_block['ra (s)'][i]))))
-        plot_airmass(FixedTarget(coord=SkyCoord(ra=ra,dec=dec,unit=(u.hourangle, u.deg)),\
+        plot_airmass(FixedTarget(coord=SkyCoord(ra=ra, dec=dec, unit=(u.hourangle, u.deg)), \
                                  name=night_block['target'][i]), observatory, delta_midnight, altitude_yaxis=True)
         plt.ylabel('Altitude (degrees)')
         t = Time(night_block['start time (UTC)'][i])
-        axs.vlines(t.iso, 3, 1,linestyle='--',color=colors_start_new_target[i],alpha = 0.7,label='start ' + str(night_block['target'][i]))
+        axs.vlines(t.iso, 3, 1, linestyle='--', color=colors_start_new_target[i], alpha=0.7,
+                   label='start ' + str(night_block['target'][i]))
         axs.vlines(sun_set, 3, 1, linestyle=':', color='yellow', alpha=0.9)
         axs.vlines(sun_rise, 3, 1, linestyle=':', color='yellow', alpha=0.9)
-        #plt.legend(loc=2)
+        # plt.legend(loc=2)
         plt.grid(color='gainsboro', linestyle='-', linewidth=1, alpha=0.3)
-        plt.title('Visibility plot for the night of the ' + str(day.tt.datetime.strftime("%Y-%m-%d")) + ' on ' + str(telescope))
+        plt.title('Visibility plot for the night of the ' + str(day.tt.datetime.strftime("%Y-%m-%d")) + ' on ' + str(
+            telescope))
 
-def airmass_altitude_plot_proposition(name_observatory,telescope,day):
+
+def airmass_altitude_plot_proposition(name_observatory, telescope, day):
     """
 
     Parameters
@@ -225,14 +245,17 @@ def airmass_altitude_plot_proposition(name_observatory,telescope,day):
          visibility plot on telescope at a given day
 
     """
-    night_block = pd.read_csv(os.path.join(path_spock + '/night_blocks_propositions/','night_blocks_' + telescope + '_' + day.tt.datetime.strftime("%Y-%m-%d") + '.txt'),\
+    night_block = pd.read_csv(os.path.join(path_spock + '/night_blocks_propositions/',
+                                           'night_blocks_' + telescope + '_' + day.tt.datetime.strftime(
+                                               "%Y-%m-%d") + '.txt'), \
                               sep=' ', skipinitialspace=True)
     observatory = charge_observatories(name_observatory)[0]
-    day = Time(night_block['start time (UTC)'][0]) - 5 *u.hour
-    delta_midnight = Time(np.linspace(observatory.twilight_evening_nautical(day,which='next').jd - 0.07,\
-                                      observatory.twilight_morning_nautical(day+1,which='nearest').jd + 0.07, 100),format='jd')
-    sun_set =observatory.twilight_evening_nautical(day,which='next').iso
-    sun_rise = observatory.twilight_morning_nautical(day+1,which='nearest').iso
+    day = Time(night_block['start time (UTC)'][0]) - 5 * u.hour
+    delta_midnight = Time(np.linspace(observatory.twilight_evening_nautical(day, which='next').jd - 0.07, \
+                                      observatory.twilight_morning_nautical(day + 1, which='nearest').jd + 0.07, 100),
+                          format='jd')
+    sun_set = observatory.twilight_evening_nautical(day, which='next').iso
+    sun_rise = observatory.twilight_morning_nautical(day + 1, which='nearest').iso
     fig, axs = plt.subplots(1)
     colors_start_new_target = ['black', 'darkgray', 'lightgray']
     for i in range(len(night_block)):
@@ -240,16 +263,18 @@ def airmass_altitude_plot_proposition(name_observatory,telescope,day):
             int(abs(float(night_block['dec (m)'][i])))) + ' ' + str(int(abs(float(night_block['dec (s)'][i]))))
         ra = str(int(float(night_block['ra (h)'][i]))) + ' ' + str(
             int(abs(float(night_block['ra (m)'][i])))) + ' ' + str(int(abs(float(night_block['ra (s)'][i]))))
-        plot_airmass(FixedTarget(coord=SkyCoord(ra=ra,dec=dec,unit=(u.hourangle, u.deg)),\
+        plot_airmass(FixedTarget(coord=SkyCoord(ra=ra, dec=dec, unit=(u.hourangle, u.deg)), \
                                  name=night_block['target'][i]), observatory, delta_midnight, altitude_yaxis=True)
         plt.ylabel('Altitude (degrees)')
         t = Time(night_block['start time (UTC)'][i])
-        axs.vlines(t.iso, 3, 1,linestyle='--',color=colors_start_new_target[i],alpha = 0.7,label='start ' + str(night_block['target'][i]))
+        axs.vlines(t.iso, 3, 1, linestyle='--', color=colors_start_new_target[i], alpha=0.7,
+                   label='start ' + str(night_block['target'][i]))
         axs.vlines(sun_set, 3, 1, linestyle=':', color='yellow', alpha=0.9)
         axs.vlines(sun_rise, 3, 1, linestyle=':', color='yellow', alpha=0.9)
-        #plt.legend(loc=2)
+        # plt.legend(loc=2)
         plt.grid(color='gainsboro', linestyle='-', linewidth=1, alpha=0.3)
-        plt.title('Visibility plot for the night of the ' + str(day.tt.datetime.strftime("%Y-%m-%d")) + ' on ' + str(telescope))
+        plt.title('Visibility plot for the night of the ' + str(day.tt.datetime.strftime("%Y-%m-%d")) + ' on ' + str(
+            telescope))
 
 
 def gantt_chart_all(target_list=None):
@@ -278,7 +303,7 @@ def gantt_chart_all(target_list=None):
     telescope = []
     location = EarthLocation.from_geodetic(-70.40300000000002 * u.deg, -24.625199999999996 * u.deg,
                                            2635.0000000009704 * u.m)
-    telescopes = ['Io', 'Europa', 'Ganymede', 'Callisto', 'Artemis', 'Saint-Ex','TS_La_Silla','TN_Oukaimeden']
+    telescopes = ['Io', 'Europa', 'Ganymede', 'Callisto', 'Artemis', 'Saint-Ex', 'TS_La_Silla', 'TN_Oukaimeden']
     for tel in telescopes:
         for i in os.listdir(os.path.join(path_spock + '/DATABASE/', tel,
                                          'Archive_night_blocks')):
@@ -293,37 +318,39 @@ def gantt_chart_all(target_list=None):
     df2 = pd.DataFrame(
         {'start': start, 'finish': finish, 'targets': targets, 'telescope': telescope, 'configuration': configuration})
 
-    Resource=df2['telescope']
-    Task=df2['targets']
-    Start=df2['start']
-    Finish=df2['finish']
-    Description=df2['configuration']
-    df=[]
+    Resource = df2['telescope']
+    Task = df2['targets']
+    Start = df2['start']
+    Finish = df2['finish']
+    Description = df2['configuration']
+    df = []
     colors = {'Io': 'rgba(220, 0, 0,0.3)',
               'Europa': 'rgba(0, 0, 255,0.75)',
               'Callisto': 'rgba(0, 255, 255,0.75)',
               'Ganymede': 'rgba(255, 128, 0,0.75)',
-              'Artemis':'rgba(107,142,35,0.75)',
-              'Saint-Ex':'rgba(255,215,0,0.9)',
+              'Artemis': 'rgba(107,142,35,0.75)',
+              'Saint-Ex': 'rgba(255,215,0,0.9)',
               'Io_s': 'rgba(255, 182, 193, .9)',
               'Europa_s': 'rgba(28,134,238,0.9)',
               'Ganymede_s': 'rgba(255,160,122,0.9)',
               'Callisto_s': 'rgba(152,245,255,0.9)',
               'TS_La_Silla': 'rgba(255,0,255,0.9)',
-              'TN_Oukaimeden':'rgba(0,128,128,0.9)'}
+              'TN_Oukaimeden': 'rgba(0,128,128,0.9)'}
 
-    for i in range(0,len(Task)):
-        for j in range(0,len(Task[i])):
-            df.append(dict(Task=Task[i][j], Start=Start[i][j], Finish=Finish[i][j],Resource=Resource[i],Description=Description[i][j]))
+    for i in range(0, len(Task)):
+        for j in range(0, len(Task[i])):
+            df.append(dict(Task=Task[i][j], Start=Start[i][j], Finish=Finish[i][j], Resource=Resource[i],
+                           Description=Description[i][j]))
 
-    fig = ff.create_gantt(df, colors=colors, index_col='Resource', show_colorbar=True, showgrid_x=True, showgrid_y=True, group_tasks=True)
+    fig = ff.create_gantt(df, colors=colors, index_col='Resource', show_colorbar=True, showgrid_x=True, showgrid_y=True,
+                          group_tasks=True)
 
     fig['layout'].update(height=800, width=1300, title='Preview: Plans sent to telescopes')
-    fig['layout'].update(autosize=False, margin= go.layout.Margin(l=100))
+    fig['layout'].update(autosize=False, margin=go.layout.Margin(l=100))
     config = {
         'scrollZoom': True
     }
-    offline.plot(fig,auto_open=True,filename=path_spock + '/SPOCK_Figures/Preview_schedule.html',config=config)
+    offline.plot(fig, auto_open=True, filename=path_spock + '/SPOCK_Figures/Preview_schedule.html', config=config)
 
 
 def gantt_chart(date_start, date_end, telescope, local=False):
@@ -368,10 +395,11 @@ def gantt_chart(date_start, date_end, telescope, local=False):
                     configuration.append(list(df['configuration']))
                     telescopes.append(tel)
             except SystemExit:
-                print(Fore.YELLOW + 'WARNING:  ' + Fore.BLACK + "Cannot find plans for tlescope "+tel)
+                print(Fore.YELLOW + 'WARNING:  ' + Fore.BLACK + "Cannot find plans for tlescope " + tel)
 
         df2 = pd.DataFrame(
-        {'start': start, 'finish': finish, 'targets': targets, 'telescope': telescopes, 'configuration': configuration})
+            {'start': start, 'finish': finish, 'targets': targets, 'telescope': telescopes,
+             'configuration': configuration})
 
         Resource = df2['telescope']
         Task = df2['targets']
@@ -383,8 +411,8 @@ def gantt_chart(date_start, date_end, telescope, local=False):
                   'Europa': 'rgba(0, 0, 255,0.75)',
                   'Callisto': 'rgba(0, 255, 255,0.75)',
                   'Ganymede': 'rgba(255, 128, 0,0.75)',
-                  'Artemis':'rgba(107,142,35,0.75)',
-                  'Saint-Ex':'rgba(255,255,0,0.75)',
+                  'Artemis': 'rgba(107,142,35,0.75)',
+                  'Saint-Ex': 'rgba(255,255,0,0.75)',
                   'Io_s': 'rgba(255, 182, 193, .9)',
                   'Europa_s': 'rgba(28,134,238,0.9)',
                   'Ganymede_s': 'rgba(255,160,122,0.9)',
@@ -392,17 +420,19 @@ def gantt_chart(date_start, date_end, telescope, local=False):
                   'TS_La_Silla': 'rgba(255,0,255,0.9)',
                   'TN_Oukaimeden': 'rgba(0,128,128,0.9)'}
 
-        for i in range(0,len(Task)):
-            for j in range(0,len(Task[i])):
-                df.append(dict(Task=Task[i][j], Start=Start[i][j], Finish=Finish[i][j],Resource=Resource[i],Description=Description[i][j]))
+        for i in range(0, len(Task)):
+            for j in range(0, len(Task[i])):
+                df.append(dict(Task=Task[i][j], Start=Start[i][j], Finish=Finish[i][j], Resource=Resource[i],
+                               Description=Description[i][j]))
 
-        fig = ff.create_gantt(df, colors=colors, index_col='Resource', show_colorbar=True, showgrid_x=True, showgrid_y=True, group_tasks=True)
+        fig = ff.create_gantt(df, colors=colors, index_col='Resource', show_colorbar=True, showgrid_x=True,
+                              showgrid_y=True, group_tasks=True)
 
         fig['layout'].update(height=800, width=1300, title='Preview: Plans sent to telescopes')
         fig['layout'].update(autosize=False, margin=go.layout.Margin(l=100))
         config = {
             'scrollZoom': True}
-        offline.plot(fig,auto_open=True,filename=path_spock + '/SPOCK_Figures/Preview_schedule.html', config=config)
+        offline.plot(fig, auto_open=True, filename=path_spock + '/SPOCK_Figures/Preview_schedule.html', config=config)
 
     else:
         for tel in telescope:
@@ -422,7 +452,7 @@ def gantt_chart(date_start, date_end, telescope, local=False):
                         telescopes.append(tel)
 
         df2 = pd.DataFrame({'start': start, 'finish': finish, 'targets': targets, 'telescope': telescopes,
-                               'configuration': configuration})
+                            'configuration': configuration})
         Resource = df2['telescope']
         Task = df2['targets']
         Start = df2['start']
@@ -433,8 +463,8 @@ def gantt_chart(date_start, date_end, telescope, local=False):
                   'Europa': 'rgba(0, 0, 255,0.75)',
                   'Callisto': 'rgba(0, 255, 255,0.75)',
                   'Ganymede': 'rgba(255, 128, 0,0.75)',
-                  'Artemis':'rgba(107,142,35,0.75)',
-                  'Saint-Ex':'rgba(255,255,0,0.75)',
+                  'Artemis': 'rgba(107,142,35,0.75)',
+                  'Saint-Ex': 'rgba(255,255,0,0.75)',
                   'Io_s': 'rgba(255, 182, 193, .9)',
                   'Europa_s': 'rgba(28,134,238,0.9)',
                   'Ganymede_s': 'rgba(255,160,122,0.9)',
@@ -442,17 +472,19 @@ def gantt_chart(date_start, date_end, telescope, local=False):
                   'TS_La_Silla': 'rgba(255,0,255,0.9)',
                   'TN_Oukaimeden': 'rgba(0,128,128,0.9)'}
 
-        for i in range(0,len(Task)):
-            for j in range(0,len(Task[i])):
-                df.append(dict(Task=Task[i][j], Start=Start[i][j], Finish=Finish[i][j],Resource=Resource[i],Description=Description[i][j]))
+        for i in range(0, len(Task)):
+            for j in range(0, len(Task[i])):
+                df.append(dict(Task=Task[i][j], Start=Start[i][j], Finish=Finish[i][j], Resource=Resource[i],
+                               Description=Description[i][j]))
 
-        fig = ff.create_gantt(df, colors=colors, index_col='Resource', show_colorbar=True, showgrid_x=True, showgrid_y=True, group_tasks=True)
+        fig = ff.create_gantt(df, colors=colors, index_col='Resource', show_colorbar=True, showgrid_x=True,
+                              showgrid_y=True, group_tasks=True)
 
         fig['layout'].update(height=800, width=1300, title='Preview: Plans sent to telescopes')
         fig['layout'].update(autosize=False, margin=go.layout.Margin(l=100))
         config = {
-            'scrollZoom': True }
-        offline.plot(fig,auto_open=True,filename=path_spock + '/SPOCK_Figures/Preview_schedule.html',config=config)
+            'scrollZoom': True}
+        offline.plot(fig, auto_open=True, filename=path_spock + '/SPOCK_Figures/Preview_schedule.html', config=config)
 
 
 def airmass_altitude_plot_given_target(name_observatory, day, target, path_target_list=None):
@@ -576,7 +608,7 @@ def airmass_altitude_plot_nolist(name_observatory, day, target, ra, dec):
     plt.show()
 
 
-def constraints_scores(constraints,target,observatory,start,end):
+def constraints_scores(constraints, target, observatory, start, end):
     """
 
     Parameters
@@ -599,7 +631,7 @@ def constraints_scores(constraints,target,observatory,start,end):
 
     """
     time_resolution = 0.5 * u.hour
-    time_grid = time_grid_from_range([start, end],time_resolution=time_resolution)
+    time_grid = time_grid_from_range([start, end], time_resolution=time_resolution)
 
     observability_grid = np.zeros((len(constraints), len(time_grid)))
 
@@ -639,7 +671,7 @@ def coverage(t, p):
     if p == 0:
         return 1
     else:
-        ph = ((t + 0.5*p)%p - (0.5*p))
+        ph = ((t + 0.5 * p) % p - (0.5 * p))
         sph_in = np.sort(ph)
         sph_out = sph_in[::-1]
 
@@ -648,15 +680,15 @@ def coverage(t, p):
 
         df = np.min(np.diff(t))
 
-        spaces_in = np.sort(sph_in[np.hstack([*np.argwhere(sph_in_diff > 4*df).T, len(sph_in)-1])])
-        spaces_out = np.sort(sph_out[np.hstack([*np.argwhere(sph_out_diff > 4*df).T, len(sph_in)-1])])
+        spaces_in = np.sort(sph_in[np.hstack([*np.argwhere(sph_in_diff > 4 * df).T, len(sph_in) - 1])])
+        spaces_out = np.sort(sph_out[np.hstack([*np.argwhere(sph_out_diff > 4 * df).T, len(sph_in) - 1])])
 
-        return np.sum(spaces_in - spaces_out)/p
+        return np.sum(spaces_in - spaces_out) / p
 
 
-def getSPClcV2(target, ap = '', pwvCorr = 0, user= user_portal, password= pwd_portal):
+def getSPClcV2(target, ap='', pwvCorr=0, user=user_portal, password=pwd_portal):
     urlGet = "http://www.mrao.cam.ac.uk/SPECULOOS/portal/get_tls_prep_v2.php?date=*&id=" + target + \
-            "&filter=&telescope=&ap=" + str(ap) + "&pwvCorr=" + str(pwvCorr)
+             "&filter=&telescope=&ap=" + str(ap) + "&pwvCorr=" + str(pwvCorr)
     rGET = requests.get(urlGet, auth=(user, password))
     names = ['TMID-2450000', 'BJDMID-2450000', 'DIFF_FLUX', 'ERROR', 'DIFF_FLUX_PWV',
              'RA_MOVE', 'DEC_MOVE', 'FWHM', 'PSF_a_5', 'PSF_b_5', 'SKYLEVEL', 'AIRMASS',
@@ -666,11 +698,13 @@ def getSPClcV2(target, ap = '', pwvCorr = 0, user= user_portal, password= pwd_po
     return lc
 
 
-def getSPCdata(target, date, telescope='any', ap=6, user= user_portal, password=pwd_portal):
+def getSPCdata(target, date, telescope='any', ap=6, user=user_portal, password=pwd_portal):
     if telescope == 'any':
-        urlGet = "http://www.mrao.cam.ac.uk/SPECULOOS/portal/get_file.php?telescope=&date=" + date + "&id=" + target + "&filter=&file=MCMC_text_" + str(ap)
+        urlGet = "http://www.mrao.cam.ac.uk/SPECULOOS/portal/get_file.php?telescope=&date=" + date + "&id=" + target + "&filter=&file=MCMC_text_" + str(
+            ap)
     else:
-        urlGet = "http://www.mrao.cam.ac.uk/SPECULOOS/portal/get_file.php?telescope=" + telescope + '&date=' + date + "&id=" + target + "&filter=&file=MCMC_text_" + str(ap)
+        urlGet = "http://www.mrao.cam.ac.uk/SPECULOOS/portal/get_file.php?telescope=" + telescope + '&date=' + date + "&id=" + target + "&filter=&file=MCMC_text_" + str(
+            ap)
     rGET = requests.get(urlGet, auth=(user, password))
     rFile = json.loads(rGET.text)
     # retrieve available file
@@ -680,13 +714,13 @@ def getSPCdata(target, date, telescope='any', ap=6, user= user_portal, password=
         # read files
         MCMC = pd.read_csv(io.StringIO(rMCMC.text), sep=' ')
         MCMC['JD'] = MCMC['TMID-2450000'] + 2450000
-        targetdf = pd.DataFrame({'TMID-2450000':MCMC['JD'].values,'DIFF_FLUX': MCMC['DIFF_FLUX'].values,
-                                 'ERROR': MCMC['ERROR'].values,'dx_MOVE':MCMC['RA_MOVE'].values,
-                                 'dy_MOVE':MCMC['DEC_MOVE'].values,'FWHM':MCMC['FWHM'].values,
-                                 'AIRMASS': MCMC['AIRMASS'].values,'EXPOSURE':MCMC['EXPOSURE'].values})
+        targetdf = pd.DataFrame({'TMID-2450000': MCMC['JD'].values, 'DIFF_FLUX': MCMC['DIFF_FLUX'].values,
+                                 'ERROR': MCMC['ERROR'].values, 'dx_MOVE': MCMC['RA_MOVE'].values,
+                                 'dy_MOVE': MCMC['DEC_MOVE'].values, 'FWHM': MCMC['FWHM'].values,
+                                 'AIRMASS': MCMC['AIRMASS'].values, 'EXPOSURE': MCMC['EXPOSURE'].values})
         return targetdf
     except TypeError:
-        targetdf = pd.DataFrame({'JD':[],'DIFF_FLUX': [], 'ERROR': [], 'AIRMASS': []})
+        targetdf = pd.DataFrame({'JD': [], 'DIFF_FLUX': [], 'ERROR': [], 'AIRMASS': []})
         return targetdf.reset_index(drop=True)
 
 
@@ -746,9 +780,9 @@ def phase_coverage_given_target(target, pmin, pmax, fix_expt=None, path_target_l
     target_list_speculoos = target_list_speculoos.sort_values(by="Sp_ID")
 
     all_targets = pd.DataFrame({'Sp_ID': pd.concat([target_list_follow_up['Sp_ID'],
-                                                   target_list_speculoos["Sp_ID"]]),
+                                                    target_list_speculoos["Sp_ID"]]),
                                 "Gaia_ID": pd.concat([target_list_follow_up['Gaia_ID'],
-                                                     target_list_speculoos["Gaia_ID"]])})
+                                                      target_list_speculoos["Gaia_ID"]])})
     all_targets.reset_index(inplace=True)
 
     idx_target_list = list(all_targets['Sp_ID']).index(target)
@@ -770,7 +804,7 @@ def phase_coverage_given_target(target, pmin, pmax, fix_expt=None, path_target_l
 
     try:
         covs = [coverage(t, period) for period in periods]
-        mean_cov = np.mean(covs)*100
+        mean_cov = np.mean(covs) * 100
         fig, ax = plt.subplots(1, figsize=(9, 7))
         if target[0:2] == "Sp":
             anchored_text = AnchoredText(r'$SNR_{JWST}$ = ' +
@@ -778,11 +812,11 @@ def phase_coverage_given_target(target, pmin, pmax, fix_expt=None, path_target_l
                                          + "\n" +
                                          "Hours observed = " +
                                          str(round(target_list_speculoos['nb_hours_surved'][idx_target_list], 2)) +
-                                         ' hours',  loc=3)
+                                         ' hours', loc=3)
             ax.add_artist(anchored_text)
 
-        plt.plot(periods, np.array(covs)*100, c="silver", label='Effective cov = ' + str(round(mean_cov, 1)) + ' %')
-        plt.plot(periods, np.array(covs)*100, ".", c="k",)
+        plt.plot(periods, np.array(covs) * 100, c="silver", label='Effective cov = ' + str(round(mean_cov, 1)) + ' %')
+        plt.plot(periods, np.array(covs) * 100, ".", c="k", )
         plt.ylabel('Phase coverage in %')
         plt.xlabel('Period in days')
         plt.legend(fontsize=16)
@@ -799,7 +833,7 @@ def phase_coverage_given_target(target, pmin, pmax, fix_expt=None, path_target_l
         else:
             plt.figure(figsize=(8, 7))
         plt.plot(dates, exposures, 'H', color='goldenrod', alpha=0.8)
-        plt.ylim(min(exposures)-1, max(exposures)+1)
+        plt.ylim(min(exposures) - 1, max(exposures) + 1)
         plt.ylabel('Exposure time (seconds)')
         plt.xticks(rotation=60)
         plt.xlabel('Dates', )
@@ -917,8 +951,8 @@ def plot_annulus_phase_covered(times, period, target_name, t0):
 def phase_folded_LC(t, diff_flux, period, t0, x_lim_phase=0.02):
     x_fold = (t - t0 + 0.5 * period) % period - 0.5 * period
     plt.subplots(1, figsize=(8, 5))
-    plt.errorbar(x_fold, diff_flux, fmt='.', alpha=0.5,)
-    plt.vlines(t0,0.98,1.02,'r',alpha=0.3,zorder=3)
+    plt.errorbar(x_fold, diff_flux, fmt='.', alpha=0.5, )
+    plt.vlines(t0, 0.98, 1.02, 'r', alpha=0.3, zorder=3)
     plt.title("Phase folded on period " + str(period) + " days")
     plt.ylim(0.98, 1.02)
     plt.xlim(-x_lim_phase, x_lim_phase)

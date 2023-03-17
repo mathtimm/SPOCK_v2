@@ -4,10 +4,10 @@ from astropy.table import unique, Table, vstack
 from astropy import units as u
 from astropy.coordinates import SkyCoord, EarthLocation, AltAz
 from astroplan.utils import time_grid_from_range
-from astroplan import FixedTarget, AltitudeConstraint, MoonSeparationConstraint,AtNightConstraint,AirmassConstraint,\
+from astroplan import FixedTarget, AltitudeConstraint, MoonSeparationConstraint, AtNightConstraint, AirmassConstraint, \
     TimeConstraint, observability_table
-from astroplan.plots import dark_style_sheet,plot_airmass
-from astroplan import Observer,moon_illumination, is_observable
+from astroplan.plots import dark_style_sheet, plot_airmass
+from astroplan import Observer, moon_illumination, is_observable
 from astroplan.periodic import EclipsingSystem
 from astroplan.constraints import is_event_observable
 from colorama import Fore
@@ -15,7 +15,7 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import *
 from datetime import date, timedelta, datetime
-from eScheduler.spe_schedule import SPECULOOSScheduler, Schedule, ObservingBlock,Transitioner
+from eScheduler.spe_schedule import SPECULOOSScheduler, Schedule, ObservingBlock, Transitioner
 import gspread
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,7 +23,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import os
 import pandas as pd
 import requests
-from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro,\
+from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
     upload_np_calli, upload_np_tn, upload_np_ts
 from .make_night_plans import make_np
 import subprocess
@@ -38,8 +38,8 @@ scope = ['https://spreadsheets.google.com/feeds',
 creds = ServiceAccountCredentials.from_json_keyfile_name(path_credential_json, scope)
 client = gspread.authorize(creds)
 
-dt = Time('2018-01-02 00:00:00',scale='tcg')-Time('2018-01-01 00:00:00',scale='tcg')  # 1 day
-constraints = [AltitudeConstraint(min=24*u.deg), AtNightConstraint()]  # MoonSeparationConstraint(min=30*u.deg)
+dt = Time('2018-01-02 00:00:00', scale='tcg') - Time('2018-01-01 00:00:00', scale='tcg')  # 1 day
+constraints = [AltitudeConstraint(min=24 * u.deg), AtNightConstraint()]  # MoonSeparationConstraint(min=30*u.deg)
 
 
 def charge_observatories(name):
@@ -58,36 +58,38 @@ def charge_observatories(name):
     # Observatories
     if 'SSO' in str(name):
         location = \
-            EarthLocation.from_geodetic(-70.40300000000002*u.deg, -24.625199999999996*u.deg,2635.0000000009704*u.m)
+            EarthLocation.from_geodetic(-70.40300000000002 * u.deg, -24.625199999999996 * u.deg,
+                                        2635.0000000009704 * u.m)
         observatories.append(Observer(location=location, name="SSO", timezone="UTC"))
 
     if 'SNO' in str(name):
-        location_SNO = EarthLocation.from_geodetic(-16.50583131*u.deg, 28.2999988*u.deg, 2390*u.m)
+        location_SNO = EarthLocation.from_geodetic(-16.50583131 * u.deg, 28.2999988 * u.deg, 2390 * u.m)
         observatories.append(Observer(location=location_SNO, name="SNO", timezone="UTC"))
 
     if 'Saint-Ex' in str(name):
         location_saintex = \
-            EarthLocation.from_geodetic(-115.48694444444445*u.deg, 31.029166666666665*u.deg, 2829.9999999997976*u.m)
+            EarthLocation.from_geodetic(-115.48694444444445 * u.deg, 31.029166666666665 * u.deg,
+                                        2829.9999999997976 * u.m)
         observatories.append(Observer(location=location_saintex, name="Saint-Ex", timezone="UTC"))
 
     if 'TS_La_Silla' in str(name):
         location_TSlasilla = \
-            EarthLocation.from_geodetic(-70.73000000000002*u.deg, -29.25666666666666*u.deg, 2346.9999999988418*u.m)
+            EarthLocation.from_geodetic(-70.73000000000002 * u.deg, -29.25666666666666 * u.deg,
+                                        2346.9999999988418 * u.m)
         observatories.append(Observer(location=location_TSlasilla, name="TS_La_Silla", timezone="UTC"))
 
     if 'TN_Oukaimeden' in str(name):
-        location_TNOuka = EarthLocation.from_geodetic( -7.862263*u.deg, 31.20516*u.deg,2751*u.m)
+        location_TNOuka = EarthLocation.from_geodetic(-7.862263 * u.deg, 31.20516 * u.deg, 2751 * u.m)
         observatories.append(Observer(location=location_TNOuka, name="TN_Oukaimeden", timezone="UTC"))
 
     if 'Munich' in str(name):
-        location_munich = EarthLocation.from_geodetic(48.2*u.deg, -11.6*u.deg, 600*u.m)
+        location_munich = EarthLocation.from_geodetic(48.2 * u.deg, -11.6 * u.deg, 600 * u.m)
         observatories.append(Observer(location=location_munich, name="Munich", timezone="UTC"))
 
     return observatories
 
 
 def target_list_good_coord_format(df=None, path_target_list=None):
-
     """
     Give target corrdinates in ICRS format (used for astropy.coordinates SkyCoord function)
 
@@ -105,7 +107,7 @@ def target_list_good_coord_format(df=None, path_target_list=None):
     if df is None:
         df = pd.read_csv(path_target_list, delimiter=' ')
     target_table_spc = Table.from_pandas(df)
-    targets = [FixedTarget(coord=SkyCoord(ra=target_table_spc['RA'][i]* u.degree,
+    targets = [FixedTarget(coord=SkyCoord(ra=target_table_spc['RA'][i] * u.degree,
                                           dec=target_table_spc['DEC'][i] * u.degree),
                            name=target_table_spc['Sp_ID'][i]) for i in range(len(target_table_spc['RA']))]
     return targets
@@ -156,7 +158,7 @@ class Schedules:
                                                self.day_of_night + 1, which='nearest')).value) / 2, format='jd')
         return end_between_nautical_civil
 
-    def load_parameters(self, filename_list_special=None, filename_follow_up=None,mangos=None):
+    def load_parameters(self, filename_list_special=None, filename_follow_up=None, mangos=None):
         """
 
         Parameters
@@ -207,7 +209,7 @@ class Schedules:
             self.targets_follow_up = target_list_good_coord_format(path_target_list=filename_follow_up)
             self.target_table_spc_follow_up = Table.from_pandas(pd.read_csv(filename_follow_up, delimiter=' '))
 
-    def night_duration(self, day):
+    def night_duration(self):
         """
 
         Parameters
@@ -243,7 +245,7 @@ class Schedules:
                                          TimeConstraint((
                                              Time(self.observatory.twilight_evening_nautical(self.day_of_night,
                                                                                              which='next'))),
-                                             (Time(self.observatory.twilight_morning_nautical(self.day_of_night+1,
+                                             (Time(self.observatory.twilight_morning_nautical(self.day_of_night + 1,
                                                                                               which='nearest'))))]
         if self.target_table_spc['texp_spc'][idx_first_target] == 0:
             self.target_table_spc['texp_spc'][idx_first_target], self.target_table_spc['Filter_spc'][idx_first_target] = \
@@ -256,10 +258,10 @@ class Schedules:
         a = ObservingBlock(self.targets[idx_first_target], dur_mon_target, -1,
                            constraints=constraints_monitoring_target,
                            configuration={"filt": str(self.target_table_spc['Filter_spc'][idx_first_target]),
-                                          "texp":  str(self.target_table_spc['texp_spc'][idx_first_target])})
+                                          "texp": str(self.target_table_spc['texp_spc'][idx_first_target])})
         blocks.append(a)
         transitioner = Transitioner(slew_rate=11 * u.deg / u.second)
-        seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night+1)
+        seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night + 1)
         sequen_scheduler_ss1 = SPECULOOSScheduler(constraints=constraints_monitoring_target,
                                                   observer=self.observatory, transitioner=transitioner)
         sequen_scheduler_ss1(blocks, seq_schedule_ss1)
@@ -279,16 +281,16 @@ class Schedules:
         dur_dome_rotation = 5 / 60 / 24 * u.day  # 5min
 
         sun_set = Time(self.observatory.twilight_evening_nautical(self.day_of_night, which='next'))
-        sun_rise = Time(self.observatory.twilight_morning_nautical(self.day_of_night+1, which='nearest'))
+        sun_rise = Time(self.observatory.twilight_morning_nautical(self.day_of_night + 1, which='nearest'))
 
-        time_resolution = 1*u.hour
+        time_resolution = 1 * u.hour
         time_grid = time_grid_from_range([sun_set, sun_rise], time_resolution=time_resolution)
         dom_rot_possible = False
 
         self.make_scheduled_table()
         end_times = Time(self.scheduled_table['end time (UTC)'][:]).iso
 
-        for i in range(1, len(time_grid)-1):
+        for i in range(1, len(time_grid) - 1):
 
             start = time_grid[i]
             # print(start.iso)
@@ -301,7 +303,7 @@ class Schedules:
                               str(int(self.scheduled_table['dec (d)'][idx][0])) + 'd' +
                               str(abs(int(self.scheduled_table['dec (m)'][idx][0]))) + 'm' +
                               str(abs(round(self.scheduled_table['dec (s)'][idx][0], 3))) + 's').transform_to(
-                AltAz(obstime=start,location=self.observatory.location))
+                AltAz(obstime=start, location=self.observatory.location))
             coords_dome_rotation = SkyCoord(alt=coords.alt, az=(coords.az.value - 180) * u.deg, obstime=start,
                                             frame='altaz', location=self.observatory.location)
             if (coords.alt.value > 60) or (coords.alt.value < 30):
@@ -312,7 +314,7 @@ class Schedules:
             else:
                 target = FixedTarget(coord=SkyCoord(ra=coords_dome_rotation.icrs.ra.value * u.degree,
                                                     dec=coords_dome_rotation.icrs.dec.value * u.degree),
-                        name='dome_rot')
+                                     name='dome_rot')
                 dom_rot_possible = True
 
                 df = pd.DataFrame({'target': target.name, 'start time (UTC)': start.iso, 'end time (UTC)': end.iso,
@@ -351,7 +353,7 @@ class Schedules:
                 (end <= self.start_of_observation):
             sys.exit(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + 'Start time (or End time) is not on the same day.')
 
-        dur_obs_both_target = (self.night_duration(self.day_of_night) / (2 * u.day)) * 2 * u.day
+        dur_obs_both_target = (self.night_duration() / (2 * u.day)) * 2 * u.day
         constraints_special_target = [AltitudeConstraint(min=self.altitude_constraint * u.deg),
                                       MoonSeparationConstraint(min=self.moon_constraint * u.deg),
                                       TimeConstraint(start, end)]
@@ -372,7 +374,7 @@ class Schedules:
             a = ObservingBlock(self.targets[idx_to_insert_target], dur_obs_both_target, -1,
                                constraints=constraints_special_target,
                                configuration={"filt": str(self.target_table_spc['Filter_spc'][idx_to_insert_target]),
-                                              "texp":  str(self.target_table_spc['texp_spc'][idx_to_insert_target])})
+                                              "texp": str(self.target_table_spc['texp_spc'][idx_to_insert_target])})
             blocks.append(a)
             transitioner = Transitioner(slew_rate=11 * u.deg / u.second)
             seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night + 1)
@@ -398,10 +400,10 @@ class Schedules:
 
         """
         self.observatory = charge_observatories(self.observatory_name)[0]
-        dur_obs_both_target = (self.night_duration(self.day_of_night)/(2*u.day))*2*u.day
-        constraints_special_target = [AltitudeConstraint(min=self.altitude_constraint*u.deg),
-                                      MoonSeparationConstraint(min=self.moon_constraint*u.deg),
-                                      TimeConstraint(self.start_of_observation,self.end_of_observation)]
+        dur_obs_both_target = (self.night_duration() / (2 * u.day)) * 2 * u.day
+        constraints_special_target = [AltitudeConstraint(min=self.altitude_constraint * u.deg),
+                                      MoonSeparationConstraint(min=self.moon_constraint * u.deg),
+                                      TimeConstraint(self.start_of_observation, self.end_of_observation)]
         idx_first_target = int(np.where((self.target_table_spc["Sp_ID"] == input_name))[0])
         if int(self.target_table_spc['texp_spc'][idx_first_target]) == 0:
             self.target_table_spc['texp_spc'][idx_first_target], \
@@ -415,13 +417,13 @@ class Schedules:
         a = ObservingBlock(self.targets[idx_first_target], dur_obs_both_target, -1,
                            constraints=constraints_special_target,
                            configuration={"filt": str(self.target_table_spc['Filter_spc'][idx_first_target]),
-                                          "texp":  str(self.target_table_spc['texp_spc'][idx_first_target])})
+                                          "texp": str(self.target_table_spc['texp_spc'][idx_first_target])})
         blocks.append(a)
-        transitioner = Transitioner(slew_rate=11*u.deg/u.second)
-        seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night+1)
+        transitioner = Transitioner(slew_rate=11 * u.deg / u.second)
+        seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night + 1)
         sequen_scheduler_ss1 = SPECULOOSScheduler(constraints=constraints_special_target,
                                                   observer=self.observatory, transitioner=transitioner)
-        sequen_scheduler_ss1(blocks,seq_schedule_ss1)
+        sequen_scheduler_ss1(blocks, seq_schedule_ss1)
         self.SS1_night_blocks = seq_schedule_ss1.to_table()
         if len(self.SS1_night_blocks) == 0:
             print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + 'Impossible to schedule target ' + input_name +
@@ -443,7 +445,7 @@ class Schedules:
         self.observatory = charge_observatories(self.observatory_name)[0]
 
         constraints_follow_up = [AltitudeConstraint(min=self.altitude_constraint * u.deg), AtNightConstraint(),
-                                 TimeConstraint(Time(self.day_of_night), Time(self.day_of_night+1))]
+                                 TimeConstraint(Time(self.day_of_night), Time(self.day_of_night + 1))]
         df = self.target_table_spc_follow_up
 
         if input_name is not None:
@@ -475,7 +477,7 @@ class Schedules:
                 err_T0_neg = T0_err_transit  # timing_to_obs_jd[0] -
                 # (np.round((timing_to_obs_jd[0] - epoch.jd) / period.value, 1) *(period.value -
                 # P_err_transit) + (epoch.jd - T0_err_transit))
-                err_T0_pos = T0_err_transit  #(np.round((timing_to_obs_jd[0] - epoch.jd) / period.value, 1) *
+                err_T0_pos = T0_err_transit  # (np.round((timing_to_obs_jd[0] - epoch.jd) / period.value, 1) *
                 # (period.value + P_err_transit) + (epoch.jd + T0_err_transit)) - timing_to_obs_jd[0]
                 start_transit = Time(ing_egr[0][0].value - err_T0_neg - oot_time.value - W_err_transit,
                                      format='jd')
@@ -505,7 +507,7 @@ class Schedules:
                         a = ObservingBlock(self.targets_follow_up[idx_first_target], dur_obs_transit_target, -1,
                                            constraints=constraints_transit_target,
                                            configuration={"filt": str(df['Filter_spc'][idx_first_target]),
-                                                          "texp":  str(df['texp_spc'][idx_first_target])})
+                                                          "texp": str(df['texp_spc'][idx_first_target])})
                         blocks.append(a)
                         transitioner = Transitioner(slew_rate=11 * u.deg / u.second)
                         seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night + 1)
@@ -521,7 +523,7 @@ class Schedules:
                               ' : ', Time(ing_egr[0][1]).iso)
                         print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + ' Transit not full.')
                         constraints_transit_target = [AltitudeConstraint(min=self.altitude_constraint * u.deg),
-                                                      MoonSeparationConstraint(min= self.moon_constraint* u.deg),
+                                                      MoonSeparationConstraint(min=self.moon_constraint * u.deg),
                                                       TimeConstraint(Time(ing_egr[0][0]), Time(ing_egr[0][1]))]
                         idx_first_target = int(np.where((df['Sp_ID'] == df['Sp_ID'][i]))[0])
                         if df['texp_spc'][idx_first_target] == 0:
@@ -530,7 +532,7 @@ class Schedules:
                         a = ObservingBlock(self.targets_follow_up[idx_first_target], dur_obs_transit_target, -1,
                                            constraints=constraints_transit_target,
                                            configuration={"filt": str(df['Filter_spc'][idx_first_target]),
-                                                          "texp":  str(df['texp_spc'][idx_first_target])})
+                                                          "texp": str(df['texp_spc'][idx_first_target])})
                         blocks.append(a)
                         transitioner = Transitioner(slew_rate=11 * u.deg / u.second)
                         seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night + 1)
@@ -598,7 +600,7 @@ class Schedules:
                     print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + ' No transit of ',
                           df['Sp_ID'][i], ' on the period chosen')
 
-                observable = is_event_observable(constraints,self.observatory,
+                observable = is_event_observable(constraints, self.observatory,
                                                  self.targets_follow_up, times_ingress_egress=ing_egr)
                 if np.any(observable):
                     err_T0_neg = timing_to_obs_jd[0] - (np.round((timing_to_obs_jd[0] - epoch.jd) / period.value, 1) *
@@ -611,13 +613,13 @@ class Schedules:
                     if (end_transit > self.end_of_observation) \
                             or (start_transit < self.start_of_observation):
 
-                        if (Time(ing_egr[0][1]) < self.end_of_observation)\
+                        if (Time(ing_egr[0][1]) < self.end_of_observation) \
                                 and (Time(ing_egr[0][0]) > self.start_of_observation):
 
                             constraints_transit_target = [AltitudeConstraint(min=self.altitude_constraint * u.deg),
                                                           TimeConstraint(start_transit, end_transit),
                                                           MoonSeparationConstraint(min=self.moon_constraint * u.deg),
-                                                          AtNightConstraint(max_solar_altitude=-12*u.deg)]
+                                                          AtNightConstraint(max_solar_altitude=-12 * u.deg)]
                             print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' start_transit of ',
                                   str(df['Sp_ID'][i]), ' : ', start_transit.iso)
                             print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' end_transit of ',
@@ -625,13 +627,14 @@ class Schedules:
                             print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + ' Time out of transit not optimal.')
                             idx_first_target = int(np.where((df['Sp_ID'] == df['Sp_ID'][i]))[0])
                             if df['texp_spc'][idx_first_target] == 0:
-                                df['texp_spc'][idx_first_target], df['Filter_spc'][idx_first_target] = self.exposure_time(
+                                df['texp_spc'][idx_first_target], df['Filter_spc'][
+                                    idx_first_target] = self.exposure_time(
                                     input_name=df['Sp_ID'][idx_first_target],
                                     target_list=self.target_table_spc_follow_up)
                             a = ObservingBlock(self.targets_follow_up[idx_first_target], dur_obs_transit_target, -1,
                                                constraints=constraints_transit_target,
                                                configuration={"filt": str(df['Filter_spc'][idx_first_target]),
-                                                              "texp":  str(df['texp_spc'][idx_first_target])})
+                                                              "texp": str(df['texp_spc'][idx_first_target])})
                             blocks.append(a)
                             transitioner = Transitioner(slew_rate=11 * u.deg / u.second)
                             seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night + 1)
@@ -652,13 +655,14 @@ class Schedules:
                             # continue
                             idx_first_target = int(np.where((df['Sp_ID'] == df['Sp_ID'][i]))[0])
                             if df['texp_spc'][idx_first_target] == 0:
-                                df['texp_spc'][idx_first_target], df['Filter_spc'][idx_first_target] = self.exposure_time(
+                                df['texp_spc'][idx_first_target], df['Filter_spc'][
+                                    idx_first_target] = self.exposure_time(
                                     input_name=df['Sp_ID'][idx_first_target],
                                     target_list=self.target_table_spc_follow_up)
                             a = ObservingBlock(self.targets_follow_up[idx_first_target], dur_obs_transit_target, -1,
                                                constraints=constraints_transit_target,
                                                configuration={"filt": str(df['Filter_spc'][idx_first_target]),
-                                                              "texp":  str(df['texp_spc'][idx_first_target])})
+                                                              "texp": str(df['texp_spc'][idx_first_target])})
                             blocks.append(a)
                             transitioner = Transitioner(slew_rate=11 * u.deg / u.second)
                             seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night + 1)
@@ -679,10 +683,10 @@ class Schedules:
                         a = ObservingBlock(self.targets_follow_up[idx_first_target], dur_obs_transit_target, -1,
                                            constraints=constraints_transit_target,
                                            configuration={"filt": str(df['Filter_spc'][idx_first_target]),
-                                                          "texp":  str(df['texp_spc'][idx_first_target])})
+                                                          "texp": str(df['texp_spc'][idx_first_target])})
                         blocks.append(a)
                         transitioner = Transitioner(slew_rate=11 * u.deg / u.second)
-                        seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night+1)
+                        seq_schedule_ss1 = Schedule(self.day_of_night, self.day_of_night + 1)
                         sequen_scheduler_ss1 = SPECULOOSScheduler(constraints=constraints_transit_target,
                                                                   observer=self.observatory,
                                                                   transitioner=transitioner)
@@ -706,13 +710,13 @@ class Schedules:
         night_block = self.SS1_night_blocks.to_pandas()
 
         night_block.to_csv(path_spock + '/DATABASE/' + self.telescope + '/' +
-                           'Locked_obs/'+'lock_night_block_'+self.telescope+'_' + 
-                           Time(self.day_of_night, out_subfmt='date').iso+'.txt', index=None)
+                           'Locked_obs/' + 'lock_night_block_' + self.telescope + '_' +
+                           Time(self.day_of_night, out_subfmt='date').iso + '.txt', index=None)
 
         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Observation block saved as ' +
               path_spock + '/DATABASE/' + self.telescope + '/' +
-                           'Locked_obs/'+'lock_night_block_'+self.telescope+'_' + 
-              Time(self.day_of_night, out_subfmt='date').iso+'.txt')
+              'Locked_obs/' + 'lock_night_block_' + self.telescope + '_' +
+              Time(self.day_of_night, out_subfmt='date').iso + '.txt')
 
     def planification(self):
 
@@ -753,7 +757,7 @@ class Schedules:
                             self.scheduled_table_sorted['end time (UTC)'][0])
                     self.SS1_night_blocks['duration (minutes)'][0] = \
                         (Time(self.SS1_night_blocks['end time (UTC)'][0]) -
-                         Time(self.SS1_night_blocks['start time (UTC)'][0])).value*24*60
+                         Time(self.SS1_night_blocks['start time (UTC)'][0])).value * 24 * 60
                     end_scheduled_table.append({'target': self.SS1_night_blocks['target'][0],
                                                 'start time (UTC)': self.SS1_night_blocks['start time (UTC)'][0],
                                                 'end time (UTC)': self.SS1_night_blocks['end time (UTC)'][0],
@@ -767,7 +771,7 @@ class Schedules:
                                                 'configuration': self.SS1_night_blocks['configuration'][0]},
                                                ignore_index=True)
             # situation 1
-            if (self.SS1_night_blocks['start time (UTC)'][0] <= 
+            if (self.SS1_night_blocks['start time (UTC)'][0] <=
                     self.start_of_observation.iso):
                 print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' situation 1')
                 self.SS1_night_blocks['start time (UTC)'][0] = \
@@ -778,30 +782,30 @@ class Schedules:
 
                 # situation 2
                 if (self.SS1_night_blocks['end time (UTC)'][0] > start_before_cut) and \
-                        (self.SS1_night_blocks['end time (UTC)'][0] < end_before_cut): 
+                        (self.SS1_night_blocks['end time (UTC)'][0] < end_before_cut):
                     # case 2 # if new_block ends beFore the end of existing block
                     print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' situation 2')
                     self.scheduled_table['start time (UTC)'][i] = self.SS1_night_blocks['end time (UTC)'][0]
                     self.scheduled_table['duration (minutes)'][i] = \
                         (Time(self.scheduled_table['end time (UTC)'][i]) -
-                         Time(self.scheduled_table['start time (UTC)'][i])).value*24*60
+                         Time(self.scheduled_table['start time (UTC)'][i])).value * 24 * 60
 
                 # situation 3
                 if self.SS1_night_blocks['end time (UTC)'][0] <= start_before_cut:
                     self.scheduled_table['duration (minutes)'][i] = \
                         (Time(self.scheduled_table['end time (UTC)'][i]) -
-                         Time(self.scheduled_table['start time (UTC)'][i])).value*24*60
+                         Time(self.scheduled_table['start time (UTC)'][i])).value * 24 * 60
                     print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' situation 3, no change made to initial schedule')
 
                 # situation 4
                 elif (self.SS1_night_blocks['end time (UTC)'][0] >= end_before_cut) and \
-                        (self.SS1_night_blocks['end time (UTC)'][0] <= 
+                        (self.SS1_night_blocks['end time (UTC)'][0] <=
                          self.end_of_observation.iso):
                     print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' situation 4')
                     self.scheduled_table[i] = self.SS1_night_blocks[0]  # a way to erase self.scheduled_table block
 
                 # situation 5
-                elif (self.SS1_night_blocks['end time (UTC)'][0] >= 
+                elif (self.SS1_night_blocks['end time (UTC)'][0] >=
                       self.end_of_observation.iso):
                     print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' situation 5')
                     self.SS1_night_blocks['end time (UTC)'][0] = \
@@ -813,36 +817,36 @@ class Schedules:
                 # situation 6
                 if (self.SS1_night_blocks['start time (UTC)'][0] <= end_before_cut) and \
                         (self.SS1_night_blocks['end time (UTC)'][0] <= end_before_cut):
-                    
                     print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' situation 6')
                     self.scheduled_table['end time (UTC)'][i] = self.SS1_night_blocks['start time (UTC)'][0]
                     self.scheduled_table['duration (minutes)'] = \
-                        (Time(self.scheduled_table['end time (UTC)'][i]) - 
-                         Time(self.scheduled_table['start time (UTC)'][i])).value * 24*60
+                        (Time(self.scheduled_table['end time (UTC)'][i]) -
+                         Time(self.scheduled_table['start time (UTC)'][i])).value * 24 * 60
 
-                    end_scheduled_table = end_scheduled_table.append({'target': self.scheduled_table['target'][i]+'_2',
-                                                                      'start time (UTC)':
-                                                                          self.SS1_night_blocks['end time (UTC)'][0],
-                                                                      'end time (UTC)': end_before_cut,
-                                                                      'duration (minutes)': (Time(end_before_cut)-Time(
-                                                                          self.SS1_night_blocks['end time (UTC)'][
-                                                                              0])).value * 24 * 60,
-                                                                      'ra (h)': self.scheduled_table['ra (h)'][i],
-                                                                      'ra (m)': self.scheduled_table['ra (m)'][i],
-                                                                      'ra (s)': self.scheduled_table['ra (s)'][i],
-                                                                      'dec (d)': self.scheduled_table['dec (d)'][i],
-                                                                      'dec (m)': self.scheduled_table['dec (m)'][i],
-                                                                      'dec (s)': self.scheduled_table['dec (s)'][i],
-                                                                      'configuration':
-                                                                          self.scheduled_table['configuration'][i]},
-                                                                     ignore_index=True)
+                    end_scheduled_table = end_scheduled_table.append(
+                        {'target': self.scheduled_table['target'][i] + '_2',
+                         'start time (UTC)':
+                             self.SS1_night_blocks['end time (UTC)'][0],
+                         'end time (UTC)': end_before_cut,
+                         'duration (minutes)': (Time(end_before_cut) - Time(
+                             self.SS1_night_blocks['end time (UTC)'][
+                                 0])).value * 24 * 60,
+                         'ra (h)': self.scheduled_table['ra (h)'][i],
+                         'ra (m)': self.scheduled_table['ra (m)'][i],
+                         'ra (s)': self.scheduled_table['ra (s)'][i],
+                         'dec (d)': self.scheduled_table['dec (d)'][i],
+                         'dec (m)': self.scheduled_table['dec (m)'][i],
+                         'dec (s)': self.scheduled_table['dec (s)'][i],
+                         'configuration':
+                             self.scheduled_table['configuration'][i]},
+                        ignore_index=True)
 
                 if self.SS1_night_blocks['end time (UTC)'][0] >= end_before_cut:
 
                     # situation 7
-                    if (self.SS1_night_blocks['end time (UTC)'][0] >= 
+                    if (self.SS1_night_blocks['end time (UTC)'][0] >=
                             self.end_of_observation.iso):
-                        
+
                         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' situation 7')
 
                         if self.SS1_night_blocks['start time (UTC)'][0] > self.scheduled_table['end time (UTC)'][i]:
@@ -859,11 +863,11 @@ class Schedules:
                                 self.end_of_observation.iso
                             self.SS1_night_blocks['duration (minutes)'][0] = \
                                 (Time(self.SS1_night_blocks['end time (UTC)'][0]) -
-                                 Time(self.SS1_night_blocks['start time (UTC)'][0])).value * 24*60
+                                 Time(self.SS1_night_blocks['start time (UTC)'][0])).value * 24 * 60
 
                     elif (self.SS1_night_blocks['end time (UTC)'][0] <=
                           self.end_of_observation.iso):
-                        
+
                         # situation 8
                         if self.SS1_night_blocks['start time (UTC)'][0] >= end_before_cut:
                             print(Fore.GREEN + 'INFO: ' + Fore.BLACK +
@@ -881,11 +885,11 @@ class Schedules:
                     print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' situation 10, no change made to initial schedule')
 
             end_scheduled_table = end_scheduled_table.append({'target': self.SS1_night_blocks['target'][0],
-                                                              'start time (UTC)': 
+                                                              'start time (UTC)':
                                                                   self.SS1_night_blocks['start time (UTC)'][0],
-                                                              'end time (UTC)': 
+                                                              'end time (UTC)':
                                                                   self.SS1_night_blocks['end time (UTC)'][0],
-                                                              'duration (minutes)': 
+                                                              'duration (minutes)':
                                                                   self.SS1_night_blocks['duration (minutes)'][0],
                                                               'ra (h)': self.SS1_night_blocks['ra (h)'][0],
                                                               'ra (m)': self.SS1_night_blocks['ra (m)'][0],
@@ -893,15 +897,15 @@ class Schedules:
                                                               'dec (d)': self.SS1_night_blocks['dec (d)'][0],
                                                               'dec (m)': self.SS1_night_blocks['dec (m)'][0],
                                                               'dec (s)': self.SS1_night_blocks['dec (s)'][0],
-                                                              'configuration': 
+                                                              'configuration':
                                                                   self.SS1_night_blocks['configuration'][0]},
                                                              ignore_index=True)
             end_scheduled_table = end_scheduled_table.append({'target': self.scheduled_table['target'][i],
-                                                              'start time (UTC)': 
+                                                              'start time (UTC)':
                                                                   self.scheduled_table['start time (UTC)'][i],
-                                                              'end time (UTC)': 
+                                                              'end time (UTC)':
                                                                   self.scheduled_table['end time (UTC)'][i],
-                                                              'duration (minutes)': 
+                                                              'duration (minutes)':
                                                                   self.scheduled_table['duration (minutes)'][i],
                                                               'ra (h)': self.scheduled_table['ra (h)'][i],
                                                               'ra (m)': self.scheduled_table['ra (m)'][i],
@@ -909,7 +913,7 @@ class Schedules:
                                                               'dec (d)': self.scheduled_table['dec (d)'][i],
                                                               'dec (m)': self.scheduled_table['dec (m)'][i],
                                                               'dec (s)': self.scheduled_table['dec (s)'][i],
-                                                              'configuration': 
+                                                              'configuration':
                                                                   self.scheduled_table['configuration'][i]},
                                                              ignore_index=True)
 
@@ -1150,7 +1154,7 @@ class Schedules:
             if self.telescope == 'Artemis':
                 filt_ = filt_.replace('\'', '')
 
-        if self.telescope == 'Callisto':
+        if self.telescope == 'Callisto_SPIRIT':
             # example files used to generate SR
             efficiencyFile2 = path_spock + '/SPOCK/files_ETC/SPIRIT/datafiles/systems/pirtSPC_-60.csv'
             filterFile2 = path_spock + '/SPOCK/files_ETC/SPIRIT/datafiles/filters/zYJ.csv'
@@ -1162,23 +1166,23 @@ class Schedules:
             SRFile2 = path_spock + '/SPOCK/files_ETC/SPIRIT/datafiles/SRs/' + name2 + '_instrumentSR.csv'
             mphot.generateSR(efficiencyFile2, filterFile2, SRFile2)
             props_sky = {
-                            "pwv" : 2.5, # PWV [mm]
-                            "airmass" : 1.1, # Airmass
-                            "seeing" : 1.2 # Seeing/FWHM ["]
-                        }
+                "pwv": 2.5,  # PWV [mm]
+                "airmass": 1.1,  # Airmass
+                "seeing": 1.2  # Seeing/FWHM ["]
+            }
             props_callisto = {
-                                    "name" : name2,
-                                    "plate_scale" : 0.35 * (12/13.5),
-                                    "N_dc" : 230,
-                                    "N_rn" : 80,
-                                    "well_depth" : 55000,
-                                    "bias_level" : 0,
-                                    "well_fill" : 0.7,
-                                    "read_time" : 0.1,
-                                    "r0" : 0.5,
-                                    "r1" : 0.14,
-                                    "ap_rad" : 3
-                                }
+                "name": name2,
+                "plate_scale": 0.35 * (12 / 13.5),
+                "N_dc": 230,
+                "N_rn": 80,
+                "well_depth": 55000,
+                "bias_level": 0,
+                "well_fill": 0.7,
+                "read_time": 0.1,
+                "r0": 0.5,
+                "r1": 0.14,
+                "ap_rad": 3
+            }
             spirit = mphot.get_precision(props_callisto, props_sky, target_list["Teff"][i].values,
                                          target_list["distance"][i].values, override=False, mapping=True)
 
@@ -1204,7 +1208,7 @@ class Schedules:
 
 def visibility_plot(day, observatory, night_block):
     delta_midnight = Time(np.linspace(observatory.twilight_evening_nautical(day, which='next').jd,
-                                      observatory.twilight_morning_nautical(day+1, which='nearest').jd, 100),
+                                      observatory.twilight_morning_nautical(day + 1, which='nearest').jd, 100),
                           format='jd')
     dec = str(int(float(night_block['dec (d)'][0]))) + 'd' + str(int(float(night_block['dec (m)'][0]))) + 'm' + \
           str(int(float(night_block['dec (s)'][0]))) + 's'
@@ -1219,7 +1223,7 @@ def visibility_plot(day, observatory, night_block):
 
 def save_schedule(save, over_write, day, telescope):
     if save:
-        source = path_spock + '/night_blocks_propositions/' + 'night_blocks_' + telescope + '_' +\
+        source = path_spock + '/night_blocks_propositions/' + 'night_blocks_' + telescope + '_' + \
                  day.tt.datetime.strftime("%Y-%m-%d") + '.txt'
         destination = path_spock + '/DATABASE/' + telescope + '/'
         destination_2 = path_spock + '/DATABASE/' + telescope + '/' + 'Archive_night_blocks/'
@@ -1231,7 +1235,7 @@ def save_schedule(save, over_write, day, telescope):
         if not over_write:
             try:
                 dest = shutil.move(source, destination)
-                dest2 = shutil.move(source, destination_2)
+                shutil.move(source, destination_2)
                 print(Fore.GREEN + 'INFO:  ' + Fore.BLACK + '\"' + source + '\"' + ' has been copied to ' +
                       '\"' + destination + '\"')
             except shutil.Error:
@@ -1266,7 +1270,7 @@ def upload_plans(day, nb_days, telescope):
     path_database_home = \
         os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Preview_schedule.html')
     print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Path local \'Gant chart\' = ', path_gant_chart)
-    print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Path database = \'Gant chart\' = ',  path_database_home)
+    print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Path database = \'Gant chart\' = ', path_database_home)
     subprocess.Popen(["sshpass", "-p", pwd_appcs, "scp", "-r", path_gant_chart, path_database_home])
     path_gant_chart_masterfile = \
         os.path.join('/Users/elsaducrot/spock_2/SPOCK_Figures/spock_stats_masterfile.csv')
@@ -1278,7 +1282,7 @@ def upload_plans(day, nb_days, telescope):
 
 def read_night_block(telescope, day):
     day_fmt = Time(day, scale='utc', out_subfmt='date').tt.datetime.strftime("%Y-%m-%d")
-    path_local = path_spock + '/DATABASE/' + telescope+'/Archive_night_blocks/night_blocks_' + telescope + '_' + \
+    path_local = path_spock + '/DATABASE/' + telescope + '/Archive_night_blocks/night_blocks_' + telescope + '_' + \
                  day_fmt + '.txt'
 
     if os.path.exists(path_local):
@@ -1288,8 +1292,8 @@ def read_night_block(telescope, day):
             str(telescope) + '_' + str(day_fmt) + '.txt',
             format='ascii')
     else:
-        nightb_url = "http://www.mrao.cam.ac.uk/SPECULOOS/"+telescope+'/schedule/Archive_night_blocks/night_blocks_' + \
-                     telescope+'_'+day_fmt+'.txt'
+        nightb_url = "http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/" + telescope + '/schedule/Archive_night_blocks/night_blocks_' + \
+                     telescope + '_' + day_fmt + '.txt'
         nightb = requests.get(nightb_url, auth=(user_portal, pwd_portal))
 
         if nightb.status_code == 404:
@@ -1324,8 +1328,8 @@ def get_info_follow_up_target(name, target_list_follow_up):
     if idx_target.size == 0:
         sys.exit('ERROR: This target name is not in the list.')
     else:
-        return float(target_list_follow_up['RA'][idx_target]), float(target_list_follow_up['DEC'][idx_target]),\
-               float(target_list_follow_up['T0'][idx_target]), float(target_list_follow_up['P'][idx_target]),\
+        return float(target_list_follow_up['RA'][idx_target]), float(target_list_follow_up['DEC'][idx_target]), \
+               float(target_list_follow_up['T0'][idx_target]), float(target_list_follow_up['P'][idx_target]), \
                float(target_list_follow_up['W'][idx_target])
 
 
@@ -1338,19 +1342,17 @@ def prediction(name, ra, dec, timing, period, duration, start_date, ntr):
     constraints_predictions = [AltitudeConstraint(min=altitude_constraint * u.deg),
                                AtNightConstraint.twilight_nautical()]
     constraints_predictions_stx = [AltitudeConstraint(min=altitude_constraint_stx * u.deg),
-                               AtNightConstraint.twilight_nautical()]
+                                   AtNightConstraint.twilight_nautical()]
 
     target_transit = EclipsingSystem(primary_eclipse_time=Time(timing, format='jd'),
-                                     orbital_period=period*u.day, duration=duration*u.day,
+                                     orbital_period=period * u.day, duration=duration * u.day,
                                      name=name)
-    target = [FixedTarget(coord=SkyCoord(ra=ra* u.degree, dec=dec* u.degree), name=name)]
-
+    target = [FixedTarget(coord=SkyCoord(ra=ra * u.degree, dec=dec * u.degree), name=name)]
 
     target_set_time_sso = charge_observatories('SSO')[0].target_set_time(start_date,
                                                                          target,
                                                                          which='next',
                                                                          horizon=altitude_constraint * u.deg)
-
 
     mid_transit_timing = Time(target_transit.next_primary_eclipse_time(start_date, n_eclipses=ntr)).iso
     mid_transit_timing_jd = Time(target_transit.next_primary_eclipse_time(start_date, n_eclipses=ntr)).jd
@@ -1378,9 +1380,9 @@ def prediction(name, ra, dec, timing, period, duration, start_date, ntr):
     observable_saint_ex_tables = []
 
     for i in range(len(ing_egr)):
-        date = Time(Time(Time(Time(ing_egr[i][0]).iso, out_subfmt='date').iso).jd+0.625, format='jd')
+        date = Time(Time(Time(Time(ing_egr[i][0]).iso, out_subfmt='date').iso).jd + 0.625, format='jd')
         observable_sso_tables.append(observability_table(constraints_predictions, charge_observatories('SSO')[0],
-                                                         target, time_range=Time([date, date+1]),
+                                                         target, time_range=Time([date, date + 1]),
                                                          time_grid_resolution=0.5 * u.hour))
 
         observable_sno_tables.append(observability_table(constraints_predictions, charge_observatories('SNO')[0],
@@ -1396,7 +1398,7 @@ def prediction(name, ra, dec, timing, period, duration, start_date, ntr):
     observable_sno_table = vstack(observable_sno_tables)
     observable_saint_ex_table = vstack(observable_saint_ex_tables)
 
-    df = pd.DataFrame(data=ing_egr.sort().iso, index=[name]*len(ing_egr), columns=["Ingress", "Egress"])
+    df = pd.DataFrame(data=ing_egr.sort().iso, index=[name] * len(ing_egr), columns=["Ingress", "Egress"])
 
     df['mid transit'] = mid_transit_timing
 
@@ -1404,22 +1406,21 @@ def prediction(name, ra, dec, timing, period, duration, start_date, ntr):
 
     df['Observable SSO'] = observable_sso[0]
 
-    df['Hours observable SSO (h)'] = observable_sso_table['fraction of time observable'] * 24#*u.hour
+    df['Hours observable SSO (h)'] = observable_sso_table['fraction of time observable'] * 24  # *u.hour
 
     df['Observable SNO'] = observable_sno[0]
 
-    df['Hours observable SNO (h)'] = observable_sno_table['fraction of time observable'] * 24#*u.hour
+    df['Hours observable SNO (h)'] = observable_sno_table['fraction of time observable'] * 24  # *u.hour
 
     df['Observable Saint-Ex'] = observable_saintex[0]
 
-    df['Hours observable Saint-Ex (h)'] = observable_saint_ex_table['fraction of time observable'] * 24#*u.hour
+    df['Hours observable Saint-Ex (h)'] = observable_saint_ex_table['fraction of time observable'] * 24  # *u.hour
 
     df['Observable TN Oukaimeden'] = observable_tn_oukaimeden[0]
 
     df['Observable TS La Silla'] = observable_ts_la_silla[0]
 
     return df
-
 
 # def make_docx_schedule(observatory, telescope, date_range, name_operator):
 #
