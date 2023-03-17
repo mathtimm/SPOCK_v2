@@ -7,9 +7,9 @@ def read(fname):
 
 setup(
     name = 'SPOCK',
-    version = '0.0.1',
+    version = '2.0',
     author = 'Elsa Ducrot',
-    author_email = 'educrot@uliege.be',
+    author_email = 'ducrotelsa@gmail.com',
     description = ('Speculoos Observatory SChedule maKer for chilean night on SPECULOOS South Observatory'),
     keywords = '',
     url = 'https://github.com/educrot/SPOCK/',
