@@ -1,8 +1,8 @@
 .. image:: https://travis-ci.com/educrot/SPOCK.svg?branch=master&status=passed
-    :target: https://travis-ci.com/educrot/SPOCK
+    :target: https://travis-ci.com/educrot22/SPOCK
 
 .. image:: https://img.shields.io/badge/docs-dev-green.svg
-    :target: https://educrot.github.io/SPOCK/index.html
+    :target: https://educrot22.github.io/SPOCK/index.html
 
 .. image:: ./SPOCK_Figures/logo_SPOCK_2.png
    :width: 600
@@ -28,7 +28,7 @@ Documentation SPOCK
 ---------------------
 
 You will find complete documentation (in dev) for setting up your project at `SPOCK Read
-the Docs site <https://educrot.github.io/SPOCK/index.html>`_.
+the Docs site <https://educrot22.github.io/SPOCK/index.html>`_.
 
 
 Installation
