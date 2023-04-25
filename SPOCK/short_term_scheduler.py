@@ -1000,11 +1000,11 @@ class Schedules:
                 try:
                     panda_table.to_csv(os.path.join(path, 'night_blocks_' + str(self.telescope) + '_' +
                                                     self.day_of_night.tt.datetime[0].strftime("%Y-%m-%d") +
-                                                    '.txt'), sep=' ')
+                                                    '.txt'), sep=' ',index_label='target')
                 except TypeError:
                     panda_table.to_csv(os.path.join(path, 'night_blocks_' + str(self.telescope) + '_' +
                                                     self.day_of_night.tt.datetime.strftime("%Y-%m-%d") +
-                                                    '.txt'), sep=' ')
+                                                    '.txt'), sep=' ',index_label='target')
 
     def exposure_time(self, input_name, target_list, day=None):
         """

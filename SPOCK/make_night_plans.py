@@ -303,6 +303,7 @@ def make_np(t_now, nb_jours, tel):
                                texp[i], ra1[i], ra2[i], ra3[i], dec1[i], dec2[i], dec3[i], None, Path, telescope)
                         flatdawn(t_now, date_end[i], sun_rise.iso, Path, telescope)
                     if i == (len(name) - 1) and telescope.find('Callisto') is not -1:
+                        autofocus = True
                         target(t_now, nam, date_start[i], date_end[i], waitlimit, afinterval, autofocus, count, filt[i],
                                texp[i], ra1[i], ra2[i], ra3[i], dec1[i], dec2[i], dec3[i], None, Path, telescope)
                         flatdawn(t_now, date_end[i], sun_rise.iso, Path, telescope)
@@ -352,6 +353,7 @@ def make_np(t_now, nb_jours, tel):
                                texp[i], ra1[i], ra2[i], ra3[i], dec1[i], dec2[i], dec3[i], None, Path, telescope)
                         flatdawn(t_now, date_end[i], sun_rise.iso, Path, telescope)
                     if i == (len(name) - 1) and telescope.find('Callisto') is not -1:
+                        autofocus = True
                         target(t_now, nam, date_start[i], date_end[i], waitlimit, afinterval, autofocus, count, filt[i],
                                texp[i], ra1[i], ra2[i], ra3[i], dec1[i], dec2[i], dec3[i], None, Path, telescope)
                         flatdawn(t_now, date_end[i], sun_rise.iso, Path, telescope)

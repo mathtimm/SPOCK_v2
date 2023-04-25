@@ -1247,7 +1247,7 @@ class Schedules:
 
                 self.night_block_by_day.append(self.night_block)
                 self.make_night_block(day)
-                self.make_night_block(day)
+                #self.make_night_block(day)
 
         if str(self.strategy) == 'segmented':
             print()
@@ -1909,7 +1909,7 @@ class Schedules:
         panda_table = self.night_block.to_pandas()
         panda_table.to_csv(os.path.join(
             path_spock + '/night_blocks_propositions/' + 'night_blocks_' + self.telescope + '_' + str(
-                day_fmt) + '.txt'), sep=' ')
+                day_fmt) + '.txt'), sep=' ', index_label='target')
 
     def is_constraint_hours(self, idx_target):
         """
