@@ -12,6 +12,8 @@ import yaml
 import glob
 from ftplib import FTP
 from colorama import Fore
+import warnings
+warnings.filterwarnings('ignore')
 from datetime import date, timedelta, datetime
 import pandas as pd
 import sys
@@ -161,7 +163,7 @@ def change_fmt_stargate_TL(file_name):
     """
     # change columns names
     if path_spock + '/target_lists/stargate/' + 'TL_spock_' + file_name:
-        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Taregt list already in good format')
+        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Target list already in good format')
     else:
         df = pd.read_csv(path_spock + '/target_lists/stargate/' + file_name, delimiter=';')
         df = df.rename(columns={'spc': 'Sp_ID', 'ra': 'RA', 'dc': 'DEC', 'gaia': 'Gaia_ID', 'obstime': 'nb_hours_surved',
