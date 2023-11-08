@@ -303,7 +303,6 @@ def make_np(t_now, nb_jours, tel):
                                texp[i], ra1[i], ra2[i], ra3[i], dec1[i], dec2[i], dec3[i], None, Path, telescope)
                         flatdawn(t_now, date_end[i], sun_rise.iso, Path, telescope)
                     if i == (len(name) - 1) and telescope.find('Callisto') is not -1:
-                        autofocus = True
                         target(t_now, nam, date_start[i], date_end[i], waitlimit, afinterval, autofocus, count, filt[i],
                                texp[i], ra1[i], ra2[i], ra3[i], dec1[i], dec2[i], dec3[i], None, Path, telescope)
                         flatdawn(t_now, date_end[i], sun_rise.iso, Path, telescope)
@@ -353,7 +352,6 @@ def make_np(t_now, nb_jours, tel):
                                texp[i], ra1[i], ra2[i], ra3[i], dec1[i], dec2[i], dec3[i], None, Path, telescope)
                         flatdawn(t_now, date_end[i], sun_rise.iso, Path, telescope)
                     if i == (len(name) - 1) and telescope.find('Callisto') is not -1:
-                        autofocus = True
                         target(t_now, nam, date_start[i], date_end[i], waitlimit, afinterval, autofocus, count, filt[i],
                                texp[i], ra1[i], ra2[i], ra3[i], dec1[i], dec2[i], dec3[i], None, Path, telescope)
                         flatdawn(t_now, date_end[i], sun_rise.iso, Path, telescope)
@@ -397,7 +395,7 @@ def make_np(t_now, nb_jours, tel):
                                    Path, telescope=telescope)
 
         if telescope.find('Callisto') is not -1:
-            filt.append("Clear")
+            #filt.append("Clear")
             flatexo_calli(Path, t_now, filt)
         if telescope.find('Ganymede') is not -1:
             flatexo_gany(Path, t_now, filt)
@@ -429,3 +427,122 @@ def make_np(t_now, nb_jours, tel):
 
         p2 = os.path.join(path_spock + '/DATABASE', str(telescope), 'Zip_files', str(t_now))
         shutil.make_archive(p2, 'zip', p)
+
+
+def make_astra_schedule_file(day, nb_days, telescope):
+    t0 = Time(day)
+    dt = Time('2018-01-02 00:00:00', scale='tcg') - Time('2018-01-01 00:00:00', scale='tcg')  # 1 day
+
+    for nb_day in range(0, nb_days):
+        t_now = Time(t0 + nb_day * dt, scale='utc', out_subfmt='date').tt.datetime.strftime("%Y-%m-%d")
+        Path = path_spock + '/DATABASE'
+        p = os.path.join(Path, str(telescope), 'Plans_by_date', str(t_now))
+        if not os.path.exists(p):
+            os.makedirs(p)
+        scheduler_table = Table.read(path_spock + '/DATABASE/' + str(telescope) + '/Archive_night_blocks' +
+                                     '/night_blocks_' + str(telescope) + '_' + str(t_now) + '.txt', format='ascii')
+        if (telescope == 'Io') or telescope == ('Europa') or (telescope == 'Ganymede') or (telescope == 'Callisto'):
+            scheduler_table = dome_rotation(telescope=telescope, day_of_night=t_now)  # Intentional dome rotation to
+            # avoid technical pb on Callisto with dome
+        name = scheduler_table['target']
+        config = scheduler_table['configuration']
+        filt = []
+        texp = []
+        scheduler_table.add_index('target')
+        try:
+            index_to_delete = scheduler_table.loc['TransitionBlock'].index
+            scheduler_table.remove_row(index_to_delete)
+        except KeyError:
+            print()
+        for i in range(0, len(scheduler_table)):
+            if name[i] != 'TransitionBlock':
+                conf = ast.literal_eval(config[i])
+                filt.append(conf['filt'])
+                texp.append(conf['texp'])
+                if telescope != 'Artemis':
+                    if filt[i] == 'z' or filt[i] == 'g' or filt[i] == 'g' or filt[i] == 'i' or filt[i] == 'r':
+                        a = filt[i]
+                        filt[i] = a + '\''
+
+        t = Time(day)
+
+        #Paranal
+        location_paranal = EarthLocation.from_geodetic(-70.40300000000002 * u.deg, -24.625199999999996 * u.deg,
+                                               2635.0000000009704 * u.m)
+        paranal = Observer(location=location_paranal, name="paranal", timezone="UTC")
+        sun_set_paranal  = paranal.sun_set_time(t, which='next', horizon=-8.19 * u.degree)
+        sun_rise_paranal = paranal.sun_rise_time(t, which='next', horizon=-8.19 * u.degree)
+
+        #Tenerife
+        location_SNO = EarthLocation.from_geodetic(-16.50583131 * u.deg, 28.2999988 * u.deg, 2390 * u.m)
+        teide = Observer(location=location_SNO, name="SNO", timezone="UTC")
+        sun_set_teide = teide.sun_set_time(t, which='next', horizon=-8.19 * u.degree)
+        sun_rise_teide = teide.sun_rise_time(t + 1, which='next', horizon=-8.19 * u.degree)
+
+        #San Pedro de Martir
+        location_saintex = EarthLocation.from_geodetic(-115.48694444444445 * u.deg, 31.029166666666665 * u.deg,
+                                                       2829.9999999997976 * u.m)
+        san_pedro = Observer(location=location_saintex, name="saintex", timezone="UTC")
+        sun_set_san_pedro = san_pedro.sun_set_time(t + 1, which='next', horizon=-8.19 * u.degree)
+        sun_rise_san_pedro = san_pedro.sun_rise_time(t + 1, which='next', horizon=-8.19 * u.degree)
+
+        if telescope == "Saint_Ex":
+            sun_set = sun_set_san_pedro
+            sun_rise = sun_rise_san_pedro
+
+        if (telescope == "Io") or (telescope == "Europa") or (telescope == "Ganymede") or (telescope == "Callisto"):
+            sun_set = sun_set_paranal
+            sun_rise = sun_rise_paranal
+
+        if (telescope == "Artemis"):
+            sun_set = sun_set_teide
+            sun_rise = sun_rise_teide
+
+
+        ## Built Schedule for ASTRA
+        # Open
+        open_row = [["Camera",	"camera_"+str(telescope).upper(),	"open",	 "{}",	sun_set.iso,	sun_rise.iso]]
+        df = pd.DataFrame(open_row, columns=["device_type",	"device_name",	"action_type",	"action_value", "start_time",	"end_time"])
+
+        # Dome
+        dome_row = pd.Series({"device_type": "Dome",	"device_name": "dome_"+str(telescope).upper(),
+                             "action_type": "SlewToAzimuth",	"action_value": 230,
+                             "start_time": sun_set.iso,	"end_time": sun_rise.iso})
+        df = df.append(dome_row, ignore_index=True)
+        # Flats
+        flats_row_evening = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).upper(),
+                             "action_type": "flats",	"action_value": {"filter": filt, 'n': [10]*len(filt)},
+                             "start_time": sun_set.iso,	"end_time": (sun_rise+30*u.min).iso})
+        df = df.append(flats_row_evening, ignore_index=True)
+        #Targets
+        for i in range(len(scheduler_table)):
+            coords = SkyCoord(str(int(scheduler_table['ra (h)'][i])) + 'h' +
+                              str(int(scheduler_table['ra (m)'][i])) + 'm' +
+                              str(round(scheduler_table['ra (s)'][i], 3)) + 's' + ' ' +
+                              str(int(scheduler_table['dec (d)'][i])) + 'd' +
+                              str(abs(int(scheduler_table['dec (m)'][i]))) + 'm' +
+                              str(abs(round(scheduler_table['dec (s)'][i], 3))) + 's')
+            action_values_target = {'object': name[i], 'filter': filt[i], 'ra': coords.ra.value, 'dec': coords.dec.value,
+                            'exptime': texp[i], 'guiding': False, 'pointing': False }
+            target_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).upper(),
+                             "action_type": "object",	"action_value": action_values_target,
+                             "start_time": scheduler_table["start time (UTC)"][i],	"end_time": scheduler_table["end time (UTC)"][i]})
+            df = df.append(target_row, ignore_index=True)
+        # Flats
+        flats_row_morning = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).upper(),
+                             "action_type": "flats",	"action_value": {"filter": filt, 'n': [10]*len(filt)},
+                             "start_time": scheduler_table["end time (UTC)"][-1],	"end_time": (Time(scheduler_table["end time (UTC)"][-1])+30*u.min).iso})
+        df = df.append(flats_row_morning, ignore_index=True)
+        # Close
+        close_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).upper(),
+                             "action_type": "close",	"action_value": {},
+                             "start_time": sun_rise.iso,	"end_time": (sun_rise+1*u.min).iso})
+        df = df.append(close_row, ignore_index=True)
+        # Calibration
+        calibration_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).upper(),
+                             "action_type": "calibration",	"action_value": {"exptime":texp, 'n': [10]*len(texp)},
+                             "start_time": sun_rise.iso,	"end_time": (sun_rise+30*u.min).iso})
+        df = df.append(calibration_row, ignore_index=True)
+        #To .csv file
+        df.to_csv(path_spock + '/DATABASE/' + str(telescope) + "/Astra/" +
+                  str(telescope) + '_' + str(t_now) + '.csv', index=None)

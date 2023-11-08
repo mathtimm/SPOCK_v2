@@ -503,7 +503,7 @@ class Schedules:
                                 input_name=df['Sp_ID'][idx_first_target], target_list=self.target_table_spc_follow_up,
                                 day=self.day_of_night)
                         if self.telescope == 'Artemis':
-                            df['texp_spc'][idx_first_target] = str(df['texp_spc'][idx_first_target]).replace('\'', '')
+                            df['Filter_spc'][idx_first_target] = str(df['Filter_spc'][idx_first_target]).replace('\'', '')
                         a = ObservingBlock(self.targets_follow_up[idx_first_target], dur_obs_transit_target, -1,
                                            constraints=constraints_transit_target,
                                            configuration={"filt": str(df['Filter_spc'][idx_first_target]),
@@ -529,6 +529,8 @@ class Schedules:
                         if df['texp_spc'][idx_first_target] == 0:
                             df['texp_spc'][idx_first_target], df['Filter_spc'][idx_first_target] = self.exposure_time(
                                 input_name=df['Sp_ID'][idx_first_target], target_list=self.target_table_spc_follow_up)
+                        if self.telescope == 'Artemis':
+                            df['Filter_spc'][idx_first_target] = str(df['Filter_spc'][idx_first_target]).replace('\'', '')
                         a = ObservingBlock(self.targets_follow_up[idx_first_target], dur_obs_transit_target, -1,
                                            constraints=constraints_transit_target,
                                            configuration={"filt": str(df['Filter_spc'][idx_first_target]),
@@ -550,6 +552,8 @@ class Schedules:
                         df['texp_spc'][idx_first_target], df['Filter_spc'][idx_first_target] = \
                             self.exposure_time(input_name=df['Sp_ID'][idx_first_target],
                                                target_list=self.target_table_spc_follow_up)
+                    if self.telescope == 'Artemis':
+                            df['Filter_spc'][idx_first_target] = str(df['Filter_spc'][idx_first_target]).replace('\'', '')
                     a = ObservingBlock(self.targets_follow_up[idx_first_target], dur_obs_transit_target, -1,
                                        constraints=constraints_transit_target,
                                        configuration={"filt": str(df['Filter_spc'][idx_first_target]),

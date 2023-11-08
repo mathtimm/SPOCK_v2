@@ -6,13 +6,13 @@ import numpy as np
 from alive_progress import alive_bar
 import os.path, time
 import requests
-from SPOCK import user_portal, pwd_portal, target_list_from_stargate_path
+from SPOCK import user_portal, pwd_portal, target_list_from_stargate_path, path_spock
 
 target_list_df = pd.read_csv(target_list_from_stargate_path, sep=',')
 
 
 def read_night_plans_server(telescope,date):
-    TargetURL = "http://www.mrao.cam.ac.uk/SPECULOOS/"+telescope+\
+    TargetURL = "http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/"+telescope+\
                 "/schedule/Archive_night_blocks/night_blocks_"+telescope+"_"+date+".txt"
     resp = requests.get(TargetURL, auth=(user_portal, pwd_portal))
     content = resp.text.replace("\n", "")
@@ -37,7 +37,7 @@ def listFD(url, ext=''):
 
 def df_all_obs_scheduled(telescope):
     date_night_plan = []
-    url = "http://www.mrao.cam.ac.uk/SPECULOOS/" + telescope + "/schedule/Archive_night_blocks/"
+    url = "http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/" + telescope + "/schedule/Archive_night_blocks/"
     ext = 'txt'
 
     with alive_bar(len(listFD(url, ext))) as bar:
@@ -53,7 +53,7 @@ def df_all_obs_scheduled(telescope):
                 df = pd.concat(frames)
                 df = df.reset_index(drop=True)
                 date_night_plan.append(
-                    file.replace('http://www.mrao.cam.ac.uk/SPECULOOS/', '').replace(telescope, '').replace(
+                    file.replace('http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/', '').replace(telescope, '').replace(
                         '/schedule/Archive_night_blocks//night_blocks_', '').replace('_', '').replace('.txt', ''))
         return df,date_night_plan
 
@@ -93,7 +93,7 @@ def run_masterfile():
 
     df_speculoos = pd.concat(frames)
     df_speculoos = df_speculoos.sort_values('target').reset_index(drop=True)
-    df_speculoos.to_csv('/Users/elsaducrot/spock_2/SPOCK_files/all_schedules.csv',sep=',',index=None)
+    df_speculoos.to_csv(path_spock + '/all_schedules.csv',sep=',',index=None)
 
     date_night_start_each_target = []
     date_oldest_obs = []
@@ -125,7 +125,7 @@ def run_masterfile():
                        'Ms': target_list_df['Ms'][idx_all], 'Rs': target_list_df['Rs'][idx_all],
                        'SpT': target_list_df['SpT'][idx_all]})
 
-    df_masterfile.to_csv('/Users/elsaducrot/spock_2/SPOCK_files/spock_stats_masterfile.csv',sep=',',index=None)
+    df_masterfile.to_csv(path_spock + 'spock_stats_masterfile.csv',sep=',',index=None)
 
 
 def info_on_Sp_target(target):

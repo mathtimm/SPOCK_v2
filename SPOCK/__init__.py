@@ -138,10 +138,13 @@ def get_target_list_stargate(day):
     ftp.login(login_stargate,pwd_stargate)
     # day = Time(day, scale='utc', out_subfmt='date').iso
     file_name = 'stargate_db_'+y+'-'+m+'-'+d+'.csv'
-    my_file = open(path_spock + '/target_lists/stargate/' + file_name, 'wb')
-    ftp.retrbinary('RETR ' + file_name, my_file.write,8*1024)
-    print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Downloading target list from STARGATE.')
-    # time.sleep(5)  # wait for the file to fully download
+    if path_spock + '/target_lists/stargate/' + file_name:
+        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Latest target list already updated.')
+    else:
+        my_file = open(path_spock + '/target_lists/stargate/' + file_name, 'wb')
+        ftp.retrbinary('RETR ' + file_name, my_file.write,8*1024)
+        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Downloading target list from STARGATE.')
+        # time.sleep(5)  # wait for the file to fully download
     return file_name
 
 
@@ -157,62 +160,65 @@ def change_fmt_stargate_TL(file_name):
 
     """
     # change columns names
-    df = pd.read_csv(path_spock + '/target_lists/stargate/' + file_name, delimiter=';')
-    df = df.rename(columns={'spc': 'Sp_ID', 'ra': 'RA', 'dc': 'DEC', 'gaia': 'Gaia_ID', 'obstime': 'nb_hours_surved',
-                            'program.1': 'Program', 'spt': 'SpT', 'mag_j': 'J'})
-    df['nb_hours_surved'] = df['nb_hours_surved'].fillna(0)
-    df['texp_spc'] = [0] * len(df['Sp_ID'])
-    df['Filter_spc'] = ['I+z'] * len(df['Sp_ID'])
-    df['texp_trap'] = [0] * len(df['Sp_ID'])
-    df['Filter_trap'] = ['I+z'] * len(df['Sp_ID'])
-    df['telescope'] = [''] * len(df['Sp_ID'])
-    df['nb_hours_threshold'] = [100] * len(df['Sp_ID'])
-    df.loc[df.Program == 1, 'nb_hours_threshold'] = 200
-    df['SNR_TESS_temp'] = [0]*len(df['SNR_JWST_HZ_tr'])
-    df['SNR_Spec_temp'] = [0]*len(df['SNR_JWST_HZ_tr'])
-    df['SNR_JWST_HZ_tr'] = df['SNR_JWST_HZ_tr'].fillna(0)
-    df['SNR_TESS_temp'] = df['SNR_TESS_temp'].fillna(0)
-    df['SNR_Spec_temp'] = df['SNR_Spec_temp'].fillna(0)
-    df["SNR_SPIRIT"] = [0]*len(df)
-    df["texp_spirit"] = [0]*len(df)
-    df_spirit = pd.read_csv(path_spock + "/SPIRIT/target_precision_df_1.2seeing_andorSPC_-60_I+z_pirtSPC_-60_real_zYJ_final_upgraded_2022-05-17T120501.csv", sep=',')
-    idx_list1_in_list2, idx_list2_in_list1 = index_list1_list2(df_spirit["Sp_ID"], df["Sp_ID"])
-    df["SNR_SPIRIT"][idx_list1_in_list2] = df_spirit["SNR_1"][idx_list2_in_list1]
-    df["texp_spirit"][idx_list1_in_list2] = df_spirit["exp_time_2"][idx_list2_in_list1]
-    df_observable_field = pd.read_csv(path_spock + "/SPIRIT/observable_fields.csv", sep=',')
-    idx_targets_in_notobsfield, idx_notobsfield_in_targets = index_list1_list2(df["Sp_ID"],
-                         np.array(df_observable_field["Sp_ID"][~np.array(df_observable_field["enough_comparisons"])]))
-    df["SNR_SPIRIT"][idx_notobsfield_in_targets] = 0
+    if path_spock + '/target_lists/stargate/' + 'TL_spock_' + file_name:
+        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Taregt list already in good format')
+    else:
+        df = pd.read_csv(path_spock + '/target_lists/stargate/' + file_name, delimiter=';')
+        df = df.rename(columns={'spc': 'Sp_ID', 'ra': 'RA', 'dc': 'DEC', 'gaia': 'Gaia_ID', 'obstime': 'nb_hours_surved',
+                                'program.1': 'Program', 'spt': 'SpT', 'mag_j': 'J'})
+        df['nb_hours_surved'] = df['nb_hours_surved'].fillna(0)
+        df['texp_spc'] = [0] * len(df['Sp_ID'])
+        df['Filter_spc'] = ['I+z'] * len(df['Sp_ID'])
+        df['texp_trap'] = [0] * len(df['Sp_ID'])
+        df['Filter_trap'] = ['I+z'] * len(df['Sp_ID'])
+        df['telescope'] = [''] * len(df['Sp_ID'])
+        df['nb_hours_threshold'] = [100] * len(df['Sp_ID'])
+        df.loc[df.Program == 1, 'nb_hours_threshold'] = 200
+        df['SNR_TESS_temp'] = [0]*len(df['SNR_JWST_HZ_tr'])
+        df['SNR_Spec_temp'] = [0]*len(df['SNR_JWST_HZ_tr'])
+        df['SNR_JWST_HZ_tr'] = df['SNR_JWST_HZ_tr'].fillna(0)
+        df['SNR_TESS_temp'] = df['SNR_TESS_temp'].fillna(0)
+        df['SNR_Spec_temp'] = df['SNR_Spec_temp'].fillna(0)
+        df["SNR_SPIRIT"] = [0]*len(df)
+        df["texp_spirit"] = [0]*len(df)
+        df_spirit = pd.read_csv(path_spock + "/SPIRIT/target_precision_df_1.2seeing_andorSPC_-60_I+z_pirtSPC_-60_real_zYJ_final_upgraded_2022-05-17T120501.csv", sep=',')
+        idx_list1_in_list2, idx_list2_in_list1 = index_list1_list2(df_spirit["Sp_ID"], df["Sp_ID"])
+        df["SNR_SPIRIT"][idx_list1_in_list2] = df_spirit["SNR_1"][idx_list2_in_list1]
+        df["texp_spirit"][idx_list1_in_list2] = df_spirit["exp_time_2"][idx_list2_in_list1]
+        df_observable_field = pd.read_csv(path_spock + "/SPIRIT/observable_fields.csv", sep=',')
+        idx_targets_in_notobsfield, idx_notobsfield_in_targets = index_list1_list2(df["Sp_ID"],
+                             np.array(df_observable_field["Sp_ID"][~np.array(df_observable_field["enough_comparisons"])]))
+        df["SNR_SPIRIT"][idx_notobsfield_in_targets] = 0
 
-    path = path_spock + "/target_lists/www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/"
-    os.makedirs(path, exist_ok=True)
-    resp = requests.get('https://www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/get_hours.php', auth=(user_portal, pwd_portal))
-    open(path_spock + '/target_lists/www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/get_hours.php', 'wb').write(resp.content)
-    f = open(path_spock + '/target_lists/www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/get_hours.php', 'r')
-    f = f.read()
-    line = f #.strip()
-    columns = line.split('","')
+        path = path_spock + "/target_lists/www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/"
+        os.makedirs(path, exist_ok=True)
+        resp = requests.get('https://www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/get_hours.php', auth=(user_portal, pwd_portal))
+        open(path_spock + '/target_lists/www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/get_hours.php', 'wb').write(resp.content)
+        f = open(path_spock + '/target_lists/www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/get_hours.php', 'r')
+        f = f.read()
+        line = f #.strip()
+        columns = line.split('","')
 
-    names = []
-    hours = []
+        names = []
+        hours = []
 
-    for c in columns:
-        if c.find('SP') != -1 and c.find('TESS') == -1 and c.find('WAS') == -1:
-            info = c.split(',')
-            names.append(info[0].replace(' ','').replace('SP','Sp'))
-            hours.append(float(info[1]))
+        for c in columns:
+            if c.find('SP') != -1 and c.find('TESS') == -1 and c.find('WAS') == -1:
+                info = c.split(',')
+                names.append(info[0].replace(' ','').replace('SP','Sp'))
+                hours.append(float(info[1]))
 
-    df_portal = pd.DataFrame({"Sp_ID": names,"nb_hours_surved": hours})
+        df_portal = pd.DataFrame({"Sp_ID": names,"nb_hours_surved": hours})
 
-    idx_list1_in_list2, idx_list2_in_list1 = index_list1_list2(df["Sp_ID"],df_portal["Sp_ID"])
+        idx_list1_in_list2, idx_list2_in_list1 = index_list1_list2(df["Sp_ID"],df_portal["Sp_ID"])
 
-    df["nb_hours_surved"][idx_list2_in_list1] = df_portal["nb_hours_surved"][idx_list1_in_list2]
-    idx_double_stars = np.where((df["Sp_ID"] == "Sp1633-6808_2") | (df["Sp_ID"] == "Sp1633-6808_1") |
-                             (df["Sp_ID"] == "Sp1953+4424_1") | (df["Sp_ID"] == "Sp1953+4424_2") |
-                           (df["Sp_ID"] == "Sp0933-4353_1") | (df["Sp_ID"] == "Sp0933-4353_2"))[0]
-    df["nb_hours_surved"][idx_double_stars] = 200
+        df["nb_hours_surved"][idx_list2_in_list1] = df_portal["nb_hours_surved"][idx_list1_in_list2]
+        idx_double_stars = np.where((df["Sp_ID"] == "Sp1633-6808_2") | (df["Sp_ID"] == "Sp1633-6808_1") |
+                                 (df["Sp_ID"] == "Sp1953+4424_1") | (df["Sp_ID"] == "Sp1953+4424_2") |
+                               (df["Sp_ID"] == "Sp0933-4353_1") | (df["Sp_ID"] == "Sp0933-4353_2"))[0]
+        df["nb_hours_surved"][idx_double_stars] = 200
 
-    df.to_csv(path_spock + '/target_lists/stargate/' + 'TL_spock_' + file_name, sep=',', index=None)
+        df.to_csv(path_spock + '/target_lists/stargate/' + 'TL_spock_' + file_name, sep=',', index=None)
 
     return path_spock + '/target_lists/stargate/' + 'TL_spock_' + file_name
 

@@ -808,7 +808,7 @@ class PriorityScheduler(Scheduler):
             # Select the most optimal time
 
             # calculate the number of time slots needed for this exposure
-            _stride_by = np.int(np.ceil(float(b.duration / time_resolution)))
+            _stride_by = int(np.ceil(float(b.duration / time_resolution)))
 
             # Stride the score arrays by that number
             _strided_scores = stride_array(constraint_scores, _stride_by)
@@ -856,7 +856,7 @@ class PriorityScheduler(Scheduler):
 
     def attempt_insert_block(self, b, new_start_time, start_time_idx):
         # set duration to be exact multiple of time resolution
-        duration_indices = np.int(np.ceil(
+        duration_indices = int(np.ceil(
             float(b.duration / self.time_resolution)))
         b.duration = duration_indices * self.time_resolution
 
@@ -923,7 +923,7 @@ class PriorityScheduler(Scheduler):
         # tweak durations to exact multiple of time resolution
         for block in (tb_beFore, tb_after):
             if block is not None:
-                block.duration = self.time_resolution * np.int(
+                block.duration = self.time_resolution * int(
                     np.ceil(float(block.duration / self.time_resolution))
                 )
 
@@ -940,7 +940,7 @@ class PriorityScheduler(Scheduler):
             ob_offset = 2 if tb_beFore_already_exists else 1
             previous_ob = self.schedule.slots[slot_index - ob_offset]
             if tb_beFore:
-                transition_indices = np.int(tb_beFore.duration / self.time_resolution)
+                transition_indices = int(tb_beFore.duration / self.time_resolution)
             else:
                 transition_indices = 0
 
@@ -955,7 +955,7 @@ class PriorityScheduler(Scheduler):
             next_ob = self.schedule.slots[slot_index + slot_offset].block
             end_idx = start_time_idx + duration_indices
             if tb_after:
-                end_idx += np.int(tb_after.duration/self.time_resolution)
+                end_idx += int(tb_after.duration/self.time_resolution)
                 if end_idx >= next_ob.start_idx:
                     # cannot schedule
                     return False
@@ -1086,7 +1086,7 @@ class SPECULOOSScheduler(Scheduler):
 
             # calculate the number of time slots needed for this exposure
 
-            _stride_by = np.int(np.ceil(float(b.duration / time_resolution))) # number of slots in the block's duration, int
+            _stride_by = int(np.ceil(float(b.duration / time_resolution))) # number of slots in the block's duration, int
 
 
             # Stride the score arrays by that number
@@ -1130,7 +1130,7 @@ class SPECULOOSScheduler(Scheduler):
                     is_open_time = self._get_filled_indices(times)
 
                     constraint_scores[~is_open_time] = 0
-                    _stride_by = np.int(np.ceil(float(b.duration / time_resolution)))
+                    _stride_by = int(np.ceil(float(b.duration / time_resolution)))
                     _strided_scores = stride_array(constraint_scores, _stride_by)
                     good = np.all(_strided_scores > 1e-5, axis=1)#np.where(_strided_scores[2] > 0)#np.where(_strided_scores > 0)[0]
                     sum_scores = np.zeros(len(_strided_scores))
@@ -1168,7 +1168,7 @@ class SPECULOOSScheduler(Scheduler):
 
     def attempt_insert_block(self, b, new_start_time, start_time_idx):
         # set duration to be exact multiple of time resolution
-        duration_indices = np.int(np.ceil(
+        duration_indices = int(np.ceil(
             float(b.duration / self.time_resolution)))
         b.duration = duration_indices * self.time_resolution
 
@@ -1237,7 +1237,7 @@ class SPECULOOSScheduler(Scheduler):
         # tweak durations to exact multiple of time resolution
         for block in (tb_beFore, tb_after):
             if block is not None:
-                block.duration = self.time_resolution * np.int(
+                block.duration = self.time_resolution * int(
                     np.ceil(float(block.duration / self.time_resolution))
                 )
 
@@ -1254,7 +1254,7 @@ class SPECULOOSScheduler(Scheduler):
             ob_offset = 2 if tb_beFore_already_exists else 1
             previous_ob = self.schedule.slots[slot_index - ob_offset]
             if tb_beFore:
-                transition_indices = np.int(tb_beFore.duration / self.time_resolution)
+                transition_indices = int(tb_beFore.duration / self.time_resolution)
             else:
                 transition_indices = 0
 
@@ -1269,7 +1269,7 @@ class SPECULOOSScheduler(Scheduler):
             next_ob = self.schedule.slots[slot_index + slot_offset].block
             end_idx = start_time_idx + duration_indices
             if tb_after:
-                end_idx += np.int(tb_after.duration/self.time_resolution)
+                end_idx += int(tb_after.duration/self.time_resolution)
                 if end_idx >= next_ob.start_idx:
                     # cannot schedule
                     return False

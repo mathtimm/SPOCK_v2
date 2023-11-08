@@ -1330,9 +1330,9 @@ def flatexo_calli(Path,t_now,filt, nbB=None, nbz=None, nbzcut=None, nbV=None, nb
     if nbExo is None:
         nbExo=5
     if nbClear is None:
-        nbClear=20
+        nbClear=5
     if nbxYJ is None:
-        nbxYJ =20
+        nbxYJ =5
     with open(os.path.join(Path,str(t_now),'Cal_flatexo.txt'),'w') as out:
         if ('B' in filt) or ('B\'' in filt):
             out.write(str(nbB) + ',' + 'B' + ',' + '1' + '\n')
@@ -1625,9 +1625,9 @@ def flatexo_artemis_morning(Path,t_now,filt, nbu=None, nbz=None, nbr=None, nbi=N
     if nbExo is None:
         nbExo=7
     if nbClear is None:
-        nbClear=7
+        nbClear=5
     if nbzcut is None:
-        nbzcut=7
+        nbzcut=5
     with open(os.path.join(Path, str(t_now), 'Cal_flatexo_morning.txt'), 'w') as out:
         if ('u' in filt) or ('u\'' in filt):
             out.write(str(nbu) + ',' + 'u' + ',' + '1' + '\n')
@@ -1695,9 +1695,9 @@ def flatexo_artemis_evening(Path,t_now,filt, nbu=None,
     if nbExo is None:
         nbExo=7
     if nbClear is None:
-        nbClear=7
+        nbClear=5
     if nbzcut is None:
-        nbzcut=7
+        nbzcut=5
     with open(os.path.join(Path,str(t_now),'Cal_flatexo_evening.txt'),'w') as out:
         if ('u' in filt) or( 'u\'' in filt):
             out.write(str(nbu) + ',' + 'u' + ',' + '1' + '\n')
