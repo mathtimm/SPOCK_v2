@@ -1,0 +1,12 @@
+device_type,device_name,action_type,action_value,start_time,end_time
+Camera,camera_IO,open,{},2023-09-01 23:02:53.871,2023-09-02 10:19:45.043
+Dome,dome_IO,SlewToAzimuth,230,2023-09-01 23:02:53.871,2023-09-02 10:19:45.043
+Camera,camera_IO,flats,"{'filter': ['I+z', 'I+z', ""i'"", 'I+z', ""i'""], 'n': [10, 10, 10, 10, 10]}",2023-09-01 23:02:53.871,2023-09-02 10:49:45.043
+Camera,camera_IO,object,"{'object': 'Sp2101+0307', 'filter': 'I+z', 'ra': 315.26995833333325, 'dec': 3.1180480555555556, 'exptime': '23', 'guiding': False, 'pointing': False}",2023-09-15 23:11:20.018,2023-09-16 04:32:20.018
+Camera,camera_IO,object,"{'object': 'dome_rot', 'filter': 'I+z', 'ra': 18.825487499999998, 'dec': -36.02458444444444, 'exptime': '10', 'guiding': False, 'pointing': False}",2023-09-16 04:32:20.018,2023-09-16 04:34:20.018
+Camera,camera_IO,object,"{'object': 'Sp0214-0357', 'filter': ""i'"", 'ra': 33.55235, 'dec': -3.9621061111111113, 'exptime': '18', 'guiding': False, 'pointing': False}",2023-09-16 04:34:20.018,2023-09-16 05:08:20.031
+Camera,camera_IO,object,"{'object': 'Trappist-1b', 'filter': 'I+z', 'ra': 346.6208333333333, 'dec': -5.041111111111111, 'exptime': '20', 'guiding': False, 'pointing': False}",2023-09-16 05:08:20.031,2023-09-16 07:39:20.031
+Camera,camera_IO,object,"{'object': 'Sp0214-0357_2', 'filter': ""i'"", 'ra': 33.55235, 'dec': -3.9621061111111113, 'exptime': '18', 'guiding': False, 'pointing': False}",2023-09-16 07:39:20.031,2023-09-16 10:02:00.030
+Camera,camera_IO,flats,"{'filter': ['I+z', 'I+z', ""i'"", 'I+z', ""i'""], 'n': [10, 10, 10, 10, 10]}",2023-09-16 10:02:00.030,2023-09-16 10:32:00.030
+Camera,camera_IO,close,{},2023-09-02 10:19:45.043,2023-09-02 10:20:45.043
+Camera,camera_IO,calibration,"{'exptime': ['23', '10', '18', '20', '18'], 'n': [10, 10, 10, 10, 10]}",2023-09-02 10:19:45.043,2023-09-02 10:49:45.043

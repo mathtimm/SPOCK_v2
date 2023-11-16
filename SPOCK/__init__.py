@@ -140,7 +140,7 @@ def get_target_list_stargate(day):
     ftp.login(login_stargate,pwd_stargate)
     # day = Time(day, scale='utc', out_subfmt='date').iso
     file_name = 'stargate_db_'+y+'-'+m+'-'+d+'.csv'
-    if path_spock + '/target_lists/stargate/' + file_name:
+    if os.path.exists(path_spock + '/target_lists/stargate/' + file_name):
         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Latest target list already updated.')
     else:
         my_file = open(path_spock + '/target_lists/stargate/' + file_name, 'wb')
@@ -162,7 +162,7 @@ def change_fmt_stargate_TL(file_name):
 
     """
     # change columns names
-    if path_spock + '/target_lists/stargate/' + 'TL_spock_' + file_name:
+    if os.path.exists(path_spock + '/target_lists/stargate/' + 'TL_spock_' + file_name):
         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Target list already in good format')
     else:
         df = pd.read_csv(path_spock + '/target_lists/stargate/' + file_name, delimiter=';')

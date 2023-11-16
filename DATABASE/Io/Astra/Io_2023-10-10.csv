@@ -1,0 +1,10 @@
+device_type,device_name,action_type,action_value,start_time,end_time
+Camera,camera_IO,open,{},2023-09-01 23:02:53.871,2023-09-02 10:19:45.043
+Dome,dome_IO,SlewToAzimuth,230,2023-09-01 23:02:53.871,2023-09-02 10:19:45.043
+Camera,camera_IO,flats,"{'filter': ['I+z', 'I+z', 'I+z'], 'n': [10, 10, 10]}",2023-09-01 23:02:53.871,2023-09-02 10:49:45.043
+Camera,camera_IO,object,"{'object': 'Sp2315-0627', 'filter': 'I+z', 'ra': 348.9771125, 'dec': -6.462898055555556, 'exptime': '12', 'guiding': False, 'pointing': False}",2023-10-10 23:21:40.018,2023-10-11 04:24:20.018
+Camera,camera_IO,object,"{'object': 'dome_rot', 'filter': 'I+z', 'ra': 48.0082125, 'dec': -37.344118055555555, 'exptime': '10', 'guiding': False, 'pointing': False}",2023-10-11 04:24:20.018,2023-10-11 04:26:20.018
+Camera,camera_IO,object,"{'object': 'Sp0351-0052', 'filter': 'I+z', 'ra': 57.7501125, 'dec': 0.879143888888889, 'exptime': '16', 'guiding': False, 'pointing': False}",2023-10-11 04:26:20.018,2023-10-11 09:35:00.018
+Camera,camera_IO,flats,"{'filter': ['I+z', 'I+z', 'I+z'], 'n': [10, 10, 10]}",2023-10-11 09:35:00.018,2023-10-11 10:05:00.018
+Camera,camera_IO,close,{},2023-09-02 10:19:45.043,2023-09-02 10:20:45.043
+Camera,camera_IO,calibration,"{'exptime': ['12', '10', '16'], 'n': [10, 10, 10]}",2023-09-02 10:19:45.043,2023-09-02 10:49:45.043

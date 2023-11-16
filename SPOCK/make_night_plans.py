@@ -531,7 +531,7 @@ def make_astra_schedule_file(day, nb_days, telescope):
         # Flats
         flats_row_morning = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).upper(),
                              "action_type": "flats",	"action_value": {"filter": filt, 'n': [10]*len(filt)},
-                             "start_time": scheduler_table["end time (UTC)"][-1],	"end_time": (Time(scheduler_table["end time (UTC)"][-1])+30*u.min).iso})
+                             "start_time": scheduler_table["end time (UTC)"][-1],	"end_time": sun_rise.iso})
         df = df.append(flats_row_morning, ignore_index=True)
         # Close
         close_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).upper(),
@@ -541,7 +541,7 @@ def make_astra_schedule_file(day, nb_days, telescope):
         # Calibration
         calibration_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).upper(),
                              "action_type": "calibration",	"action_value": {"exptime":texp, 'n': [10]*len(texp)},
-                             "start_time": sun_rise.iso,	"end_time": (sun_rise+30*u.min).iso})
+                             "start_time": sun_rise.iso,	"end_time": sun_rise.iso})
         df = df.append(calibration_row, ignore_index=True)
         #To .csv file
         df.to_csv(path_spock + '/DATABASE/' + str(telescope) + "/Astra/" +

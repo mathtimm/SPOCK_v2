@@ -1,0 +1,10 @@
+device_type,device_name,action_type,action_value,start_time,end_time
+Camera,camera_IO,open,{},2023-09-01 23:02:53.871,2023-09-02 10:19:45.043
+Dome,dome_IO,SlewToAzimuth,230,2023-09-01 23:02:53.871,2023-09-02 10:19:45.043
+Camera,camera_IO,flats,"{'filter': ['I+z', 'I+z', ""i'""], 'n': [10, 10, 10]}",2023-09-01 23:02:53.871,2023-09-02 10:49:45.043
+Camera,camera_IO,object,"{'object': 'Sp2355-5800', 'filter': 'I+z', 'ra': 358.8410958333333, 'dec': -58.00099194444444, 'exptime': '44', 'guiding': False, 'pointing': False}",2023-09-28 23:16:00.017,2023-09-29 04:27:40.017
+Camera,camera_IO,object,"{'object': 'dome_rot', 'filter': 'I+z', 'ra': 6.5944625, 'dec': 8.576240833333333, 'exptime': '10', 'guiding': False, 'pointing': False}",2023-09-29 04:27:40.017,2023-09-29 04:29:40.017
+Camera,camera_IO,object,"{'object': 'Sp0435-1606', 'filter': ""i'"", 'ra': 68.81730833333332, 'dec': -16.11590388888889, 'exptime': '24', 'guiding': False, 'pointing': False}",2023-09-29 04:29:40.017,2023-09-29 09:47:40.029
+Camera,camera_IO,flats,"{'filter': ['I+z', 'I+z', ""i'""], 'n': [10, 10, 10]}",2023-09-29 09:47:40.029,2023-09-29 10:17:40.029
+Camera,camera_IO,close,{},2023-09-02 10:19:45.043,2023-09-02 10:20:45.043
+Camera,camera_IO,calibration,"{'exptime': ['44', '10', '24'], 'n': [10, 10, 10]}",2023-09-02 10:19:45.043,2023-09-02 10:49:45.043

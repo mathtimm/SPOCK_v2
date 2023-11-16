@@ -454,7 +454,7 @@ class Schedules:
             epoch = Time(df['T0'][i], format='jd')
             period = df['P'][i] * u.day
             duration = df['W'][i] * u.day
-            oot_time = duration.value * 1.5 * u.day
+            oot_time = duration.value * 1. * u.day
             T0_err_transit = df['T0_err'][i]
             P_err_transit = df['P_err'][i]
             W_err_transit = df['W_err'][i]
