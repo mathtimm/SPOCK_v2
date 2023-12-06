@@ -8,6 +8,14 @@ target_lists/
 
 eScheduler/
 
+DATABASE/Io/*.csv
+
+DATABASE/Europa/*.csv
+
+DATABASE/Ganymede/*.csv
+
+DATABASE/Callisto/*.csv
+
 DATABASE/Io/*.txt
 
 DATABASE/Europa/*.txt
