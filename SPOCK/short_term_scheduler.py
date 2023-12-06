@@ -25,7 +25,7 @@ import pandas as pd
 import requests
 from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
     upload_np_calli, upload_np_tn, upload_np_ts
-from .make_night_plans import make_np
+from .make_night_plans import make_np, make_astra_schedule_file
 import subprocess
 import sys
 import shutil
@@ -587,7 +587,7 @@ class Schedules:
                 epoch = Time(df['T0'][i], format='jd')
                 period = df['P'][i] * u.day
                 duration = df['W'][i] * u.day
-                oot_time = duration.value * 1.5 * u.day
+                oot_time = duration.value * 1. * u.day
                 T0_err_transit = df['T0_err'][i]
                 P_err_transit = df['P_err'][i]
                 W_err_transit = df['W_err'][i]
@@ -951,10 +951,10 @@ class Schedules:
         path = path_spock + '/DATABASE'
         try:
             os.path.exists(os.path.join(path, self.telescope, 'night_blocks_' + str(self.telescope) + '_' +
-                                        self.day_of_night.tt.datetime[0].strftime("%Y-%m-%d") + '.txt'))
+                                        self.day_of_night.tt.strftime("%Y-%m-%d") + '.txt'))
             print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Local path exists and is: ',
                   os.path.join(path, self.telescope, 'night_blocks_' + str(self.telescope) + '_' +
-                               self.day_of_night.tt.datetime[0].strftime("%Y-%m-%d") + '.txt'))
+                               self.day_of_night.tt.strftime("%Y-%m-%d") + '.txt'))
         except TypeError:
             print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Local path does not exist yet ')
         except NameError:
@@ -1236,12 +1236,14 @@ def save_schedule(save, over_write, day, telescope):
             dest2 = shutil.copy(source, destination_2)
             print(Fore.GREEN + 'INFO:  ' + Fore.BLACK + '\"' + source + '\"' + ' has been over-written to ' +
                   '\"' + destination + '\"')
+            #make_astra_schedule_file(day, 1, telescope)
         if not over_write:
             try:
                 dest = shutil.move(source, destination)
                 shutil.move(source, destination_2)
                 print(Fore.GREEN + 'INFO:  ' + Fore.BLACK + '\"' + source + '\"' + ' has been copied to ' +
                       '\"' + destination + '\"')
+                #make_astra_schedule_file(day, 1, telescope)
             except shutil.Error:
                 print(Fore.GREEN + 'INFO:  ' + Fore.BLACK + '\"' + destination + 'night_blocks_' +
                       telescope + '_' + day.tt.datetime.strftime("%Y-%m-%d") + '.txt' + '\"' + ' already exists')
@@ -1251,6 +1253,7 @@ def save_schedule(save, over_write, day, telescope):
 
 def make_plans(day, nb_days, telescope):
     make_np(day, nb_days, telescope)
+    make_astra_schedule_file(day, nb_days, telescope)
 
 
 def upload_plans(day, nb_days, telescope):

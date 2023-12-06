@@ -1,0 +1,9 @@
+device_type,device_name,action_type,action_value,start_time,end_time
+Camera,camera_ARTEMIS,open,{},2023-11-10 18:50:28.695,2023-11-12 06:50:25.979
+Dome,dome_ARTEMIS,SlewToAzimuth,230,2023-11-10 18:50:28.695,2023-11-12 06:50:25.979
+Camera,camera_ARTEMIS,flats,"{'filter': ['I+z', 'I+z'], 'n': [10, 10]}",2023-11-10 18:50:28.695,2023-11-12 07:20:25.979
+Camera,camera_ARTEMIS,object,"{'object': 'Trappist-1', 'filter': 'I+z', 'ra': 346.6208333333333, 'dec': -5.041111111111111, 'exptime': '20', 'guiding': False, 'pointing': False}",2023-11-10 18:54:20.009,2023-11-11 00:46:40.009
+Camera,camera_ARTEMIS,object,"{'object': 'Sp0602+3910', 'filter': 'I+z', 'ra': 90.62714583333332, 'dec': 39.182941111111106, 'exptime': '57', 'guiding': False, 'pointing': False}",2023-11-11 00:46:40.009,2023-11-11 06:32:00.009
+Camera,camera_ARTEMIS,flats,"{'filter': ['I+z', 'I+z'], 'n': [10, 10]}",2023-11-11 06:32:00.009,2023-11-12 06:50:25.979
+Camera,camera_ARTEMIS,close,{},2023-11-12 06:50:25.979,2023-11-12 06:51:25.979
+Camera,camera_ARTEMIS,calibration,"{'exptime': ['20', '57'], 'n': [10, 10]}",2023-11-12 06:50:25.979,2023-11-12 06:50:25.979

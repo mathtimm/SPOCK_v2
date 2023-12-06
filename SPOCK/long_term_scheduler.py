@@ -39,7 +39,7 @@ import SPOCK.ETC as ETC
 iers.IERS_A_URL = 'https://datacenter.iers.org/data/9/finals2000A.all'  # 'http://maia.usno.navy.mil/ser7/finals2000A.all'#'ftp://cddis.gsfc.nasa.gov/pub/products/iers/finals2000A.all'
 ssl._create_default_https_context = ssl._create_unverified_context
 
-from .make_night_plans import make_np
+from .make_night_plans import make_np, make_astra_schedule_file
 from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
     upload_np_calli, upload_np_tn, upload_np_ts
 
@@ -682,6 +682,7 @@ def make_plans(day, nb_days, telescope):
     """
 
     make_np(day, nb_days, telescope)
+    make_astra_schedule_file(day, nb_days, telescope)
 
 
 def upload_plans(day, nb_days, telescope):

@@ -46,10 +46,21 @@ def upload_np_euro(t_now, nb_days):
         path_local_zip_folder = os.path.join(path_spock + '/DATABASE/', 'Europa','Zip_files/')
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_database_zip_file,
                               path_local_zip_folder])
+        # Astra cam server to local
+        path_database_astra_file = os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Telescopes/',
+                                              'Europa', 'schedule', 'Astra', 'Europa_'+str(t_now)+'.csv')
+        path_local_astra_folder = os.path.join(path_spock + '/DATABASE/', 'Europa','Astra/')
+        p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_database_astra_file,
+                              path_local_astra_folder])
         # Local to reduction computer
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_zip_file, 
                               'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Europa/Plans/'])
         print('----->', t_now, 'Zip Plans_by_dates folder uploaded on the HUB for Europa')
+        # Astra Local to reduction computer
+        path_local_astra_file = os.path.join(path_spock + '/DATABASE/', 'Europa', 'Astra/', 'Europa_'+str(t_now)+'.csv')
+        p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_astra_file,
+                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Europa/Plans/Astra/'])
+        print('----->', t_now, 'Astra folder updated on the HUB for Europa')
 
 
 def upload_np_calli(t_now, nb_days):
@@ -86,6 +97,15 @@ def upload_np_calli(t_now, nb_days):
                           path_local_zip_file, path_database_zip_files])
         print('----->', t_now, 'Zip Plans_by_dates folder uploaded on the Cambridge server')
 
+        # Astra
+        path_database_astra = os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Telescopes/',
+                                            'Callisto',
+                                            'schedule', 'Astra')
+        path_astra = os.path.join(path_spock + '/DATABASE/', 'Callisto',
+                                         'Astra/', 'Callisto_'+str(t_now)+'.csv')
+        subprocess.Popen(["sshpass", "-p", pwd_appcs, "scp", path_astra, path_database_astra])
+        print('----->', t_now, 'Astra plans uploaded on the Cambridge server')
+
         # upload on HUB
         # cam server to local
         path_database_zip_file = os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Telescopes/',
@@ -93,10 +113,21 @@ def upload_np_calli(t_now, nb_days):
         path_local_zip_folder = os.path.join(path_spock + '/DATABASE/', 'Callisto','Zip_files/')
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_database_zip_file,
                               path_local_zip_folder])
+        # Astra cam server to local
+        path_database_astra_file = os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Telescopes/',
+                                              'Callisto', 'schedule', 'Astra', 'Callisto_'+str(t_now)+'.csv')
+        path_local_astra_folder = os.path.join(path_spock + '/DATABASE/', 'Callisto', 'Astra/')
+        p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_database_astra_file,
+                              path_local_astra_folder])
         # Local to reduction computer
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_zip_file,
                               'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Callisto/Plans/'])
         print('----->', t_now, 'Zip Plans_by_dates folder uploaded on the HUB for Callisto')
+        # Astra Local to reduction computer
+        path_local_astra_file = os.path.join(path_spock + '/DATABASE/', 'Callisto', 'Astra/', 'Callisto_'+str(t_now)+'.csv')
+        p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_astra_file,
+                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Callisto/Plans/Astra/'])
+        print('----->', t_now, 'Astra folder updated on the HUB for Callisto')
 
 
 def upload_np_io(t_now, nb_days):
@@ -180,6 +211,15 @@ def upload_np_gany(t_now, nb_days):
                           path_local_zip_file, path_database_zip_files])
         print('----->', t_now, 'Zip Plans_by_dates folder uploaded on the Cambridge server')
 
+        # Astra
+        path_database_astra = os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Telescopes/',
+                                            'Ganymede',
+                                            'schedule', 'Astra')
+        path_astra = os.path.join(path_spock + '/DATABASE/', 'Ganymede',
+                                         'Astra/', 'Ganymede_'+str(t_now)+'.csv')
+        subprocess.Popen(["sshpass", "-p", pwd_appcs, "scp", path_astra, path_database_astra])
+        print('----->', t_now, 'Astra plans uploaded on the Cambridge server')
+
         # upload on HUB
         # cam server to local
         path_database_zip_file = os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Telescopes/',
@@ -187,10 +227,21 @@ def upload_np_gany(t_now, nb_days):
         path_local_zip_folder = os.path.join(path_spock + '/DATABASE/', 'Ganymede','Zip_files/')
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_database_zip_file,
                               path_local_zip_folder])
+        # cam server to local for Astra
+        path_database_astra_file = os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Telescopes/',
+                                              'Ganymede', 'schedule', 'Astra', 'Ganymede_'+str(t_now)+'.csv')
+        path_local_astra_folder = os.path.join(path_spock + '/DATABASE/', 'Ganymede', 'Astra/')
+        p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_database_astra_file,
+                              path_local_astra_folder])
         # Local to reduction computer
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_zip_file,
                               'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Ganymede/Plans/'])
         print('----->', t_now, 'Zip Plans_by_dates folder uploaded on the HUB for Ganymede')
+        # Astra Local to reduction computer
+        path_local_astra_file = os.path.join(path_spock + '/DATABASE/', 'Ganymede', 'Astra/', 'Ganymede_'+str(t_now)+'.csv')
+        p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_astra_file,
+                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Ganymede/Plans/Astra/'])
+        print('----->', t_now, 'Astra folder updated on the HUB for Ganymede')
 
 
 def upload_np_artemis(t_now, nb_days):
