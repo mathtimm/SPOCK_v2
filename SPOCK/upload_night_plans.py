@@ -59,7 +59,7 @@ def upload_np_euro(t_now, nb_days):
         # Astra Local to reduction computer
         path_local_astra_file = os.path.join(path_spock + '/DATABASE/', 'Europa', 'Astra/', 'Europa_'+str(t_now)+'.csv')
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_astra_file,
-                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Europa/Plans/Astra/'])
+                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Europa/Astra/'])
         print('----->', t_now, 'Astra folder updated on the HUB for Europa')
 
 
@@ -240,7 +240,7 @@ def upload_np_gany(t_now, nb_days):
         # Astra Local to reduction computer
         path_local_astra_file = os.path.join(path_spock + '/DATABASE/', 'Ganymede', 'Astra/', 'Ganymede_'+str(t_now)+'.csv')
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_astra_file,
-                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Ganymede/Plans/Astra/'])
+                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Ganymede/Astra/'])
         print('----->', t_now, 'Astra folder updated on the HUB for Ganymede')
 
 
