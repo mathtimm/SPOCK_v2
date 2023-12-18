@@ -94,6 +94,9 @@ def _get_files():
             if not os.path.exists(path_spock + '/DATABASE/' + tel + '/Plans_by_date'):
                 os.makedirs(path_spock + '/DATABASE/' + tel + '/Plans_by_date')
         for tel in telescopes_names:
+            if not os.path.exists(path_spock + '/DATABASE/' + tel + '/Astra'):
+                os.makedirs(path_spock + '/DATABASE/' + tel + '/Astra')
+        for tel in telescopes_names:
             if not os.path.exists(path_spock + '/DATABASE/' + tel + '/Zip_files'):
                 os.makedirs(path_spock + '/DATABASE/' + tel + '/Zip_files')
 
