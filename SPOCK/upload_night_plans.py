@@ -126,7 +126,7 @@ def upload_np_calli(t_now, nb_days):
         # Astra Local to reduction computer
         path_local_astra_file = os.path.join(path_spock + '/DATABASE/', 'Callisto', 'Astra/', 'Callisto_'+str(t_now)+'.csv')
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_astra_file,
-                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Callisto/Plans/Astra/'])
+                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Callisto/Astra/'])
         print('----->', t_now, 'Astra folder updated on the HUB for Callisto')
 
 
