@@ -1,42 +1,56 @@
----
-title: SPOCK
----
+.. image:: https://travis-ci.com/educrot/SPOCK.svg?branch=master&status=passed
+    :target: https://travis-ci.com/educrot22/SPOCK
 
-*SPOCK* (Speculoos Observatories sChedule maker) is a python package developed to handle
-the planification of observation of the SPECULOOS telescopes. The project SPECULOOS -Search for habitable Planets EClipsing ULtra-cOOl Stars –
+.. image:: https://img.shields.io/badge/docs-dev-green.svg
+    :target: https://educrot22.github.io/SPOCK/index.html
+
+.. image:: ./SPOCK_Figures/logo_SPOCK_2.png
+   :width: 600
+
+**SPOCK** (Speculoos Observatory SChedule maKer) is a python package developed to handle the
+planification of observation of the SPECULOOS telescopes. The project SPECULOOS -Search for habitable Planets EClipsing ULtra-cOOl Stars –
 searches for potentially habitable exoplanets around the smallest and coolest stars
 of the solar neighborhood `Link to site <https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos>`_.
 
+*SPOCK* allows you to schedule SPECULOOS core program targets on several criteria:
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Documentation
-   :hidden:
+*  Visibility of the target
 
-   content/installation
-   content/quick-ref
-   content/api
+*  Priority (calculated from stellar parameters)
 
-.. toctree::
-   :caption: SPOCKApp
-   :maxdepth: 1
+*  Number of hours already performed
 
-   examples/tutorials/notebooks/tutorials_SPOCKApp.ipynb
+*  Coordination between different site
+
+as well as external program targets (planetary candidates, eclipsing binaries, complex rotators, etc)
+
+Documentation SPOCK
+---------------------
+
+You will find complete documentation (in dev) for setting up your project at `SPOCK Read
+the Docs site <https://educrot22.github.io/SPOCK/index.html>`_.
+
+
+Installation
+---------------------
+
+.. _installation:
+
+
+.. warning::
+    You must be part of the SPECULOOS consortium to use *SPOCK*.
+
+
+Install *SPOCK* locally::
+
+    git clone https://github.com/educrot/SPOCK.git
+    cd spock
+    python setup.py install
 
 
 
-.. toctree::
-   :caption: Examples & Tutorials
-   :maxdepth: 1
 
-   examples/tutorials/notebooks/tutorials_spocklt.ipynb
-   examples/tutorials/notebooks/tutorials_spockst.ipynb
-   examples/tutorials/notebooks/tutorials_spockplot.ipynb
-   examples/tutorials/notebooks/tutorials_spocktools.ipynb
+More about *SPOCK*
+---------------------
 
-.. toctree::
-   :caption: How spock works ?
-   :maxdepth: 1
-
-   examples/tutorials/notebooks/how.ipynb
-
+*SPOCK* is presented in more details in `Sebastian et al. 2020 <http://arxiv.org/abs/2011.02069>`_.
