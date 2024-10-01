@@ -1,0 +1,7 @@
+device_type,device_name,action_type,action_value,start_time,end_time
+Camera,camera_Artemis,open,{},2024-01-31 18:40:35.925,2024-02-01 07:57:53.989
+Camera,camera_Artemis,flats,"{'filter': ['I+z'], 'n': [10]}",2024-01-31 18:40:35.925,2024-01-31 19:37:40.009
+Camera,camera_Artemis,object,"{'object': 'Sp0911+7401', 'filter': 'I+z', 'ra': 137.80186666666665, 'dec': 74.0189288888889, 'exptime': 73, 'guiding': True, 'pointing': False}",2024-01-31 19:37:40.009,2024-02-01 07:00:40.009
+Camera,camera_Artemis,flats,"{'filter': ['I+z'], 'n': [10]}",2024-02-01 07:00:40.009,2024-02-01 07:57:53.989
+Camera,camera_Artemis,close,{},2024-02-01 07:57:53.989,2024-02-01 08:02:53.989
+Camera,camera_Artemis,calibration,"{'exptime': [0, 15, 30, 60, 73, 120], 'n': [10, 10, 10, 10, 10, 10]}",2024-02-01 08:02:53.989,2024-02-01 08:27:53.989

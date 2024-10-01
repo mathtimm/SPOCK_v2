@@ -1,0 +1,8 @@
+device_type,device_name,action_type,action_value,start_time,end_time
+Camera,camera_Artemis,open,{},2024-07-26 20:20:44.946,2024-07-27 06:04:37.551
+Camera,camera_Artemis,flats,"{'filter': ['g'], 'n': [20]}",2024-07-26 20:21:44.946,2024-07-26 20:41:00.012
+Camera,camera_Artemis,object,"{'object': 'HAT-P-27c', 'filter': 'g', 'ra': 222.76732083333332, 'dec': 5.947363055555556, 'exptime': 12, 'guiding': True, 'pointing': False}",2024-07-26 20:42:00.012,2024-07-26 23:56:40.012
+Camera,camera_Artemis,object,"{'object': 'TOI-5938', 'filter': 'g', 'ra': 303.90884166666666, 'dec': 28.65922611111111, 'exptime': 11, 'guiding': True, 'pointing': False}",2024-07-26 23:57:40.012,2024-07-27 05:44:29.122
+Camera,camera_Artemis,flats,"{'filter': ['g'], 'n': [20]}",2024-07-27 05:45:29.122,2024-07-27 06:04:37.551
+Camera,camera_Artemis,close,{},2024-07-27 06:05:37.551,2024-07-27 06:09:37.551
+Camera,camera_Artemis,calibration,"{'exptime': [0, 11, 12, 15, 30, 60, 120], 'n': [10, 10, 10, 10, 10, 10, 10]}",2024-07-27 06:10:37.551,2024-07-27 06:59:37.551

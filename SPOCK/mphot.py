@@ -314,6 +314,10 @@ def get_precision(props, props_sky, Teff, distance, binning = 10, override = Fal
             well_fill = well_fill/well_depth
     
     npix = np.pi * ap**2
+
+    if np.size(Teff) == 1:
+        N_star = [N_star]
+        t = [t] 
     
     scn = scint(r0, t[0], N_star[0])
         
@@ -327,16 +331,14 @@ def get_precision(props, props_sky, Teff, distance, binning = 10, override = Fal
     
 
     image_precision = {
-        "All"  : precision,
         "Star" : precision_star,
         "Scintillation" :  precision_scn,
         "Sky" :  precision_sky,
         "Dark current" :   precision_dc,
         "Read noise" :     precision_rn
     }
-
-    nImages = (binning * 60)/(t + read_time)
-    nImages = nImages[0]
+    nImages = (binning * 60)/(t[0] + read_time)
+    nImages = nImages #[0]
     binned_precision = {
         "All"  : precision/np.sqrt(nImages),
         "Star" : precision_star/np.sqrt(nImages),
@@ -696,8 +698,8 @@ def display_results(props_sky, r1, r2):
             components2[k] = to_precision(v)
 
     values = np.c_[list(components1.values()),list(components2.values())]
-    display(pd.DataFrame(values, index=components1.keys(), columns=columns))
+    print(pd.DataFrame(values, index=components1.keys(), columns=columns))
 
     columns = [['1','2']]
     values = np.c_[list(vega1.values()),list(vega2.values())]
-    display(pd.DataFrame(values, index=vega1.keys(), columns=columns))
+    print(pd.DataFrame(values, index=vega1.keys(), columns=columns))

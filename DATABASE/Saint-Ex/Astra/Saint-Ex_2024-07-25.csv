@@ -1,0 +1,9 @@
+device_type,device_name,action_type,action_value,start_time,end_time
+Camera,camera_SaintEx,open,{},2024-07-26 03:02:15.471,2024-07-26 12:34:59.723
+Camera,camera_SaintEx,flats,"{'filter': [""r'"", 'I+z'], 'n': [10, 10]}",2024-07-26 03:03:15.471,2024-07-26 03:20:20.026
+Camera,camera_SaintEx,object,"{'object': 'Sp2000+3057', 'filter': 'I+z', 'ra': 300.0240166666666, 'dec': 30.958918055555554, 'exptime': 19, 'guiding': True, 'pointing': False}",2024-07-26 03:21:20.026,2024-07-26 03:24:40.027
+Camera,camera_SaintEx,object,"{'object': 'TOI-5799', 'filter': ""r'"", 'ra': 301.63017916666666, 'dec': 15.989141944444444, 'exptime': 19, 'guiding': True, 'pointing': False}",2024-07-26 03:25:40.027,2024-07-26 11:57:40.027
+Camera,camera_SaintEx,object,"{'object': 'Sp2127+5553', 'filter': 'I+z', 'ra': 321.85659999999996, 'dec': 55.88750805555556, 'exptime': 68, 'guiding': True, 'pointing': False}",2024-07-26 11:58:40.027,2024-07-26 12:17:40.026
+Camera,camera_SaintEx,flats,"{'filter': ['I+z', ""r'""], 'n': [10, 10]}",2024-07-26 12:18:40.026,2024-07-26 12:34:59.723
+Camera,camera_SaintEx,close,{},2024-07-26 12:35:59.723,2024-07-26 12:39:59.723
+Camera,camera_SaintEx,calibration,"{'exptime': [0, 15, 19, 30, 60, 68, 120], 'n': [10, 10, 10, 10, 10, 10, 10]}",2024-07-26 12:40:59.723,2024-07-26 13:29:59.723

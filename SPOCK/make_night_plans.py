@@ -469,51 +469,63 @@ def make_astra_schedule_file(day, nb_days, telescope):
         location_paranal = EarthLocation.from_geodetic(-70.40300000000002 * u.deg, -24.625199999999996 * u.deg,
                                                2635.0000000009704 * u.m)
         paranal = Observer(location=location_paranal, name="paranal", timezone="UTC")
-        sun_set_paranal  = paranal.sun_set_time(t, which='next', horizon=-8.19 * u.degree)
-        sun_rise_paranal = paranal.sun_rise_time(t, which='next', horizon=-8.19 * u.degree)
 
         #Tenerife
         location_SNO = EarthLocation.from_geodetic(-16.50583131 * u.deg, 28.2999988 * u.deg, 2390 * u.m)
         teide = Observer(location=location_SNO, name="SNO", timezone="UTC")
-        sun_set_teide = teide.sun_set_time(t, which='next', horizon=-8.19 * u.degree)
-        sun_rise_teide = teide.sun_rise_time(t + 1, which='next', horizon=-8.19 * u.degree)
 
         #San Pedro de Martir
         location_saintex = EarthLocation.from_geodetic(-115.48694444444445 * u.deg, 31.029166666666665 * u.deg,
                                                        2829.9999999997976 * u.m)
         san_pedro = Observer(location=location_saintex, name="saintex", timezone="UTC")
-        sun_set_san_pedro = san_pedro.sun_set_time(t + 1, which='next', horizon=-8.19 * u.degree)
-        sun_rise_san_pedro = san_pedro.sun_rise_time(t + 1, which='next', horizon=-8.19 * u.degree)
 
-        if telescope == "Saint_Ex":
-            sun_set = sun_set_san_pedro
-            sun_rise = sun_rise_san_pedro
+        if telescope == "Saint-Ex":
+            location = san_pedro
 
-        if (telescope == "Io") or (telescope == "Europa") or (telescope == "Ganymede") or (telescope == "Callisto"):
-            sun_set = sun_set_paranal
-            sun_rise = sun_rise_paranal
+        elif (telescope == "Io") or (telescope == "Europa") or (telescope == "Ganymede") or (telescope == "Callisto"):
+            location = paranal
 
-        if (telescope == "Artemis"):
-            sun_set = sun_set_teide
-            sun_rise = sun_rise_teide
+        elif (telescope == "Artemis"):
+            location = teide
 
 
         ## Built Schedule for ASTRA
         # Open
-        open_row = [["Camera",	"camera_"+str(telescope),	"open",	 "{}",	paranal.sun_set_time(t, which='next').iso,
-                     paranal.sun_rise_time(t, which='next').iso]]
-        df = pd.DataFrame(open_row, columns=["device_type",	"device_name",	"action_type",	"action_value", "start_time",	"end_time"])
+        open_row = [["Camera",	"camera_"+str(telescope).replace("-",""),	"open",	 "{}",
+                     (location.sun_set_time(t, which='next')+25*u.min).iso,
+                     (location.sun_rise_time(t, which='next')-25*u.min).iso]]
+        df = pd.DataFrame(open_row, columns=["device_type",	"device_name",	"action_type",	"action_value",
+                                             "start_time",	"end_time"])
 
         # Dome
-        dome_row = pd.Series({"device_type": "Dome",	"device_name": "dome_"+str(telescope),
+        dome_row = pd.Series({"device_type": "Dome",	"device_name": "dome_"+str(telescope).replace("-",""),
                              "action_type": "SlewToAzimuth",	"action_value": 230,
-                             "start_time": paranal.sun_set_time(t, which='next').iso,	"end_time":  paranal.sun_rise_time(t, which='next').iso})
+                             "start_time": location.sun_set_time(t, which='next').iso,
+                              "end_time": location.sun_rise_time(t, which='next').iso})
         #df = df.append(dome_row, ignore_index=True)
         # Flats
-        filt_evening = list(set(filt))
-        flats_row_evening = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope),
-                             "action_type": "flats",	"action_value": {"filter": filt_evening, 'n': [10]*len(filt_evening)},
-                             "start_time": paranal.sun_set_time(t, which='next').iso,
+        def custom_sort(arr, custom_order):
+            # Create a dictionary to store the index of each element in the custom order
+            order_dict = {val: idx for idx, val in enumerate(custom_order)}
+            # Define a custom sorting key function that uses the order_dict to get the index of each element
+            def custom_key(element):
+                return order_dict.get(element, float('inf'))
+
+            # Sort the array using the custom sorting key
+            sorted_arr = sorted(arr, key=custom_key)
+            return sorted_arr
+
+        my_array = list(set(filt)) # + ["z\'", "i\'"]))
+        my_custom_order_evening = ["B", "z\'", "V", "r\'", "i\'", "g\'", "I+z", "Exo", "zYJ", "Clear"]
+        filt_evening = custom_sort(my_array, my_custom_order_evening)
+        if len(filt_evening) == 1:
+            nb_flats = 20
+        else:
+            nb_flats = 10
+        flats_row_evening = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
+                             "action_type": "flats",
+                             "action_value": {"filter": filt_evening, 'n': [nb_flats]*len(filt_evening)},
+                             "start_time": (location.sun_set_time(t, which='next')+25*u.min + 1*u.min).iso,
                                        "end_time": scheduler_table["start time (UTC)"][0]})
         df = df.append(flats_row_evening, ignore_index=True)
         #Targets
@@ -529,32 +541,35 @@ def make_astra_schedule_file(day, nb_days, telescope):
                                   str(abs(round(scheduler_table['dec (s)'][i], 3))) + 's')
                 action_values_target = {'object': name[i], 'filter': filt[i], 'ra': coords.ra.value, 'dec': coords.dec.value,
                                 'exptime': int(texp[i]), 'guiding': True, 'pointing': False}
-                target_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope),
+                target_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                                  "action_type": "object",	"action_value": action_values_target,
-                                 "start_time": scheduler_table["start time (UTC)"][i],
+                                 "start_time": (Time(scheduler_table["start time (UTC)"][i] ) + 1*u.min).iso,
                                         "end_time": scheduler_table["end time (UTC)"][i]})
                 df = df.append(target_row, ignore_index=True)
         # Flats
-        filt_morning = list(set(filt))
-        flats_row_morning = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope),
-                             "action_type": "flats",	"action_value": {"filter": filt_morning, 'n': [10]*len(filt_morning)},
-                             "start_time": scheduler_table["end time (UTC)"][-1],
-                                       "end_time": paranal.sun_rise_time(t, which='next').iso})
+        my_custom_order_morning = my_custom_order_evening[::-1]
+
+        filt_morning = custom_sort(my_array, my_custom_order_morning)
+        flats_row_morning = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
+                             "action_type": "flats",
+                                       "action_value": {"filter": filt_morning, 'n': [nb_flats]*len(filt_morning)},
+                             "start_time": (Time(scheduler_table["end time (UTC)"][-1]) + 1*u.min).iso,
+                                       "end_time": (location.sun_rise_time(t, which='next')-25*u.min).iso})
         df = df.append(flats_row_morning, ignore_index=True)
         # Close
-        close_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope),
+        close_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "close",	"action_value": {},
-                             "start_time": paranal.sun_rise_time(t, which='next').iso,
-                               "end_time": (paranal.sun_rise_time(t, which='next')+5*u.min).iso})
+                             "start_time": (location.sun_rise_time(t, which='next')-25*u.min+ 1*u.min).iso,
+                               "end_time": (location.sun_rise_time(t, which='next')-20*u.min).iso})
         df = df.append(close_row, ignore_index=True)
         # Calibration
         texp = [int(x) for x in texp]
         texp += [0, 15, 30, 60, 120]
         texp = list(np.sort(np.unique(texp)))
-        calibration_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope),
+        calibration_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "calibration",	"action_value": {"exptime":texp, 'n': [10]*len(texp)},
-                             "start_time": (paranal.sun_rise_time(t, which='next')+5*u.min).iso,
-                                     "end_time": (paranal.sun_rise_time(t, which='next')+30*u.min).iso})
+                             "start_time": (location.sun_rise_time(t, which='next')-20*u.min+ 1*u.min).iso,
+                                     "end_time": (location.sun_rise_time(t, which='next')+30*u.min).iso})
         df = df.append(calibration_row, ignore_index=True)
         #To .csv file
         df.to_csv(path_spock + '/DATABASE/' + str(telescope) + "/Astra/" +

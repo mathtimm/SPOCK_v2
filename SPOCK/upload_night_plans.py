@@ -120,13 +120,13 @@ def upload_np_calli(t_now, nb_days):
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_database_astra_file,
                               path_local_astra_folder])
         # Local to reduction computer
-        p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_zip_file,
-                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Callisto/Plans/'])
-        print('----->', t_now, 'Zip Plans_by_dates folder uploaded on the HUB for Callisto')
+        #p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_zip_file,
+        #                      'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Callisto/Plans/'])
+        #print('----->', t_now, 'Zip Plans_by_dates folder uploaded on the HUB for Callisto')
         # Astra Local to reduction computer
         path_local_astra_file = os.path.join(path_spock + '/DATABASE/', 'Callisto', 'Astra/', 'Callisto_'+str(t_now)+'.csv')
         p = subprocess.Popen(["sshpass", "-p", pwd_HUB, "scp", path_local_astra_file,
-                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Callisto/Astra/'])
+                              'speculoos@172.16.4.169:/home/speculoos/Plans_scheduler/Callisto/Astra'])
         print('----->', t_now, 'Astra folder updated on the HUB for Callisto')
 
 
@@ -194,12 +194,12 @@ def upload_np_gany(t_now, nb_days):
         print('----->', t_now, 'Plans uploaded on the Cambridge server')
 
         # Archive_night_blocks
-        path_database_nightb = os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Telescopes/',
+        path_database_night = os.path.join('speculoos@appcs.ra.phy.cam.ac.uk:/appct/data/SPECULOOSPipeline/Telescopes/',
                                             'Ganymede',
                                             'schedule', 'Archive_night_blocks')
         path_night_blocks = os.path.join(path_spock + '/DATABASE/', 'Ganymede',
                                          'Archive_night_blocks/', 'night_blocks_Ganymede_'+str(t_now)+'.txt')
-        subprocess.Popen(["sshpass", "-p", pwd_appcs, "scp", path_night_blocks, path_database_nightb])
+        subprocess.Popen(["sshpass", "-p", pwd_appcs, "scp", path_night_blocks, path_database_night])
         print('----->', t_now, 'Night plans uploaded on the Cambridge server')
 
         # zip_files
