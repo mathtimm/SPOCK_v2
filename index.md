@@ -1,6 +1,3 @@
-.. image:: https://travis-ci.com/educrot/SPOCK.svg?branch=master&status=passed
-    :target: https://travis-ci.com/educrot22/SPOCK
-
 .. image:: https://img.shields.io/badge/docs-dev-green.svg
     :target: https://educrot22.github.io/SPOCK/index.html
 
