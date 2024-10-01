@@ -10,6 +10,8 @@ SPOCK_files/
 
 target_lists/
 
+WG6_specific_timings/
+
 .vscode/
 
 eScheduler/
