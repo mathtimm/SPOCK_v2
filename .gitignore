@@ -4,9 +4,13 @@ night_blocks_propositions/
 
 survey_hours/
 
+local_files/
+
 SPOCK_files/
 
 target_lists/
+
+.vscode/
 
 eScheduler/
 
@@ -137,3 +141,6 @@ test.py
 input_short_term.csv
 
 input.csv
+
+
+TOI_270_transits_from_Paranal_in_2022.csv
