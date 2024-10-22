@@ -17,7 +17,7 @@ master_doc = 'index'  # or the name of your main documentation file
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
-    'sphinx_markdown_docs',  # Enable Markdown support
+    'recommonmark',
 ]
 
 # Templates and static file directories
