@@ -15,25 +15,3 @@ of the solar neighborhood `Link to site <https://www.speculoos.uliege.be/cms/c_4
    content/quick-ref
    content/api
 
-.. toctree::
-   :caption: SPOCKApp
-   :maxdepth: 1
-
-   examples/tutorials/notebooks/tutorials_SPOCKApp.ipynb
-
-
-
-.. toctree::
-   :caption: Examples & Tutorials
-   :maxdepth: 1
-
-   examples/tutorials/notebooks/tutorials_spocklt.ipynb
-   examples/tutorials/notebooks/tutorials_spockst.ipynb
-   examples/tutorials/notebooks/tutorials_spockplot.ipynb
-   examples/tutorials/notebooks/tutorials_spocktools.ipynb
-
-.. toctree::
-   :caption: How spock works ?
-   :maxdepth: 1
-
-   examples/tutorials/notebooks/how.ipynb

@@ -17,7 +17,7 @@ release = '2.0'
 # Sphinx extensions
 extensions = ['sphinx_rtd_theme', 'sphinx.ext.todo', 'sphinx.ext.viewcode',
               'sphinx.ext.autodoc', 'numpydoc', 'nbsphinx', 'myst_parser',
-              'sphinx.ext.autosectionlabel', 'sphinx.ext.napoleon', 'recommonmark',]
+              'sphinx.ext.autosectionlabel', 'sphinx.ext.napoleon',]
 
 # Templates and static file directories
 html_static_path = ['_static']  # Directory for static files like CSS
