@@ -14,7 +14,7 @@ build:
 python:
   install:
     - requirements: requirements.txt  # Your requirements file
-    - requirements: requirements-docs.txt  # If you have separate requirements for docs
+    - method: pip  # Use pip to install dependencies
 
 formats:
   htmlzip: true  # Enables zip format for HTML output

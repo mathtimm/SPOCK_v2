@@ -1,71 +1,29 @@
-# -- Path setup --------------------------------------------------------------
-import os
-import sys
-
-# Add the project's root directory to the system path
-sys.path.insert(0, os.path.abspath('.'))  # Change this if needed
+# Configuration file for the Sphinx documentation builder.
+#
+# For the full list of built-in configuration values, see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # -- Project information -----------------------------------------------------
-project = 'SPOCK'
-author = 'Your Name'
-release = '2.0'  # Update this with your project version
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-master_doc = 'index'  # or the name of your main documentation file
+project = 'SPOCK'
+copyright = '2024, Elsa Ducrot'
+author = 'Elsa Ducrot'
+release = '2.0'
 
 # -- General configuration ---------------------------------------------------
-# Extensions to be loaded
-extensions = ['sphinx_rtd_theme', 'sphinx.ext.todo', 'sphinx.ext.viewcode',
-              'sphinx.ext.autodoc', 'numpydoc', 'nbsphinx', 'myst_parser',
-              'sphinx.ext.autosectionlabel', 'sphinx.ext.napoleon']
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-# Templates and static file directories
+# Sphinx extensions
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
+    'sphinx_rtd_theme',  # Add this for ReadTheDocs theme
+]
+
+# Paths to templates
 templates_path = ['_templates']
-html_static_path = ['_static']  # Directory for static files like CSS
 
-# Language settings
-language = 'en'  # Change to your preferred language if necessary
-
-# -- HTML output configuration -----------------------------------------------
-# The theme to use for HTML and HTML Help pages
-html_theme = 'sphinx_rtd_theme'  # Read the Docs theme
-
-# Theme options
-html_theme_options = {
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'style_external_links': True,
-}
-
-# Paths to custom CSS files
-html_css_files = [
-    'css/custom.css',  # Add your custom CSS file if needed
-]
-
-# Output file base name for HTML help builder
-htmlhelp_basename = f'{project}Doc'
-
-# -- Options for LaTeX output -----------------------------------------------
-latex_engine = 'pdflatex'  # Use pdflatex for LaTeX output
-
-# -- Options for manual page output -----------------------------------------
-man_pages = [
-    (master_doc, project.lower(), f'{project} Documentation',
-     [author], 1)
-]
-
-# -- Options for Texinfo output ---------------------------------------------
-texinfo_documents = [
-    (master_doc, project, f'{project} Documentation',
-     author, project, 'One line description of project.',
-     'Miscellaneous'),
-]
-
-# -- Options for Epub output ------------------------------------------------
-epub_title = project
-epub_author = author
-epub_publisher = author
-epub_copyright = '2024, Your Name'  # Update with the current year
-
-# Additional settings
-html_show_sourcelink = True  # Show link to source code
-html_show_copyright = True     # Show copyright information
+# HTML options
+html_theme = 'sphinx_rtd_theme'  # Using ReadTheDocs theme
+html_static_path = ['_static']
