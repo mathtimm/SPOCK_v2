@@ -15,15 +15,29 @@ release = '2.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 # Sphinx extensions
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode',
-    'sphinx_rtd_theme',  # Add this for ReadTheDocs theme
-]
+extensions = ['sphinx_rtd_theme', 'sphinx.ext.todo', 'sphinx.ext.viewcode',
+              'sphinx.ext.autodoc', 'numpydoc', 'nbsphinx', 'myst_parser',
+              'sphinx.ext.autosectionlabel', 'sphinx.ext.napoleon']
 
-# Paths to templates
+# Templates and static file directories
 templates_path = ['_templates']
+html_static_path = ['_static']  # Directory for static files like CSS
 
-# HTML options
-html_theme = 'sphinx_rtd_theme'  # Using ReadTheDocs theme
-html_static_path = ['_static']
+# Language settings
+language = 'en'  # Change to your preferred language if necessary
+
+# -- HTML output configuration -----------------------------------------------
+# The theme to use for HTML and HTML Help pages
+html_theme = 'sphinx_rtd_theme'  # Read the Docs theme
+
+# Theme options
+html_theme_options = {
+    'display_version': True,
+    'prev_next_buttons_location': 'bottom',
+    'style_external_links': True,
+}
+
+# Paths to custom CSS files
+html_css_files = [
+    'css/custom.css',  # Add your custom CSS file if needed
+]
