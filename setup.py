@@ -12,7 +12,7 @@ setup(
     author_email = 'ducrotelsa@gmail.com',
     description = ('Speculoos Observatory SChedule maKer for chilean night on SPECULOOS South Observatory'),
     keywords = '',
-    url = 'https://github.com/educrot/SPOCK/',
+    url = 'https://github.com/educrot22/SPOCK/',
     packages = find_packages(),
     long_description = read('README.rst'),
     python_requires='>=3.6',
