@@ -40,9 +40,13 @@ Installation
 
 Install *SPOCK* locally::
 
-    git clone https://github.com/educrot/SPOCK.git
+    git clone https://github.com/educrot22/SPOCK.git
+
     cd spock
-    python setup.py install
+
+    pip install -r requirements.txt
+
+    pip install .
 
 
 
