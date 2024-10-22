@@ -20,7 +20,6 @@ extensions = ['sphinx_rtd_theme', 'sphinx.ext.todo', 'sphinx.ext.viewcode',
               'sphinx.ext.autosectionlabel', 'sphinx.ext.napoleon']
 
 # Templates and static file directories
-templates_path = ['_templates']
 html_static_path = ['_static']  # Directory for static files like CSS
 
 # Language settings
@@ -29,6 +28,10 @@ language = 'en'  # Change to your preferred language if necessary
 # -- HTML output configuration -----------------------------------------------
 # The theme to use for HTML and HTML Help pages
 html_theme = 'sphinx_rtd_theme'  # Read the Docs theme
+
+import sphinx_rtd_theme
+# Add any paths that contain custom themes here, relative to this directory.
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # Theme options
 html_theme_options = {
