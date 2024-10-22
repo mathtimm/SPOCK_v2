@@ -4,9 +4,10 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to SPOCK’s documentation! &mdash; SPOCK 2.0 documentation</title>
+  <title>SPOCK &mdash; SPOCK 2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
 
   
   <!--[if lt IE 9]>
@@ -18,9 +19,11 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=a7e3f902"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="content/installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,12 +45,31 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Welcome to SPOCK’s documentation!</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/installation.html#using-spock">Using <em>SPOCK</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/installation.html#upgrading">Upgrading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/installation.html#more-details-on-spock">More details on <em>SPOCK</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/quick-ref.html">Quick reference</a></li>
 </ul>
-</div>
+<p class="caption" role="heading"><span class="caption-text">SPOCKApp</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_SPOCKApp.html">SPOCKApp, core programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_SPOCKApp.html#SPOCKApp,-external-programs">SPOCKApp, external programs</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples &amp; Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_spocklt.html">Long-term scheduling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_spockst.html">Short-term scheduling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_spockplot.html">Plot with SPOCK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_spocktools.html">Useful tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How spock works ?</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/how.html">How <em>spock</em> works</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -58,11 +80,11 @@
       </nav>
 
       <div class="wy-nav-content">
-        <div class="rst-content">
+        <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to SPOCK’s documentation!</li>
+      <li class="breadcrumb-item active">SPOCK</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -72,24 +94,68 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="welcome-to-spock-s-documentation">
-<h1>Welcome to SPOCK’s documentation!<a class="headerlink" href="#welcome-to-spock-s-documentation" title="Permalink to this heading"></a></h1>
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="spock">
+<h1>SPOCK<a class="headerlink" href="#spock" title="Permalink to this heading"></a></h1>
+<p><em>SPOCK</em> (Speculoos Observatories sChedule maker) is a python package developed to handle
+the planification of observation of the SPECULOOS telescopes. The project SPECULOOS -Search for habitable Planets EClipsing ULtra-cOOl Stars –
+searches for potentially habitable exoplanets around the smallest and coolest stars
+of the solar neighborhood <a class="reference external" href="https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos">Link to site</a>.</p>
 <div class="toctree-wrapper compound">
 </div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">SPOCKApp</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_SPOCKApp.html">SPOCKApp, core programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_SPOCKApp.html#SPOCKApp,-external-programs">SPOCKApp, external programs</a></li>
 </ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Examples &amp; Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_spocklt.html">Long-term scheduling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_spockst.html">Short-term scheduling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_spockplot.html">Plot with SPOCK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/tutorials_spocktools.html">Useful tools</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">How spock works ?</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/tutorials/notebooks/how.html">How <em>spock</em> works</a></li>
+</ul>
+</div>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="content/installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
