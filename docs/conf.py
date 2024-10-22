@@ -10,7 +10,7 @@ project = 'SPOCK'
 author = 'Your Name'
 release = '2.0'  # Update this with your project version
 
-master_doc = 'index.rst'  # or the name of your main documentation file
+master_doc = 'index'  # or the name of your main documentation file
 
 # -- General configuration ---------------------------------------------------
 # Extensions to be loaded
