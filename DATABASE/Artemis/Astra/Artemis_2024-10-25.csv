@@ -1,8 +1,8 @@
 device_type,device_name,action_type,action_value,start_time,end_time
-Camera,camera_Artemis,open,{},2024-10-25 18:47:39.851,2024-10-26 06:52:41.077
-Camera,camera_Artemis,flats,"{'filter': ['I+z'], 'n': [20]}",2024-10-25 18:48:39.851,2024-10-25 19:18:40.009
-Camera,camera_Artemis,object,"{'object': 'Sp0219+5912', 'filter': 'I+z', 'ra': 34.98387499999999, 'dec': 59.324248888888896, 'exptime': 15, 'guiding': True, 'pointing': False}",2024-10-25 19:19:40.009,2024-10-26 00:50:20.009
-Camera,camera_Artemis,object,"{'object': 'Sp0357+4107', 'filter': 'I+z', 'ra': 59.33295416666667, 'dec': 41.12851, 'exptime': 11, 'guiding': True, 'pointing': False}",2024-10-26 00:51:40.009,2024-10-26 06:22:20.009
-Camera,camera_Artemis,flats,"{'filter': ['I+z'], 'n': [20]}",2024-10-26 06:23:20.009,2024-10-26 06:52:41.077
-Camera,camera_Artemis,close,{},2024-10-26 06:53:41.077,2024-10-26 06:57:41.077
-Camera,camera_Artemis,calibration,"{'exptime': [0, 11, 15, 30, 60, 120], 'n': [10, 10, 10, 10, 10, 10]}",2024-10-26 06:58:41.077,2024-10-26 07:47:41.077
+Camera,camera_Artemis,open,{},2024-10-25 18:47:39.854,2024-10-26 06:52:41.080
+Camera,camera_Artemis,flats,"{'filter': ['I+z'], 'n': [20]}",2024-10-25 18:48:39.854,2024-10-25 19:18:40.009
+Camera,camera_Artemis,object,"{'object': 'Sp0219+5912', 'filter': 'I+z', 'ra': 34.98387499999999, 'dec': 59.324248888888896, 'exptime': 15, 'guiding': True, 'pointing': False}",2024-10-25 19:19:40.009,2024-10-25 21:23:00.014
+Camera,camera_Artemis,object,"{'object': 'Sp0314+1603', 'filter': 'I+z', 'ra': 48.51429583333333, 'dec': 16.05152111111111, 'exptime': 70, 'guiding': True, 'pointing': False}",2024-10-25 21:24:00.014,2024-10-26 06:35:53.639
+Camera,camera_Artemis,flats,"{'filter': ['I+z'], 'n': [20]}",2024-10-26 06:36:53.639,2024-10-26 06:52:41.080
+Camera,camera_Artemis,close,{},2024-10-26 06:53:41.080,2024-10-26 06:57:41.080
+Camera,camera_Artemis,calibration,"{'exptime': [0, 15, 30, 60, 70, 120], 'n': [10, 10, 10, 10, 10, 10]}",2024-10-26 06:58:41.080,2024-10-26 07:47:41.080

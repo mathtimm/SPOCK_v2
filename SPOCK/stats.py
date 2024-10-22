@@ -12,7 +12,7 @@ target_list_df = pd.read_csv(target_list_from_stargate_path, sep=',')
 
 
 def read_night_plans_server(telescope,date):
-    TargetURL = "http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/"+telescope+\
+    TargetURL = "http://www.mrao.cam.ac.uk/SPECULOOS/Observations/"+telescope+\
                 "/schedule/Archive_night_blocks/night_blocks_"+telescope+"_"+date+".txt"
     resp = requests.get(TargetURL, auth=(user_portal, pwd_portal))
     content = resp.text.replace("\n", "")
