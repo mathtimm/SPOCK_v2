@@ -8,19 +8,15 @@
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-    'nbsphinx',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.githubpages',
-    'jupyter_sphinx',
-    'sphinx-jsonschema',
-    ]
+# General configuration
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+html_theme = 'sphinx_rtd_theme'
 
+# Static files
+html_static_path = ['_static']
+html_css_files = [
+    'css/custom.css',  # Add your custom CSS file if needed
+]
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
@@ -87,8 +83,8 @@ html_theme = 'sphinx_rtd_theme'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
-html_style = "css/style.css"
+# html_static_path = ['_static']
+# html_style = "css/style.css"
 pygments_style = "friendly"
 
 
