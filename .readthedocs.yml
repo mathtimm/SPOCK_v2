@@ -1,7 +1,15 @@
 version: 2
 
 sphinx:
-  configuration: docs/conf.py  # Path to your conf.py file
+  configuration: docs/source/conf.py  # Path to your conf.py file
+  builder: html  # The builder to use (e.g., html, pdf, epub, etc.)
+
+
+# Set the version of Python and other tools you might need
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "3.8"
 
 python:
   install:
@@ -14,3 +22,5 @@ formats:
 # This section tells Read the Docs to use Markdown
 extensions:
   - sphinx_markdown_docs  # Include this if you are using markdown support
+
+default_branch: main  # Change to your default branch if different

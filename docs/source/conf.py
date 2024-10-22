@@ -14,11 +14,9 @@ master_doc = 'index'  # or the name of your main documentation file
 
 # -- General configuration ---------------------------------------------------
 # Extensions to be loaded
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode',
-    'recommonmark',
-]
+extensions = ['sphinx_rtd_theme', 'sphinx.ext.todo', 'sphinx.ext.viewcode',
+              'sphinx.ext.autodoc', 'numpydoc', 'nbsphinx', 'myst_parser',
+              'sphinx.ext.autosectionlabel', 'sphinx.ext.napoleon']
 
 # Templates and static file directories
 templates_path = ['_templates']
