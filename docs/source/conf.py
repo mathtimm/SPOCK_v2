@@ -15,9 +15,9 @@ master_doc = 'index'  # or the name of your main documentation file
 # -- General configuration ---------------------------------------------------
 # Extensions to be loaded
 extensions = [
-    'sphinx.ext.autodoc',   # Include documentation from docstrings
-    'sphinx.ext.viewcode',   # Include highlighted source code
-    'sphinx.ext.napoleon',   # Support for Google style docstrings
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
+    'sphinx_markdown_docs',  # Enable Markdown support
 ]
 
 # Templates and static file directories

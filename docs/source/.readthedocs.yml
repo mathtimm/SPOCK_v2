@@ -1,0 +1,16 @@
+version: 2
+
+sphinx:
+  configuration: docs/conf.py  # Path to your conf.py file
+
+python:
+  install:
+    - requirements: requirements.txt  # Your requirements file
+    - requirements: requirements-docs.txt  # If you have separate requirements for docs
+
+formats:
+  htmlzip: true  # Enables zip format for HTML output
+
+# This section tells Read the Docs to use Markdown
+extensions:
+  - sphinx_markdown_docs  # Include this if you are using markdown support
