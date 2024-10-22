@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'SPOCK'
-html_baseurl = 'https://educrot22.github.io/SPOCK/'
+html_baseurl = 'https://educrot22.readthedocs.io/en/latest/'
 copyright = u'2020, Elsa Ducrot'
 author = u'Elsa Ducrot'
 
