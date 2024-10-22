@@ -2,8 +2,6 @@ version: 2
 
 sphinx:
   configuration: docs/source/conf.py  # Path to your conf.py file
-  builder: html  # The builder to use (e.g., html, pdf, epub, etc.)
-
 
 # Set the version of Python and other tools you might need
 build:

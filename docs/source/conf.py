@@ -39,5 +39,5 @@ html_theme_options = {
 
 # Paths to custom CSS files
 html_css_files = [
-    'css/custom.css',  # Add your custom CSS file if needed
+    'css/style.css',  # Add your custom CSS file if needed
 ]
