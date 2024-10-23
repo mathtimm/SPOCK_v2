@@ -15,7 +15,7 @@ python:
     - method: pip  # Use pip to install dependencies
 
 formats:
-  htmlzip: true  # Enables zip format for HTML output
+  - htmlzip
 
 # This section tells Read the Docs to use Markdown
 extensions:
