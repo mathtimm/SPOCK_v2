@@ -12,13 +12,12 @@ build:
 python:
   install:
     - requirements: requirements.txt  # Your requirements file
-    - method: pip  # Use pip to install dependencies
 
 formats:
   - htmlzip
 
-# This section tells Read the Docs to use Markdown
-extensions:
-  - sphinx_markdown_docs  # Include this if you are using markdown support
-
-default_branch: main  # Change to your default branch if different
+# This section tells Read the Docs to use extensions
+sphinx:
+  # Specify any extensions you need
+  extra_extensions:
+    - sphinx_markdown_docs  # Ensure this is valid and correctly installed in your requirements
