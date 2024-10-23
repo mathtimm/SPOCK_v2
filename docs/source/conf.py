@@ -41,17 +41,13 @@ html_static_path = ['_static']  # Directory for static files like CSS
 # Language settings
 language = 'en'  # Change to your preferred language if necessary
 
-# -- HTML output configuration -----------------------------------------------
-# The theme to use for HTML and HTML Help pages
-html_theme = 'sphinx_rtd_theme'  # Read the Docs theme
-
 import sphinx_rtd_theme
 # Add any paths that contain custom themes here, relative to this directory.
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
     'canonical_url': '',
     'analytics_id': 'UA-XXXXXXX-1',  #  Provided by Google in your dashboard
-    'logo_only': False,
+    'logo_only': True,
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
