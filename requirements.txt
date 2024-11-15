@@ -82,7 +82,7 @@ deprecation==2.1.0
 dill==0.3.4
 distlib==0.3.5
 docstring-parser==0.14.1
-docutils==0.20.1
+docutils==0.18.1
 drizzle==1.13.6
 dynesty==1.2.1
 ellc==1.8.5

@@ -2696,7 +2696,7 @@ def read_night_block(telescope, day):
     if os.path.exists(path_local):
         scheduler_table = Table.read(path_local, format='ascii')
     else:
-        nightb_url = "http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/" + telescope + \
+        nightb_url = "http://www.mrao.cam.ac.uk/SPECULOOS/Observations/" + telescope + \
                      '/schedule/Archive_night_blocks/night_blocks_' + \
                      telescope + '_' + day_fmt + '.txt'
         nightb = requests.get(nightb_url, auth=(user_portal, pwd_portal))
