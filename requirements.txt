@@ -345,7 +345,6 @@ sortedcontainers==2.4.0
 soupsieve==2.2.1
 specphot==0.1
 spectres==2.2.0
--e git+ssh://git@github.com/lgrcia/speculoos.git@5a569dfcfedd98fc5e8dac807f9a1f918f6eafba#egg=speculoos
 spherical-geometry==1.2.22
 sphinx
 sphinx-json-schema==0.2
