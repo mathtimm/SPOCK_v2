@@ -1,6 +1,6 @@
 # .readthedocs.yml
 
-version: 3
+version: 2
 
 # Build documentation in the "docs/" directory
 sphinx:
