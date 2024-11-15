@@ -17,7 +17,7 @@ build:
 sphinx:
   configuration: docs/source/conf.py  # Correct path to your conf.py file
 
-# Python dependencies (if needed)
-python:
-  install:
-    - requirements: requirements.txt  # If you have dependencies listed here
+# # Python dependencies (if needed)
+# python:
+#   install:
+#     - requirements: requirements.txt  # If you have dependencies listed here
