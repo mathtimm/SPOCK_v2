@@ -229,7 +229,6 @@ nbsphinx==0.8.8
 nest-asyncio==1.5.1
 netCDF4==1.5.7
 networkx==2.8.4
-nightshift @ git+https://github.com/lgrcia/nightshift@d0e12d36bcc23b19c56e4332d828d2c2ba60d44d
 nodeenv==1.7.0
 notebook==6.4.5
 numba==0.57.0
