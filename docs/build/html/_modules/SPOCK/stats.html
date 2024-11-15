@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPOCK.stats &mdash; SPOCK 3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d636b35b"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SPOCK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SPOCK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">SPOCK.stats</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for SPOCK.stats</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">astropy.time</span> <span class="kn">import</span> <span class="n">Time</span>
+<span class="kn">from</span> <span class="nn">colorama</span> <span class="kn">import</span> <span class="n">Fore</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">alive_progress</span> <span class="kn">import</span> <span class="n">alive_bar</span>
+<span class="kn">import</span> <span class="nn">os.path</span><span class="o">,</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">SPOCK</span> <span class="kn">import</span> <span class="n">user_portal</span><span class="p">,</span> <span class="n">pwd_portal</span><span class="p">,</span> <span class="n">target_list_from_stargate_path</span><span class="p">,</span> <span class="n">path_spock</span>
+
+<span class="n">target_list_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">target_list_from_stargate_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="read_night_plans_server"><a class="viewcode-back" href="../../SPOCK.html#SPOCK.stats.read_night_plans_server">[docs]</a><span class="k">def</span> <span class="nf">read_night_plans_server</span><span class="p">(</span><span class="n">telescope</span><span class="p">,</span><span class="n">date</span><span class="p">):</span>
+    <span class="n">TargetURL</span> <span class="o">=</span> <span class="s2">&quot;http://www.mrao.cam.ac.uk/SPECULOOS/Observations/&quot;</span><span class="o">+</span><span class="n">telescope</span><span class="o">+</span>\
+                <span class="s2">&quot;/schedule/Archive_night_blocks/night_blocks_&quot;</span><span class="o">+</span><span class="n">telescope</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">date</span><span class="o">+</span><span class="s2">&quot;.txt&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">TargetURL</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">user_portal</span><span class="p">,</span> <span class="n">pwd_portal</span><span class="p">))</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;text_file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;text_file.txt&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">error_bad_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="read_all_night_plans_server"><a class="viewcode-back" href="../../SPOCK.html#SPOCK.stats.read_all_night_plans_server">[docs]</a><span class="k">def</span> <span class="nf">read_all_night_plans_server</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="n">TargetURL</span> <span class="o">=</span> <span class="n">file</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">TargetURL</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">user_portal</span><span class="p">,</span> <span class="n">pwd_portal</span><span class="p">))</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;text_file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;text_file.txt&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">error_bad_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="listFD"><a class="viewcode-back" href="../../SPOCK.html#SPOCK.stats.listFD">[docs]</a><span class="k">def</span> <span class="nf">listFD</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">user_portal</span><span class="p">,</span> <span class="n">pwd_portal</span><span class="p">))</span><span class="o">.</span><span class="n">text</span>
+    <span class="c1"># print(page)</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">url</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ext</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="df_all_obs_scheduled"><a class="viewcode-back" href="../../SPOCK.html#SPOCK.stats.df_all_obs_scheduled">[docs]</a><span class="k">def</span> <span class="nf">df_all_obs_scheduled</span><span class="p">(</span><span class="n">telescope</span><span class="p">):</span>
+    <span class="n">date_night_plan</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/&quot;</span> <span class="o">+</span> <span class="n">telescope</span> <span class="o">+</span> <span class="s2">&quot;/schedule/Archive_night_blocks/&quot;</span>
+    <span class="n">ext</span> <span class="o">=</span> <span class="s1">&#39;txt&#39;</span>
+
+    <span class="k">with</span> <span class="n">alive_bar</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">listFD</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ext</span><span class="p">)))</span> <span class="k">as</span> <span class="n">bar</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">listFD</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ext</span><span class="p">)):</span>
+            <span class="n">bar</span><span class="p">()</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="n">read_all_night_plans_server</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">read_all_night_plans_server</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+                <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">date_night_plan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">telescope</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                        <span class="s1">&#39;/schedule/Archive_night_blocks//night_blocks_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">df</span><span class="p">,</span><span class="n">date_night_plan</span></div>
+
+<div class="viewcode-block" id="date_night_start_func"><a class="viewcode-back" href="../../SPOCK.html#SPOCK.stats.date_night_start_func">[docs]</a><span class="k">def</span> <span class="nf">date_night_start_func</span><span class="p">(</span><span class="n">df_speculoos</span><span class="p">,</span><span class="n">target</span><span class="p">):</span>
+    <span class="n">idx_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">df_speculoos</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ici</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;Sp_ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_target</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">date_oldest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">df_speculoos</span><span class="p">[</span><span class="s1">&#39;start time (UTC)&#39;</span><span class="p">][</span><span class="n">idx_target</span><span class="p">])</span>
+        <span class="n">date_most_recent</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">df_speculoos</span><span class="p">[</span><span class="s1">&#39;start time (UTC)&#39;</span><span class="p">][</span><span class="n">idx_target</span><span class="p">])</span>
+        <span class="n">durations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df_speculoos</span><span class="p">[</span><span class="s1">&#39;duration (minutes)&#39;</span><span class="p">][</span><span class="n">idx_target</span><span class="p">])</span>
+        <span class="n">date_night_start</span>  <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">idx_target</span><span class="p">)):</span>
+            <span class="n">date_night_start</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Time</span><span class="p">(</span><span class="n">df_speculoos</span><span class="p">[</span><span class="s1">&#39;start time (UTC)&#39;</span><span class="p">][</span><span class="n">idx_target</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">out_subfmt</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">iso</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">date_night_start</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">date_oldest</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
+        <span class="n">date_most_recent</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
+        <span class="n">durations</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+
+    <span class="k">return</span> <span class="n">date_night_start</span><span class="p">,</span><span class="n">date_oldest</span><span class="p">,</span><span class="n">date_most_recent</span><span class="p">,</span><span class="n">durations</span></div>
+
+
+<div class="viewcode-block" id="run_masterfile"><a class="viewcode-back" href="../../SPOCK.html#SPOCK.stats.run_masterfile">[docs]</a><span class="k">def</span> <span class="nf">run_masterfile</span><span class="p">():</span>
+    <span class="n">df_all_Io</span><span class="p">,</span><span class="n">date_night_plan_Io</span> <span class="o">=</span> <span class="n">df_all_obs_scheduled</span><span class="p">(</span><span class="s1">&#39;Io&#39;</span><span class="p">)</span>
+    <span class="n">df_all_Europa</span><span class="p">,</span><span class="n">date_night_plan_Europa</span> <span class="o">=</span> <span class="n">df_all_obs_scheduled</span><span class="p">(</span><span class="s1">&#39;Europa&#39;</span><span class="p">)</span>
+    <span class="n">df_all_Ganymede</span><span class="p">,</span><span class="n">date_night_plan_Ganymede</span> <span class="o">=</span> <span class="n">df_all_obs_scheduled</span><span class="p">(</span><span class="s1">&#39;Ganymede&#39;</span><span class="p">)</span>
+    <span class="n">df_all_Callisto</span><span class="p">,</span><span class="n">date_night_plan_Callisto</span> <span class="o">=</span> <span class="n">df_all_obs_scheduled</span><span class="p">(</span><span class="s1">&#39;Callisto&#39;</span><span class="p">)</span>
+    <span class="n">df_all_Artemis</span><span class="p">,</span><span class="n">date_night_plan_Artemis</span> <span class="o">=</span> <span class="n">df_all_obs_scheduled</span><span class="p">(</span><span class="s1">&#39;Artemis&#39;</span><span class="p">)</span>
+    <span class="n">df_all_TS_La_Silla</span><span class="p">,</span><span class="n">date_night_plan_TS_La_Silla</span> <span class="o">=</span> <span class="n">df_all_obs_scheduled</span><span class="p">(</span><span class="s1">&#39;TS_La_Silla&#39;</span><span class="p">)</span>
+    <span class="n">df_all_TN_Oukaimeden</span><span class="p">,</span><span class="n">date_night_plan_TN_Oukaimeden</span> <span class="o">=</span> <span class="n">df_all_obs_scheduled</span><span class="p">(</span><span class="s1">&#39;TN_Oukaimeden&#39;</span><span class="p">)</span>
+    <span class="n">df_all_TN_Oukaimeden</span><span class="p">,</span><span class="n">date_night_plan_TN_Oukaimeden</span> <span class="o">=</span> <span class="n">df_all_obs_scheduled</span><span class="p">(</span><span class="s1">&#39;Saint-Ex&#39;</span><span class="p">)</span>
+
+    <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">df_all_Io</span><span class="p">,</span><span class="n">df_all_Europa</span><span class="p">,</span><span class="n">df_all_Ganymede</span><span class="p">,</span>
+              <span class="n">df_all_Callisto</span><span class="p">,</span><span class="n">df_all_Artemis</span><span class="p">,</span><span class="n">df_all_TS_La_Silla</span><span class="p">,</span><span class="n">df_all_TN_Oukaimeden</span><span class="p">]</span>
+
+    <span class="n">df_speculoos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+    <span class="n">df_speculoos</span> <span class="o">=</span> <span class="n">df_speculoos</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df_speculoos</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path_spock</span> <span class="o">+</span> <span class="s1">&#39;/all_schedules.csv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">date_night_start_each_target</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">date_oldest_obs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">date_most_recent_obs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">durations_all_obs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">idx_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;telescope&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;[]&#39;</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_list_df</span><span class="p">))])</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;Sp_ID&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">basic_info</span> <span class="o">=</span> <span class="n">date_night_start_func</span><span class="p">(</span><span class="n">df_speculoos</span><span class="p">,</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">UnboundLocalError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span> <span class="o">+</span> <span class="s1">&#39;ERROR:  &#39;</span> <span class="o">+</span> <span class="n">Fore</span><span class="o">.</span><span class="n">BLACK</span> <span class="o">+</span> <span class="s1">&#39; solve&#39;</span><span class="p">)</span>
+        <span class="n">date_night_start_each_target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basic_info</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">date_oldest_obs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basic_info</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">date_most_recent_obs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basic_info</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">durations_all_obs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basic_info</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+    <span class="n">df_masterfile</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Sp_ID&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;Sp_ID&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span> <span class="s1">&#39;RA&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;RA&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span>
+                       <span class="s1">&#39;DEC&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;DEC&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span> <span class="s1">&#39;telescope&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;telescope&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span>
+                       <span class="s1">&#39;Program&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;Program&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span>
+                       <span class="s1">&#39;nb_hours_surved&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;nb_hours_surved&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span>
+                       <span class="s1">&#39;all_dates_scheduled&#39;</span><span class="p">:</span><span class="n">date_night_start_each_target</span><span class="p">,</span>
+                       <span class="s1">&#39;all_durations_scheduled&#39;</span><span class="p">:</span><span class="n">durations_all_obs</span><span class="p">,</span>
+                       <span class="s1">&#39;oldest_obs&#39;</span><span class="p">:</span><span class="n">date_oldest_obs</span><span class="p">,</span><span class="s1">&#39;most_recent_obs&#39;</span><span class="p">:</span><span class="n">date_most_recent_obs</span><span class="p">,</span>
+                       <span class="s1">&#39;Filter_spc&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;Filter_spc&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span>
+                       <span class="s1">&#39;texp_spc&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;texp_spc&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span>
+                       <span class="s1">&#39;Ms&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;Ms&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span> <span class="s1">&#39;Rs&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;Rs&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">],</span>
+                       <span class="s1">&#39;SpT&#39;</span><span class="p">:</span> <span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;SpT&#39;</span><span class="p">][</span><span class="n">idx_all</span><span class="p">]})</span>
+
+    <span class="n">df_masterfile</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path_spock</span> <span class="o">+</span> <span class="s1">&#39;spock_stats_masterfile.csv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="info_on_Sp_target"><a class="viewcode-back" href="../../SPOCK.html#SPOCK.stats.info_on_Sp_target">[docs]</a><span class="k">def</span> <span class="nf">info_on_Sp_target</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">target_list_df</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">target_list_df</span><span class="p">[</span><span class="s1">&#39;Sp_ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">))</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">a</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Elsa Ducrot.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

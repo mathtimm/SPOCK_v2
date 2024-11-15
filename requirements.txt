@@ -202,8 +202,6 @@ mdurl==0.1.1
 memoization==0.4.0
 mergedeep==1.3.4
 mimeparse==0.1.3
-miniKanren==1.0.3
--e git+https://github.com/ccossou/miritools.git@300b22f5f0590d56f6b169396a7183f22004a869#egg=miritools
 mistune==0.8.4
 mkdocs==1.3.1
 mkdocs-autorefs==0.4.1
@@ -351,10 +349,10 @@ specphot==0.1
 spectres==2.2.0
 -e git+ssh://git@github.com/lgrcia/speculoos.git@5a569dfcfedd98fc5e8dac807f9a1f918f6eafba#egg=speculoos
 spherical-geometry==1.2.22
-Sphinx==7.1.2
+sphinx
 sphinx-json-schema==0.2
 sphinx-jsonschema==1.19.1
-sphinx-rtd-theme==2.0.0
+sphinx-rtd-theme
 sphinxcontrib-applehelp==1.0.2
 sphinxcontrib-devhelp==1.0.2
 sphinxcontrib-htmlhelp==2.0.0
