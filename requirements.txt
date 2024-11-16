@@ -263,7 +263,6 @@ poppy==1.0.2
 pre-commit==2.20.0
 progressbar2==4.2.0
 prometheus-client==0.11.0
-prompt-toolkit==3.0.20
 prose==2.0.3
 protobuf==4.22.3
 psutil==5.9.1
