@@ -85,6 +85,7 @@ docstring-parser==0.14.1
 docutils==0.18.1
 drizzle==1.13.6
 dynesty==1.2.1
+emcee==3.1.1
 emoji==2.0.0
 entrypoints==0.3
 et-xmlfile==1.1.0
@@ -92,7 +93,6 @@ etuples==0.3.5
 -e git+https://github.com/kevin218/Eureka.git@4037a1d7d32daf0b99b07f1cd7c6439420ed630b#egg=eureka
 exceptiongroup==1.1.1
 exoplanet==0.5.3
-exoplanet-core==0.1.2
 exoplanetimaging-handson==0.1
 fastapi==0.98.0
 fastjsonschema==2.16.1
