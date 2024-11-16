@@ -37,7 +37,7 @@ def listFD(url, ext=''):
 
 def df_all_obs_scheduled(telescope):
     date_night_plan = []
-    url = "http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/" + telescope + "/schedule/Archive_night_blocks/"
+    url = "http://www.mrao.cam.ac.uk/SPECULOOS/Observations/" + telescope + "/schedule/Archive_night_blocks/"
     ext = 'txt'
 
     with alive_bar(len(listFD(url, ext))) as bar:
@@ -53,7 +53,7 @@ def df_all_obs_scheduled(telescope):
                 df = pd.concat(frames)
                 df = df.reset_index(drop=True)
                 date_night_plan.append(
-                    file.replace('http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/', '').replace(telescope, '').replace(
+                    file.replace('http://www.mrao.cam.ac.uk/SPECULOOS/Observations/', '').replace(telescope, '').replace(
                         '/schedule/Archive_night_blocks//night_blocks_', '').replace('_', '').replace('.txt', ''))
         return df,date_night_plan
 

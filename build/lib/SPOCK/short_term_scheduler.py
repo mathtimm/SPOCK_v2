@@ -950,10 +950,10 @@ class Schedules:
     def make_scheduled_table(self):
         path = path_spock + '/DATABASE'
         try:
-            os.path.exists(os.path.join(path, self.telescope, 'night_blocks_' + str(self.telescope) + '_' +
+            os.path.exists(os.path.join(path, self.telescope, '/Archive_night_blocks/night_blocks_' + str(self.telescope) + '_' +
                                         self.day_of_night.tt.strftime("%Y-%m-%d") + '.txt'))
             print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Local path exists and is: ',
-                  os.path.join(path, self.telescope, 'night_blocks_' + str(self.telescope) + '_' +
+                  os.path.join(path, self.telescope, '/Archive_night_blocks/night_blocks_' + str(self.telescope) + '_' +
                                self.day_of_night.tt.strftime("%Y-%m-%d") + '.txt'))
         except TypeError:
             print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Local path does not exist yet ')
@@ -1299,7 +1299,7 @@ def read_night_block(telescope, day):
             str(telescope) + '_' + str(day_fmt) + '.txt',
             format='ascii')
     else:
-        nightb_url = "http://www.mrao.cam.ac.uk/SPECULOOS/Telescopes/" + telescope + '/schedule/Archive_night_blocks/night_blocks_' + \
+        nightb_url = "http://www.mrao.cam.ac.uk/SPECULOOS/Observations/" + telescope + '/schedule/Archive_night_blocks/night_blocks_' + \
                      telescope + '_' + day_fmt + '.txt'
         nightb = requests.get(nightb_url, auth=(user_portal, pwd_portal))
 

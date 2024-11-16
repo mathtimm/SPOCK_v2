@@ -16,5 +16,5 @@ setup(
     packages = find_packages(),
     long_description = read('README.rst'),
     python_requires='>=3.6',
-    install_requires =["numpy>=1.24.0"],
+    install_requires =["numpy==1.21.6"],
 )
