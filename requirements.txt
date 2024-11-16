@@ -92,8 +92,6 @@ et-xmlfile==1.1.0
 etuples==0.3.5
 -e git+https://github.com/kevin218/Eureka.git@4037a1d7d32daf0b99b07f1cd7c6439420ed630b#egg=eureka
 exceptiongroup==1.1.1
-exoplanet==0.5.3
-exoplanetimaging-handson==0.1
 fastapi==0.98.0
 fastjsonschema==2.16.1
 fastprogress==1.0.0
