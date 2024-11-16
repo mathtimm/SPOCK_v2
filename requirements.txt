@@ -384,8 +384,6 @@ toolz==0.11.2
 tornado==6.1
 tqdm==4.62.3
 traitlets==5.1.0
-transitforecast==0.0.0
-transitleastsquares==1.0.25
 trio==0.24.0
 trio-websocket==0.11.1
 tweakwcs==0.8.0
