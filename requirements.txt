@@ -85,7 +85,6 @@ docstring-parser==0.14.1
 docutils==0.18.1
 drizzle==1.13.6
 dynesty==1.2.1
-ellc==1.8.5
 emcee==3.1.1
 emoji==2.0.0
 entrypoints==0.3
