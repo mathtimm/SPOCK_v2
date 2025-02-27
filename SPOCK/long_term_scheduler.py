@@ -1204,6 +1204,7 @@ class Schedules:
                 self.index_prio_by_day.append(self.index_prio)
                 self.priority_ranked_by_day.append(self.priority_ranked)
                 end = time.time()
+
                 if self.is_constraints_met_first_target(t):
                     self.first_target = self.priority[self.idx_first_target]
                     self.first_target_by_day.append(self.first_target)
@@ -1513,7 +1514,7 @@ class Schedules:
             idx_prog3 = np.where((self.target_table_spc['Program'] == 3))
             self.priority['priority'][idx_prog0] *= 0.1
 
-            if self.telescope == "Callisto_SPIRIT":
+            if self.telescope == "Callisto":
                 self.priority['priority'][idx_prog1] *= 10 * self.target_table_spc['SNR_SPIRIT'][idx_prog1] ** 15
             else:
                 self.priority['priority'][idx_prog1] *= 10 * self.target_table_spc['SNR_JWST_HZ_tr'][idx_prog1] ** 15
@@ -1573,7 +1574,7 @@ class Schedules:
             texp = read_exposure_time_table['SSO_texp']
             idx_texp_too_long = np.where((texp > 120))
             self.priority['priority'][idx_texp_too_long] = -1000
-            if self.telescope == 'Callisto_SPIRIT':
+            if self.telescope == 'Callisto':
                 texp = self.target_table_spc['texp_spirit']
                 idx_texp_too_short = np.where((texp < 6))
                 self.priority['priority'][idx_texp_too_short] = -1000
@@ -2107,6 +2108,16 @@ class Schedules:
         moon_idx_set_target = 0
         moon_idx_rise_target = 0
 
+        if self.telescope == "Callisto":
+            df_observable_fields_SPIRIT = pd.read_csv(path_spock + "/target_lists/observable_fields_SPIRIT.csv", sep=',')
+            if np.any((df_observable_fields_SPIRIT["Sp_ID"] == self.first_target["Sp_ID"])):
+                is_constraints_spirit_field_met_first_target = True
+            else:
+                is_constraints_spirit_field_met_first_target = False
+                hours_constraint_first = False
+                print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK +
+                ' the second target did respect the constraints but is NOT in SPIRIT observable fields')
+
         while not (is_moon_constraint_met_first_target & hours_constraint_first):
 
             before_change_first_target = self.priority[self.idx_first_target]
@@ -2160,8 +2171,26 @@ class Schedules:
                     self.moon_and_visibility_constraint_table['ever observable'][self.idx_first_target]
                 hours_constraint_first = self.is_constraint_hours(self.idx_first_target)
 
+                                
+            elif self.telescope == "Callisto":
+                df_observable_fields_SPIRIT = pd.read_csv(path_spock + "/target_lists/observable_fields_SPIRIT.csv", sep=',')
+                if np.any((df_observable_fields_SPIRIT["Sp_ID"] == self.first_target["Sp_ID"])):
+                    is_constraints_spirit_field_met_first_target = True
+                else:
+                    is_constraints_spirit_field_met_first_target = False
+                    hours_constraint_first = False
+                    print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK +
+                    ' the second target did respect the constraints but is NOT in SPIRIT observable fields')
+
+
         if is_moon_constraint_met_first_target and hours_constraint_first:
-            is_constraints_met_first_target = True
+            if self.telescope == "Callisto":
+                if is_constraints_spirit_field_met_first_target:
+                    is_constraints_met_first_target = True
+                else:
+                    is_constraints_met_first_target = False
+            else:
+                is_constraints_met_first_target = True
         else:
             is_constraints_met_first_target = False
         return is_constraints_met_first_target
@@ -2194,6 +2223,17 @@ class Schedules:
             print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' 2nd = 1ere ')
         if self.idx_second_target is None:
             print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' No second target for that night')
+
+        if self.telescope == "Callisto":
+            df_observable_fields_SPIRIT = pd.read_csv(path_spock + "/target_lists/observable_fields_SPIRIT.csv", sep=',')
+            if np.any((df_observable_fields_SPIRIT["Sp_ID"] == self.second_target["Sp_ID"])):
+                is_constraints_spirit_field_met_second_target = True
+            else:
+                is_constraints_spirit_field_met_second_target = False
+                hours_constraint_second = False
+                print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK +
+                ' the second target did respect the constraints but is NOT in SPIRIT observable fields')
+
         else:
             while not (is_moon_constraint_met_second_target & hours_constraint_second):
 
@@ -2289,11 +2329,30 @@ class Schedules:
                         is_moon_constraint_met_second_target = \
                         self.moon_and_visibility_constraint_table['ever observable'][self.idx_second_target]
                         hours_constraint_second = self.is_constraint_hours(self.idx_second_target)
+                    
+                        if self.telescope == "Callisto":
+                            df_observable_fields_SPIRIT = pd.read_csv(path_spock + "/target_lists/observable_fields_SPIRIT.csv", sep=',')
+                            if np.any((df_observable_fields_SPIRIT["Sp_ID"] == self.second_target["Sp_ID"])):
+                                is_constraints_spirit_field_met_second_target = True
+                            else:
+                                is_constraints_spirit_field_met_second_target = False
+                                hours_constraint_second = False
+                                print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK +
+                                ' the second target did respect the constraints but is NOT in SPIRIT observable fields')
+
 
         if is_moon_constraint_met_second_target and hours_constraint_second:
-            is_constraints_met_second_target = True
+            if self.telescope == "Callisto":
+                if is_constraints_spirit_field_met_second_target:
+                    is_constraints_met_second_target = True
+                else:
+                    is_constraints_met_second_target = False
+            else:
+                is_constraints_met_second_target = True
         else:
             is_constraints_met_second_target = False
+
+
         return is_constraints_met_second_target
 
     def update_hours_observed_first(self, day):
@@ -2592,7 +2651,7 @@ class Schedules:
             if self.telescope == 'Artemis':
                 filt_ = filt_.replace('\'', '')
 
-        if self.telescope == 'Callisto_SPIRIT':
+        if self.telescope == 'Callisto':
             texp = self.target_table_spc['texp_spirit'][i]
             filt_ = 'zYJ'
 
