@@ -456,6 +456,7 @@ def make_astra_schedule_file(day, nb_days, telescope):
         except KeyError:
             print()
         for i in range(0, len(scheduler_table)):
+            print(name[i])
             if name[i] != 'TransitionBlock':
                 conf = ast.literal_eval(config[i])
                 filt.append(conf['filt'])
@@ -521,7 +522,8 @@ def make_astra_schedule_file(day, nb_days, telescope):
         if len(filt_evening) == 1:
             nb_flats = 20
         else:
-            nb_flats = 10
+            nb_flats = 15
+        filt_evening.remove('I+z')
         flats_row_evening = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "flats",
                              "action_value": {"filter": filt_evening, 'n': [nb_flats]*len(filt_evening)},
@@ -547,9 +549,10 @@ def make_astra_schedule_file(day, nb_days, telescope):
                                         "end_time": scheduler_table["end time (UTC)"][i]})
                 df = df.append(target_row, ignore_index=True)
         # Flats
-        my_custom_order_morning = my_custom_order_evening[::-1]
+        my_custom_order_morning = my_custom_order_evening[::-1]# temporaty fix for Callisto 
 
         filt_morning = custom_sort(my_array, my_custom_order_morning)
+        filt_morning.remove('I+z')
         flats_row_morning = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "flats",
                                        "action_value": {"filter": filt_morning, 'n': [nb_flats]*len(filt_morning)},
@@ -559,8 +562,8 @@ def make_astra_schedule_file(day, nb_days, telescope):
         # Close
         close_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "close",	"action_value": {},
-                             "start_time": (location.sun_rise_time(t, which='next')-15*u.min+ 1*u.min).iso,
-                               "end_time": (location.sun_rise_time(t, which='next')-20*u.min).iso})
+                             "start_time": (location.sun_rise_time(t, which='next')-15*u.min).iso,
+                               "end_time": (location.sun_rise_time(t, which='next')-10*u.min).iso})
         df = df.append(close_row, ignore_index=True)
         # Calibration
         texp = [int(x) for x in texp]
@@ -568,7 +571,7 @@ def make_astra_schedule_file(day, nb_days, telescope):
         texp = list(np.sort(np.unique(texp)))
         calibration_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "calibration",	"action_value": {"exptime":texp, 'n': [10]*len(texp), 'filter':'Dark'}, 
-                             "start_time": (location.sun_rise_time(t, which='next')-20*u.min+ 1*u.min).iso,
+                             "start_time": (location.sun_rise_time(t, which='next')-10*u.min+ 1*u.min).iso,
                                      "end_time": (location.sun_rise_time(t, which='next')+45*u.min).iso})
         df = df.append(calibration_row, ignore_index=True)
         #To .csv file

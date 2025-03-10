@@ -1752,6 +1752,9 @@ class Schedules:
         if self.priority['set or rise'][idx_target] == 'both':
             shift_hours_observation = 0
 
+        else:
+            shift_hours_observation = 0
+
         return shift_hours_observation  # hours
 
     def schedule_blocks(self, day):
@@ -2391,6 +2394,10 @@ class Schedules:
             a = dur_obs_both_target.value  # in days
 
         if self.first_target['set or rise'] == 'rise':
+            nb_hours__1rst_old = self.nb_hours[1, self.idx_first_target]  # hours
+            a = dur_obs_rise_target.value  # in days
+
+        if self.first_target['set or rise'] == 'None':
             nb_hours__1rst_old = self.nb_hours[1, self.idx_first_target]  # hours
             a = dur_obs_rise_target.value  # in days
 
