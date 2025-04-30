@@ -25,7 +25,7 @@ import pandas as pd
 import requests
 from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
     upload_np_calli, upload_np_tn, upload_np_ts
-from .make_night_plans import make_np, make_astra_schedule_file
+from .make_night_plans import make_np, make_astra_schedule_file, offset_target_position
 import subprocess
 import sys
 import shutil
@@ -1072,93 +1072,7 @@ class Schedules:
         filt_ = filters[filt_idx]
         texp = 0
 
-        while texp < 10:
-
-            if 0 < filt_idx <= 3:
-                print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + ' Change filter to avoid saturation!!')
-                filt_ = filters[filt_idx]
-                print(filt_)
-
-            if self.telescope == 'Saint-Ex':
-                print(self.day_of_night)
-                moon_phase = round(moon_illumination(Time(self.day_of_night.iso, out_subfmt='date')), 2)
-                if float(target_list['J'][i]) != 0.:
-                    a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
-                                 filt=filt_, airmass=1.1, moonphase=moon_phase, irtf=0.8, num_tel=1,
-                                 seeing=0.7, gain=3.48, temp_ccd=-70, observatory_altitude=2780))
-                else:
-                    if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
-                        a = (ETC.etc(mag_val=float(target_list['V'][i]), mag_band='V', spt=spt_type,
-                                     filt=filt_, airmass=1.1, moonphase=moon_phase, irtf=0.8, num_tel=1,
-                                     seeing=0.7, gain=3.48, temp_ccd=-70, observatory_altitude=2780))
-                    else:
-                        sys.exit('ERROR: You must precise Vmag or Jmag for this target')
-                texp = a.exp_time_calculator(ADUpeak=30000)[0]
-
-            elif self.telescope == 'TN_Oukaimeden':
-                if float(target_list['J'][i]) != 0.:
-                    a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
-                                 filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=1.0, gain=1.1))
-                else:
-                    if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
-                        a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
-                                     filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=1.0, gain=1.1))
-                    else:
-                        sys.exit('ERROR: You must precise Vmag or Jmag for this target')
-                texp = a.exp_time_calculator(ADUpeak=50000)[0]
-                print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK +
-                      ' Don\'t forget to  calculate exposure time for TRAPPIST observations!!')
-
-            elif self.telescope == 'TS_La_Silla':
-                if float(target_list['J'][i]) != 0.:
-                    a = (ETC.etc(mag_val=target_list['J'][i], mag_band='J', spt=spt_type, filt=filt_,
-                                 airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=1.4, gain=1.1))
-                else:
-                    if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
-                        a = (ETC.etc(mag_val=target_list['V'][i], mag_band='V', spt=spt_type, filt=filt_,
-                                     airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=1.4, gain=1.1))
-                    else:
-                        sys.exit('ERROR: You must precise Vmag or Jmag for ' + str(target_list['Sp_ID'][i]))
-                texp = a.exp_time_calculator(ADUpeak=50000)[0]
-                print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + ' Don\'t forget to  '
-                                                               'calculate exposure time for TRAPPIST observations!!')
-
-            elif self.telescope == 'Artemis':
-                if float(target_list['J'][i]) != 0.:
-                    a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
-                                 filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=0.7, gain=1.1))
-                else:
-                    if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
-                        a = (ETC.etc(mag_val=float(target_list['V'][i]), mag_band='V', spt=spt_type,
-                                     filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=0.7, gain=1.1))
-                    else:
-                        sys.exit('ERROR: You must precise Vmag or Jmag for this target')
-                texp = a.exp_time_calculator(ADUpeak=45000)[0]
-
-            elif self.telescope == 'Io' or self.telescope == 'Europa' \
-                    or self.telescope == 'Ganymede' or self.telescope == 'Callisto':
-                if float(target_list['J'][i]) != 0.:
-                    a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
-                                 filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=0.7, gain=1.1))
-                else:
-                    if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
-                        a = (ETC.etc(mag_val=float(target_list['V'][i]), mag_band='V', spt=spt_type,
-                                     filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=0.7, gain=1.1))
-                    else:
-                        sys.exit('ERROR: You must precise Vmag or Jmag for this target')
-                texp = a.exp_time_calculator(ADUpeak=45000)[0]
-
-            if filt_idx > 3:
-                print(Fore.RED + 'ERROR:  ' + Fore.BLACK + ' You have to defocus in we want to observe this target')
-                texp = 10.0001
-                filt_ = 'r'
-
-            filt_idx += 1
-
-            if self.telescope == 'Artemis':
-                filt_ = filt_.replace('\'', '')
-
-        if self.telescope == 'Callisto_SPIRIT':
+        if self.telescope == 'Callisto':
             # example files used to generate SR
             efficiencyFile2 = path_spock + '/SPOCK/files_ETC/SPIRIT/datafiles/systems/pirtSPC_-60.csv'
             filterFile2 = path_spock + '/SPOCK/files_ETC/SPIRIT/datafiles/filters/zYJ.csv'
@@ -1187,11 +1101,102 @@ class Schedules:
                 "r1": 0.14,
                 "ap_rad": 3
             }
-            spirit = mphot.get_precision(props_callisto, props_sky, target_list["Teff"][i].values,
-                                         target_list["distance"][i].values, override=False, mapping=True)
 
-            texp = int(spirit['components']['t [s]'])
+            print("INFO STAR SPIRIT: ", target_list["Teff"][i].values,
+                                         target_list["distance"][i].values)
+            spirit = mphot.get_precision(props_callisto, props_sky, target_list["Teff"][i].values[0],
+                                         target_list["distance"][i].values[0], override=False, mapping=True)
+
+            texp = int(spirit['components']['t [s]'][0])
             filt_ = 'zYJ'
+
+        else:
+            while texp < 10:
+
+                if 0 < filt_idx <= 3:
+                    print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + ' Change filter to avoid saturation!!')
+                    filt_ = filters[filt_idx]
+                    print(filt_)
+
+                if self.telescope == 'Saint-Ex':
+                    print(self.day_of_night)
+                    moon_phase = round(moon_illumination(Time(self.day_of_night.iso, out_subfmt='date')), 2)
+                    if float(target_list['J'][i]) != 0.:
+                        a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
+                                    filt=filt_, airmass=1.1, moonphase=moon_phase, irtf=0.8, num_tel=1,
+                                    seeing=0.7, gain=3.48, temp_ccd=-70, observatory_altitude=2780))
+                    else:
+                        if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
+                            a = (ETC.etc(mag_val=float(target_list['V'][i]), mag_band='V', spt=spt_type,
+                                        filt=filt_, airmass=1.1, moonphase=moon_phase, irtf=0.8, num_tel=1,
+                                        seeing=0.7, gain=3.48, temp_ccd=-70, observatory_altitude=2780))
+                        else:
+                            sys.exit('ERROR: You must precise Vmag or Jmag for this target')
+                    texp = a.exp_time_calculator(ADUpeak=30000)[0]
+
+                elif self.telescope == 'TN_Oukaimeden':
+                    if float(target_list['J'][i]) != 0.:
+                        a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
+                                    filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=1.0, gain=1.1))
+                    else:
+                        if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
+                            a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
+                                        filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=1.0, gain=1.1))
+                        else:
+                            sys.exit('ERROR: You must precise Vmag or Jmag for this target')
+                    texp = a.exp_time_calculator(ADUpeak=50000)[0]
+                    print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK +
+                        ' Don\'t forget to  calculate exposure time for TRAPPIST observations!!')
+
+                elif self.telescope == 'TS_La_Silla':
+                    if float(target_list['J'][i]) != 0.:
+                        a = (ETC.etc(mag_val=target_list['J'][i], mag_band='J', spt=spt_type, filt=filt_,
+                                    airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=1.4, gain=1.1))
+                    else:
+                        if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
+                            a = (ETC.etc(mag_val=target_list['V'][i], mag_band='V', spt=spt_type, filt=filt_,
+                                        airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=1.4, gain=1.1))
+                        else:
+                            sys.exit('ERROR: You must precise Vmag or Jmag for ' + str(target_list['Sp_ID'][i]))
+                    texp = a.exp_time_calculator(ADUpeak=50000)[0]
+                    print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + ' Don\'t forget to  '
+                                                                'calculate exposure time for TRAPPIST observations!!')
+
+                elif self.telescope == 'Artemis':
+                    if float(target_list['J'][i]) != 0.:
+                        a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
+                                    filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=0.7, gain=1.1))
+                    else:
+                        if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
+                            a = (ETC.etc(mag_val=float(target_list['V'][i]), mag_band='V', spt=spt_type,
+                                        filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=0.7, gain=1.1))
+                        else:
+                            sys.exit('ERROR: You must precise Vmag or Jmag for this target')
+                    texp = a.exp_time_calculator(ADUpeak=45000)[0]
+
+                elif self.telescope == 'Io' or self.telescope == 'Europa' \
+                        or self.telescope == 'Ganymede' or self.telescope == 'Callisto':
+                    if float(target_list['J'][i]) != 0.:
+                        a = (ETC.etc(mag_val=float(target_list['J'][i]), mag_band='J', spt=spt_type,
+                                    filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=0.7, gain=1.1))
+                    else:
+                        if (float(target_list['J'][i]) == 0.) and (float(target_list['V'][i]) != 0.):
+                            a = (ETC.etc(mag_val=float(target_list['V'][i]), mag_band='V', spt=spt_type,
+                                        filt=filt_, airmass=1.1, moonphase=0.5, irtf=0.8, num_tel=1, seeing=0.7, gain=1.1))
+                        else:
+                            sys.exit('ERROR: You must precise Vmag or Jmag for this target')
+                    texp = a.exp_time_calculator(ADUpeak=45000)[0]
+
+                if filt_idx > 3:
+                    print(Fore.RED + 'ERROR:  ' + Fore.BLACK + ' You have to defocus in we want to observe this target')
+                    texp = 10.0001
+                    filt_ = 'r'
+
+                filt_idx += 1
+
+                if self.telescope == 'Artemis':
+                    filt_ = filt_.replace('\'', '')
+
 
         target_list['Filter_spc'][i] = filt_
 

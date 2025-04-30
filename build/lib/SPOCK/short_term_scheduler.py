@@ -25,7 +25,7 @@ import pandas as pd
 import requests
 from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
     upload_np_calli, upload_np_tn, upload_np_ts
-from .make_night_plans import make_np, make_astra_schedule_file
+from .make_night_plans import make_np, make_astra_schedule_file, offset_target_position
 import subprocess
 import sys
 import shutil

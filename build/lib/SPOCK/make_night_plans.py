@@ -29,6 +29,23 @@ ra3 = {}
 dec3 = {}
 
 
+def offset_target_position(day_start,nb_days,telescope,ra_offset,dec_offset):
+    """
+    date = "YYYY-MM-DD"
+    """
+    dt = Time('2018-01-02 00:00:00', scale='tcg') - Time('2018-01-01 00:00:00', scale='tcg')  # 1 day
+    day_start = Time(day_start)
+    for nb_day in range(0, nb_days):
+        date = Time(day_start + nb_day*dt, scale='utc', out_subfmt='date').tt.datetime.strftime("%Y-%m-%d")
+        scheduler_table = Table.read(path_spock + '/DATABASE/' + str(telescope) + '/Archive_night_blocks' +
+                                        '/night_blocks_' + str(telescope) + '_' + str(date) + '.txt', format='ascii')
+        for i in range(len(scheduler_table)):
+            scheduler_table['ra (s)'][i] += ra_offset
+            scheduler_table['dec (s)'][i] += dec_offset
+
+        scheduler_table.write(path_spock + '/DATABASE/'+ telescope + '/Archive_night_blocks/' + 'night_blocks_' + telescope + '_' + str(date) + '.txt', format='ascii', overwrite=True)  
+        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + "Offset has been applied to targets on " + str(telescope)+ " on the "+ str(date)) 
+
 def make_scheduled_table(telescope, day_of_night):
     Path = path_spock + '/DATABASE'
     scheduled_table = None
@@ -456,6 +473,7 @@ def make_astra_schedule_file(day, nb_days, telescope):
         except KeyError:
             print()
         for i in range(0, len(scheduler_table)):
+            print(name[i])
             if name[i] != 'TransitionBlock':
                 conf = ast.literal_eval(config[i])
                 filt.append(conf['filt'])
@@ -492,8 +510,8 @@ def make_astra_schedule_file(day, nb_days, telescope):
         ## Built Schedule for ASTRA
         # Open
         open_row = [["Camera",	"camera_"+str(telescope).replace("-",""),	"open",	 "{}",
-                     (location.sun_set_time(t, which='next')+25*u.min).iso,
-                     (location.sun_rise_time(t, which='next')-25*u.min).iso]]
+                     (location.sun_set_time(t, which='next')+15*u.min).iso,
+                     (location.sun_rise_time(t, which='next')-15*u.min).iso]]
         df = pd.DataFrame(open_row, columns=["device_type",	"device_name",	"action_type",	"action_value",
                                              "start_time",	"end_time"])
 
@@ -521,11 +539,12 @@ def make_astra_schedule_file(day, nb_days, telescope):
         if len(filt_evening) == 1:
             nb_flats = 20
         else:
-            nb_flats = 10
+            nb_flats = 15
+        filt_evening.remove('I+z')
         flats_row_evening = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "flats",
                              "action_value": {"filter": filt_evening, 'n': [nb_flats]*len(filt_evening)},
-                             "start_time": (location.sun_set_time(t, which='next')+25*u.min + 1*u.min).iso,
+                             "start_time": (location.sun_set_time(t, which='next')+15*u.min + 1*u.min).iso,
                                        "end_time": scheduler_table["start time (UTC)"][0]})
         df = df.append(flats_row_evening, ignore_index=True)
         #Targets
@@ -547,29 +566,30 @@ def make_astra_schedule_file(day, nb_days, telescope):
                                         "end_time": scheduler_table["end time (UTC)"][i]})
                 df = df.append(target_row, ignore_index=True)
         # Flats
-        my_custom_order_morning = my_custom_order_evening[::-1]
+        my_custom_order_morning = my_custom_order_evening[::-1]# temporaty fix for Callisto 
 
         filt_morning = custom_sort(my_array, my_custom_order_morning)
+        filt_morning.remove('I+z')
         flats_row_morning = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "flats",
                                        "action_value": {"filter": filt_morning, 'n': [nb_flats]*len(filt_morning)},
                              "start_time": (Time(scheduler_table["end time (UTC)"][-1]) + 1*u.min).iso,
-                                       "end_time": (location.sun_rise_time(t, which='next')-25*u.min).iso})
+                                       "end_time": (location.sun_rise_time(t, which='next')-15*u.min).iso})
         df = df.append(flats_row_morning, ignore_index=True)
         # Close
         close_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "close",	"action_value": {},
-                             "start_time": (location.sun_rise_time(t, which='next')-25*u.min+ 1*u.min).iso,
-                               "end_time": (location.sun_rise_time(t, which='next')-20*u.min).iso})
+                             "start_time": (location.sun_rise_time(t, which='next')-15*u.min).iso,
+                               "end_time": (location.sun_rise_time(t, which='next')-10*u.min).iso})
         df = df.append(close_row, ignore_index=True)
         # Calibration
         texp = [int(x) for x in texp]
         texp += [0, 15, 30, 60, 120]
         texp = list(np.sort(np.unique(texp)))
         calibration_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
-                             "action_type": "calibration",	"action_value": {"exptime":texp, 'n': [10]*len(texp)},
-                             "start_time": (location.sun_rise_time(t, which='next')-20*u.min+ 1*u.min).iso,
-                                     "end_time": (location.sun_rise_time(t, which='next')+30*u.min).iso})
+                             "action_type": "calibration",	"action_value": {"exptime":texp, 'n': [10]*len(texp), 'filter':'Dark'}, 
+                             "start_time": (location.sun_rise_time(t, which='next')-10*u.min+ 1*u.min).iso,
+                                     "end_time": (location.sun_rise_time(t, which='next')+45*u.min).iso})
         df = df.append(calibration_row, ignore_index=True)
         #To .csv file
         df.to_csv(path_spock + '/DATABASE/' + str(telescope) + "/Astra/" +
