@@ -7,13 +7,13 @@ def read(fname):
 
 setup(
     name = 'SPOCK',
-    version = '2.0',
+    version = '2.2',
     author = 'Elsa Ducrot',
     author_email = 'ducrotelsa@gmail.com',
     description = ('Speculoos Observatory SChedule maKer for chilean night on SPECULOOS South Observatory'),
     keywords = '',
-    url = 'https://github.com/educrot22/SPOCK/',
+    url = 'https://github.com/educrot22/SPOCK_v2/',
     packages = find_packages(),
     long_description = read('README.rst'),
-    python_requires='>=3.6',
+    python_requires='>=3.12',
 )
