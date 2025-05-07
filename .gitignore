@@ -78,6 +78,26 @@ DATABASE/Saint-Ex/Plans_Saint-Ex.zip
 
 DATABASE/Artemis/Plans_by_date/
 
+DATABASE/Artemis/Astra/
+
+DATABASE/Io/Astra/
+
+DATABASE/Europa/Astra/
+
+DATABASE/Ganymede/Astra/
+
+DATABASE/Callisto/Astra/
+
+DATABASE/Saint-Ex/Astra/
+
+DATABASE/Saint-Ex/Archive_zip_folder_sent/
+
+DATABASE/Saint-Ex/Plans_Astra_Saint-Ex/
+
+DATABASE/Saint-Ex/*.zip
+
+DATABASE/TS_La_Silla/
+
 DATABASE/Io/Zip_files/
 
 DATABASE/Europa/Zip_files/
@@ -159,4 +179,11 @@ DATABASE/Artemis/Astra/
 
 DATABASE/Saint-Ex/Astra/
 
-test_astra.ipynb
+./test_astra.ipynb
+
+./target_lists/www.mrao.cam.ac.uk/SPECULOOS/speculoos-portal/php/
+
+./target_lists/stargate/
+
+old_docs_source/
+

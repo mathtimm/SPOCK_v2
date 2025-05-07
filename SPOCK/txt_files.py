@@ -32,7 +32,11 @@ target_table_spc_follow_up['W'] /= 24
 target_table_spc_follow_up['W_err'] /= 24
 # Read follow up (planet candidates) list
 worksheet_special = sh.worksheet("Annex_Targets_V2-STARS")
-dataframe = pd.DataFrame(worksheet_special.get_all_records())
+dataframe = pd.DataFrame(worksheet_special.get_all_records(expected_headers= [
+    "SPECULOOS", "Annex_Prog", "V_mag", "Alias", "Note", "Active", 
+    "Next Obs", "spc", "soi", "twomass", "gaia", "wise", "ra", "dec", 
+    "ra_err", "dec_err", "Filter_spc", "Filter_trap", "texp_spc", 
+    "texp_trap", "mag_j", "mag_j_err", "SpT", "e_Spt", "Teff", "distance"  ]))
 target_table_spc_special = dataframe.rename(columns={"spc": "Sp_ID", "gaia": "Gaia_ID", "dec": "DEC",
                                                   "ra": "RA", "dec_err": "DEC_err", "ra_err": "RA_err",
                                                   "mag_j": "J", "V_mag": "V"})

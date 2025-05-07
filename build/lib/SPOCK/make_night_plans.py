@@ -10,7 +10,7 @@ from .txt_files import startup, startup_no_flats, Path_txt_files, flatexo_gany, 
     flatexo_saintex
 from .txt_files import first_target, target, flatdawn, biasdark, shutdown, flatexo_calli, \
     flatdawn_no_flats, target_no_DONUTS, target_offset, biasdark_comete, flatdawn_artemis, haumea
-from astropy.coordinates import SkyCoord, get_sun, AltAz, EarthLocation
+from astropy.coordinates import SkyCoord, get_sun, AltAz, EarthLocation, Angle, Latitude, Longitude 
 from astropy import units as u
 import pandas as pd
 import numpy as np
@@ -40,8 +40,18 @@ def offset_target_position(day_start,nb_days,telescope,ra_offset,dec_offset):
         scheduler_table = Table.read(path_spock + '/DATABASE/' + str(telescope) + '/Archive_night_blocks' +
                                         '/night_blocks_' + str(telescope) + '_' + str(date) + '.txt', format='ascii')
         for i in range(len(scheduler_table)):
-            scheduler_table['ra (s)'][i] += ra_offset
-            scheduler_table['dec (s)'][i] += dec_offset
+            coord = SkyCoord(str(int(scheduler_table['ra (h)'][i])) + ":" + str(int(scheduler_table['ra (m)'][i])) + ":" + str(scheduler_table['ra (s)'][i])
+                             + " " +
+                             str(int(scheduler_table['dec (d)'][i])) + ":" + str(int(scheduler_table['dec (m)'][i])) + ":" + str(scheduler_table['dec (s)'][i])
+                            , unit=(u.hourangle, u.deg))
+            
+            new_c = SkyCoord(ra=coord.ra.to(u.deg) + ra_offset/3600*u.deg, dec=coord.dec.to(u.deg) + dec_offset/3600*u.deg, unit="deg")
+            scheduler_table['ra (h)'][i] = new_c.ra.hms[0]
+            scheduler_table['ra (m)'][i] = new_c.ra.hms[1]
+            scheduler_table['ra (s)'][i] = new_c.ra.hms[2]
+            scheduler_table['dec (d)'][i] = new_c.dec.dms[0]
+            scheduler_table['dec (m)'][i] = new_c.dec.dms[1]
+            scheduler_table['dec (s)'][i] = new_c.dec.dms[2]
 
         scheduler_table.write(path_spock + '/DATABASE/'+ telescope + '/Archive_night_blocks/' + 'night_blocks_' + telescope + '_' + str(date) + '.txt', format='ascii', overwrite=True)  
         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + "Offset has been applied to targets on " + str(telescope)+ " on the "+ str(date)) 

@@ -123,7 +123,6 @@ def _get_files():
     else:
         print(Fore.RED + 'ERROR:  ' + Fore.BLACK + ' No file '+ 'passwords.csv')
 
-
 def get_target_list_stargate(day):
     """
 
@@ -151,7 +150,6 @@ def get_target_list_stargate(day):
         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Downloading target list from STARGATE.')
         # time.sleep(5)  # wait for the file to fully download
     return file_name
-
 
 def change_fmt_stargate_TL(file_name):
     """

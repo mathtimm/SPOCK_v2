@@ -3,7 +3,7 @@ __all__ = ['long_term_scheduler','short_term_scheduler','make_night_plans','plot
            'pwd_portal','pwd_appcs','pwd_SNO_Reduc1','user_chart_studio','pwd_chart_studio','path_spock',
            'path_credential_json','login_stargate','pwd_stargate']
 
-__version__ = "1.0.0"
+__version__ = "2.1.0"
 
 import pkg_resources
 import os
@@ -123,7 +123,6 @@ def _get_files():
     else:
         print(Fore.RED + 'ERROR:  ' + Fore.BLACK + ' No file '+ 'passwords.csv')
 
-
 def get_target_list_stargate(day):
     """
 
@@ -151,7 +150,6 @@ def get_target_list_stargate(day):
         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + 'Downloading target list from STARGATE.')
         # time.sleep(5)  # wait for the file to fully download
     return file_name
-
 
 def change_fmt_stargate_TL(file_name):
     """
