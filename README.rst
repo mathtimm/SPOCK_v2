@@ -40,7 +40,7 @@ Installation
 
 Install *SPOCK* locally::
 
-    git clone https://github.com/educrot22/SPOCK.git
+    git clone git@github.com:educrot22/SPOCK_v2.git
 
     cd spock_v2
 
