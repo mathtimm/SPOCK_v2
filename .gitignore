@@ -1,5 +1,7 @@
 TRAPPIST_schedules_docx/
 
+SPOCK/credentials/*
+
 night_blocks_propositions/
 
 survey_hours/
