@@ -1512,6 +1512,7 @@ class Schedules:
             idx_prog1 = np.where((self.target_table_spc['Program'] == 1))
             idx_prog2 = np.where((self.target_table_spc['Program'] == 2))
             idx_prog3 = np.where((self.target_table_spc['Program'] == 3))
+            idx_prog5 = np.where((self.target_table_spc['Program'] == 5))
             self.priority['priority'][idx_prog0] *= 0.1
 
             if self.telescope == "Callisto":
@@ -1525,7 +1526,9 @@ class Schedules:
                 10 ** (4 + 1 / (1 + 200 - self.target_table_spc['nb_hours_surved'][idx_on_going]))
             self.priority['priority'][idx_to_be_done] *= \
                 10 ** (1 / (1 + 200 - self.target_table_spc['nb_hours_surved'][idx_to_be_done]))
+            self.priority['priority'][idx_prog5] *= 10 * self.target_table_spc['SNR_Spec_temp'][idx_prog5] * 0
             self.priority['priority'][idx_done] = -1
+            
 
         set_targets_index = (self.priority['alt set start'] > self.Altitude_constraint) & \
                             (self.priority['alt set end'] > self.Altitude_constraint)
@@ -1576,7 +1579,7 @@ class Schedules:
             self.priority['priority'][idx_texp_too_long] = -1000
             if self.telescope == 'Callisto':
                 texp = self.target_table_spc['texp_spirit']
-                idx_texp_too_short = np.where((texp < 6))
+                idx_texp_too_short = np.where((texp < 2))
                 self.priority['priority'][idx_texp_too_short] = -1000
                 print(
                     Fore.GREEN + 'INFO: ' + Fore.BLACK + 'For ' + self.telescope + ' the minimal exposure time is set to 6s')

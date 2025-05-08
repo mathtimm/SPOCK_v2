@@ -1,8 +1,0 @@
-device_type,device_name,action_type,action_value,start_time,end_time
-Camera,camera_SaintEx,open,{},2024-01-13 00:55:08.880,2024-01-13 14:45:19.374
-Camera,camera_SaintEx,flats,"{'filter': ['I+z'], 'n': [10]}",2024-01-13 00:55:08.880,2024-01-13 01:37:00.023
-Camera,camera_SaintEx,object,"{'object': 'Sp0539+4038', 'filter': 'I+z', 'ra': 84.85424166666667, 'dec': 40.64523305555556, 'exptime': 30, 'guiding': True, 'pointing': False}",2024-01-13 01:37:00.023,2024-01-13 07:46:00.023
-Camera,camera_SaintEx,object,"{'object': 'Sp0939+2935', 'filter': 'I+z', 'ra': 144.8468625, 'dec': 29.724198888888886, 'exptime': 66, 'guiding': True, 'pointing': False}",2024-01-13 07:46:20.023,2024-01-13 14:03:20.023
-Camera,camera_SaintEx,flats,"{'filter': ['I+z'], 'n': [10]}",2024-01-13 14:03:20.023,2024-01-13 14:45:19.374
-Camera,camera_SaintEx,close,{},2024-01-13 14:45:19.374,2024-01-13 14:50:19.374
-Camera,camera_SaintEx,calibration,"{'exptime': [0, 15, 30, 60, 66, 120], 'n': [10, 10, 10, 10, 10, 10]}",2024-01-13 14:50:19.374,2024-01-13 15:15:19.374
