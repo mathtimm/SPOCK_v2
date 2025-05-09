@@ -3,12 +3,15 @@
 title: SPOCK Documentation
 description: Documentation for the SPOCK project
 
-# Where the site is built from
-source: .
+## GitHub Pages base URL
+#baseurl: "."   # Name of your GitHub repo (important!)
+
 
 # Files to include or exclude
 include:
-  - _pages
+  - headers 
+  - assets
+
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -32,3 +35,7 @@ exclude:
   - WG6_specific_timings
   - test.py
   - setup.py
+
+
+# Optional: if you want pretty URLs
+permalink: pretty

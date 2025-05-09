@@ -1,3 +1,8 @@
+---
+layout: default
+title: Tutorial 
+---
+
 # Useful tools
 
 ## 1- Transit observability predictions

@@ -1,18 +1,18 @@
 ---
 layout: default
 title: Welcome to SPOCK Documentation
+image: /assets/images/spock_v2_logo.png
 ---
 
 # SPOCK v2 Documentation
 
-Welcome to the SPOCK v2 documentation site!
+![SPOCK Logo](/assets/images/spock_v2_logo.png)
 
-Use the navigation or links below to get started:
+*SPOCK* (Speculoos Observatories sChedule maker) is a python package
+developed to handle the planification of observation of the SPECULOOS
+telescopes. The project SPECULOOS -Search for habitable Planets
+EClipsing ULtra-cOOl Stars -- searches for potentially habitable
+exoplanets around the smallest and coolest stars of the solar
+neighborhood [Link to
+site](https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos).
 
-- [Getting Started](getting-started.md)
-- [Usage](usage.md)
-- More details about the project are available from the [About page](about.md).
-
-
-
-[Tutorials](examples/tutorials/notebooks/tutorials_spocktools.md)
