@@ -1,2 +1,0 @@
-target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
-ch_NGTS-10b "2023-11-21 02:00:00.000" "2023-11-21 08:45:00.000" 405.0 6.0 7.0 29.347200000004676 -25.0 -35.0 -41.62559999999473 "{'filt': 'I+z', 'texp': 20}"

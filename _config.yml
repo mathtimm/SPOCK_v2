@@ -1,0 +1,34 @@
+# _config.yml
+
+title: SPOCK Documentation
+description: Documentation for the SPOCK project
+
+# Where the site is built from
+source: .
+
+# Files to include or exclude
+include:
+  - _pages
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - .github
+  - DATABASE  # Add any other folders you want to exclude
+  - .DS_Store
+  - build
+  - SPIRIT
+  - SPOCK_files
+  - TRAPPIST_schedules_docx
+  - survey_hours
+  - target_lists
+  - eScheduler
+  - SPOCK
+  - dist
+  - SPOCK.egg.info
+  - local_files
+  - night_blocks_propositions
+  - old_docs_source
+  - WG6_specific_timings
+  - test.py
+  - setup.py

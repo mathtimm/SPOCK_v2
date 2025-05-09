@@ -1,2 +1,0 @@
-target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
-Sp1124-4213 "2025-03-07 23:52:40.019" "2025-03-08 10:03:40.019" 610.9999999999999 11.0 24.0 39.02712000000349 -42.0 -13.0 -11.441999999997847 "{'filt': 'zYJ', 'texp': '13'}"

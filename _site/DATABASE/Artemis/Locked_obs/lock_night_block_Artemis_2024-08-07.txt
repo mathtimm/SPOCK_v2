@@ -1,2 +1,0 @@
-target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
-HAT-P-27c,2024-08-07 20:31:40.012,2024-08-07 23:09:00.012,157.33333333333337,14.0,51.0,4.157280000011951,5.0,56.0,50.50680000000085,"{'filt': 'z', 'texp': '12'}"

@@ -1,4 +1,0 @@
-#waituntil 1, 03/06/2022 13:28:00
-#dawnflats Cal_flatexo_03052022.txt
-#quitat 03/06/2022 13:25:36
-#chain Cal_biasdark_03052022.txt

@@ -1,2 +1,0 @@
-target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
-Trappist-1,2024-07-15 03:56:40.028,2024-07-15 10:46:20.028,409.6666666666667,23.0,6.0,28.999920000019017,-5.0,-2.0,-27.99996000000064,"{'filt': 'I+z', 'texp': '20'}"

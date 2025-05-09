@@ -1,2 +1,0 @@
-target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
-TOI-7049,2024-12-14 00:07:20.020,2024-12-14 05:37:00.020,329.66666666666674,2.0,39.0,17.829840000001838,7.0,28.0,15.006000000000412,"{'filt': 'r', 'texp': '21'}"

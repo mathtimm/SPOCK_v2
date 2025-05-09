@@ -1,2 +1,0 @@
-target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
-TOI-2267 "2020-10-08 19:35:00.010" "2020-10-09 06:12:30.091" 637.50135 4.0 20.0 14.759040000000212 84.0 54.0 2.966400000000249 "{'filt=I+z', 'texp=10'}"

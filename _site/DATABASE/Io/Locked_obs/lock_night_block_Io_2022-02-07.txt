@@ -1,2 +1,0 @@
-target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
-NGTS-10,2022-02-08 00:06:20.020,2022-02-08 06:27:40.020,381.33333333333337,6.0,7.0,29.347200000004676,-25.0,-35.0,-41.62559999999473,"{'filt': 'I+z', 'texp': '14'}"

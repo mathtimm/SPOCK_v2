@@ -1,2 +1,0 @@
-target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
-Sp1036+1923,2024-04-12 02:47:40.026,2024-04-12 09:28:20.026,400.66666666666663,10.0,36.0,8.730480000002103,19.0,23.0,30.652799999998308,"{'filt': 'I+z', 'texp': '35'}"

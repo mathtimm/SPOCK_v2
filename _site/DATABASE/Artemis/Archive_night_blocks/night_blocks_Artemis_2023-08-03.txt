@@ -1,2 +1,0 @@
-target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
-TOI-6008 "2023-08-03 20:35:40.012" "2023-08-04 05:49:00.012" 553.3333333333334 20.0 41.0 47.69616000001321 49.0 38.0 48.83639999999161 "{'filt': 'I+z', 'texp': '10'}"

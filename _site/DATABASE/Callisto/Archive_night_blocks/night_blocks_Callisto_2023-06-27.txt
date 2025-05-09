@@ -1,2 +1,0 @@
-target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
-ch_HATS-62b "2023-06-28 02:15:00.000" "2023-06-28 10:15:00.000" 480.0000002235174 20.0 49.0 47.83392000001413 -24.0 -18.0 -12.621599999995397 "{'filt': 'I+z', 'texp': 15}"

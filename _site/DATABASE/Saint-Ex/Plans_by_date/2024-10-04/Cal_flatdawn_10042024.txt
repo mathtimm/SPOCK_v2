@@ -1,4 +1,0 @@
-#waituntil 1, 10/05/2024 13:04:20
-#dawnflats Cal_flatexo_10042024.txt
-#quitat 10/05/2024 13:01:26
-#chain Cal_biasdark_10042024.txt

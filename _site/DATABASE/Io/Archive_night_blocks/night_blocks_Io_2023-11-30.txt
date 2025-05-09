@@ -1,2 +1,0 @@
-target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
-Sp0435-1606 "2023-12-01 00:02:00.018" "2023-12-01 09:03:40.018" 541.6666666666666 4.0 35.0 16.153680000004158 -16.0 -6.0 -57.254400000001624 "{'filt': 'i', 'texp': '24'}"

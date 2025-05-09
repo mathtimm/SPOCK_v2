@@ -1,2 +1,0 @@
-target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
-ch_J134516-011054 "2024-05-13 00:10:00.000" "2024-05-13 07:00:00.000" 409.9999997019768 13.0 45.0 16.78000800000987 -1.0 -10.0 -54.800039999999726 "{'filt': ""g'"", 'texp': 426}"

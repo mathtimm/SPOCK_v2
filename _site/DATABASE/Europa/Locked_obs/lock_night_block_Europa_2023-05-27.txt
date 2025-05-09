@@ -1,2 +1,0 @@
-target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
-Sp1510-2818,2023-05-27 22:40:20.017,2023-05-28 08:26:20.017,586.0,15.0,10.0,46.99992000000819,-28.0,-18.0,-16.99920000000617,"{'filt': ""r'"", 'texp': '50'}"

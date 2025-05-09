@@ -1,2 +1,0 @@
-target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
-TOI-4552,2022-06-16 23:24:40.018,2022-06-17 09:56:20.018,631.6666666666667,17.0,38.0,51.42144000000826,-47.0,-38.0,-13.36559999999281,"{'filt': 'g', 'texp': '40'}"
