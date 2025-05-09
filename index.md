@@ -4,9 +4,9 @@ title: Welcome to SPOCK Documentation
 image: /assets/images/spock_v2_logo.png
 ---
 
-# SPOCK v2 Documentation
+![SPOCK Logo](/assets/images/spock_v2_logo.png){: style="width: 800px; height: auto;"}
 
-![SPOCK Logo](/assets/images/spock_v2_logo.png)
+# SPOCK v2 Documentation
 
 *SPOCK* (Speculoos Observatories sChedule maker) is a python package
 developed to handle the planification of observation of the SPECULOOS

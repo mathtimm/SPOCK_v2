@@ -1,6 +1,7 @@
 ---
 layout: default
-title: Tutorial 
+title: Tutorials
+permalink: /examples/tutorials/notebooks/tutorials_spocktools
 ---
 
 # Useful tools

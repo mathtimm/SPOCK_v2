@@ -11,6 +11,7 @@ description: Documentation for the SPOCK project
 include:
   - headers 
   - assets
+  - examples/tutorials
 
 exclude:
   - Gemfile
@@ -39,3 +40,5 @@ exclude:
 
 # Optional: if you want pretty URLs
 permalink: pretty
+
+highlighter: pygments
