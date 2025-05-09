@@ -2,24 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Welcome to SPOCK Documentation | SPOCK</title>
+  <title>Welcome to SPOCK Documentation | SPOCK Documentation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-                   Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      background-color: #f9f9f9;
-      color: #333;
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f7fa;
+      color: #222;
       line-height: 1.6;
     }
 
     header {
-      background: #005a9c;
+      background-color: #003366;
       color: white;
       padding: 1rem 2rem;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     header h1 {
@@ -27,14 +30,11 @@
       font-size: 1.5rem;
     }
 
-    nav {
-      margin-top: 0.5rem;
-    }
-
     nav a {
       color: #cce4ff;
-      margin: 0 0.5rem;
+      margin-left: 1rem;
       text-decoration: none;
+      font-weight: 600;
     }
 
     nav a:hover {
@@ -42,18 +42,40 @@
     }
 
     main {
-      max-width: 800px;
+      max-width: 900px;
       margin: 2rem auto;
-      padding: 0 1rem;
+      padding: 1.5rem;
       background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+      border-radius: 6px;
+    }
+
+    pre {
+      background: #f0f0f0;
+      padding: 1rem;
+      overflow-x: auto;
+      border-radius: 6px;
+    }
+
+    code {
+      font-family: Menlo, Consolas, monospace;
+      background: #f0f0f0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
     }
 
     footer {
       text-align: center;
+      color: #666;
       font-size: 0.9rem;
-      color: #888;
       margin: 2rem 0;
     }
   </style>
@@ -63,13 +85,18 @@
   <header>
     <h1>SPOCK Documentation</h1>
     <nav>
+      <a href="/">Home</a>
       <a href="/about">About</a>
-      <a href="/examples/tutorials/notebooks/tutorials_spocktools/">Tutorials</a>
+      <a href="/docs">Docs</a>
+      <a href="/examples/tutorials/notebooks/tutorials_spocktools">Tutorials</a>
+      
     </nav>
   </header>
 
-<main>
-  <p><img src="/assets/images/spock_v2_logo.png" alt="SPOCK Logo" style="width: 800px; height: auto;" /></p>
+  <main>
+    
+
+    <p><img src="/assets/images/spock_v2_logo.png" alt="SPOCK Logo" style="width: 800px; height: auto;" /></p>
 
 <h1 id="spock-v2-documentation">SPOCK v2 Documentation</h1>
 
@@ -82,7 +109,7 @@ neighborhood <a href="https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos
 site</a>.</p>
 
 
-</main>
+  </main>
 
   <footer>
     &copy; 2025 SPOCK Project

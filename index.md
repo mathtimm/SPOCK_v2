@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Welcome to SPOCK Documentation
-image: /assets/images/spock_v2_logo.png
 ---
 
 ![SPOCK Logo](/assets/images/spock_v2_logo.png){: style="width: 800px; height: auto;"}
