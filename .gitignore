@@ -16,8 +16,6 @@ WG6_specific_timings/
 
 .vscode/
 
-eScheduler/
-
 DATABASE/Io/*.csv
 
 DATABASE/Europa/*.csv

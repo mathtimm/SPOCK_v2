@@ -11,7 +11,8 @@ Use the navigation or links below to get started:
 
 - [Getting Started](getting-started.md)
 - [Usage](usage.md)
-- [API Reference](api.md)
+- More details about the project are available from the [About page](about.md).
 
 
-* Test : a new section
+
+[Tutorials](examples/tutorials/notebooks/tutorials_spocktools.md)

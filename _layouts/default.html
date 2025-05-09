@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Welcome to SPOCK Documentation | SPOCK</title>
+  <title>{{ page.title }} | SPOCK</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -68,24 +68,11 @@
   </header>
 
   <main>
-    <h1 id="spock-v2-documentation">SPOCK v2 Documentation</h1>
-
-<p>Welcome to the SPOCK v2 documentation site!</p>
-
-<p>Use the navigation or links below to get started:</p>
-
-<ul>
-  <li><a href="getting-started.md">Getting Started</a></li>
-  <li><a href="usage.md">Usage</a></li>
-  <li>More details about the project are available from the <a href="about.md">About page</a>.</li>
-</ul>
-
-<p><a href="examples/tutorials/notebooks/tutorials_spocktools.md">Tutorials</a></p>
-
+    {{ content }}
   </main>
 
   <footer>
-    &copy; 2025 SPOCK Project
+    &copy; {{ site.time | date: "%Y" }} SPOCK Project
   </footer>
 </body>
 </html>

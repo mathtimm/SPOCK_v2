@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>eScheduler.constraints_spc &mdash; SPOCK 3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d636b35b"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SPOCK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SPOCK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">eScheduler.constraints_spc</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for eScheduler.constraints_spc</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Licensed under a 3-clause BSD style license - see LICENSE.rst</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Specify and constraints to determine which targets are observable for</span>
+<span class="sd">an observer.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span>
+                        <span class="n">unicode_literals</span><span class="p">)</span>
+
+<span class="c1"># Standard library</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="c1"># Third-party</span>
+<span class="kn">from</span> <span class="nn">astropy.time</span> <span class="kn">import</span> <span class="n">Time</span>
+<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">get_body</span><span class="p">,</span> <span class="n">get_sun</span><span class="p">,</span> <span class="n">get_moon</span><span class="p">,</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">table</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="kn">import</span> <span class="n">as_strided</span>
+
+<span class="c1"># Package</span>
+<span class="kn">from</span> <span class="nn">.moon</span> <span class="kn">import</span> <span class="n">moon_illumination</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">time_grid_from_range</span>
+<span class="kn">from</span> <span class="nn">.target</span> <span class="kn">import</span> <span class="n">get_skycoord</span>
+<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">Angle</span>
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AltitudeConstraint&quot;</span><span class="p">,</span> <span class="s2">&quot;AirmassConstraint&quot;</span><span class="p">,</span> <span class="s2">&quot;AtNightConstraint&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;is_observable&quot;</span><span class="p">,</span> <span class="s2">&quot;is_always_observable&quot;</span><span class="p">,</span> <span class="s2">&quot;time_grid_from_range&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;SunSeparationConstraint&quot;</span><span class="p">,</span> <span class="s2">&quot;MoonSeparationConstraint&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;MoonIlluminationConstraint&quot;</span><span class="p">,</span> <span class="s2">&quot;LocalTimeConstraint&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;PrimaryEclipseConstraint&quot;</span><span class="p">,</span> <span class="s2">&quot;SecondaryEclipseConstraint&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;Constraint&quot;</span><span class="p">,</span><span class="s2">&quot;CelestialPoleSeparationConstraint&quot;</span><span class="p">,</span> <span class="s2">&quot;TimeConstraint&quot;</span><span class="p">,</span> <span class="s2">&quot;observability_table&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;months_observable&quot;</span><span class="p">,</span> <span class="s2">&quot;max_best_rescale&quot;</span><span class="p">,</span> <span class="s2">&quot;min_best_rescale&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;PhaseConstraint&quot;</span><span class="p">,</span> <span class="s2">&quot;is_event_observable&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_make_cache_key</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make a unique key to reference this combination of ``times`` and ``targets``.</span>
+
+<span class="sd">    Often, we wish to store expensive calculations for a combination of</span>
+<span class="sd">    ``targets`` and ``times`` in a cache on an ``observer``` object. This</span>
+<span class="sd">    routine will provide an appropriate, hashable, key to store these</span>
+<span class="sd">    calculations in a dictionary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    times : `~astropy.time.Time`</span>
+<span class="sd">        Array of times on which to test the constraint.</span>
+<span class="sd">    targets : `~astropy.coordinates.SkyCoord`</span>
+<span class="sd">        Target or list of targets.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cache_key : tuple</span>
+<span class="sd">        A hashable tuple for use as a cache key</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># make a tuple from times</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">timekey</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">jd</span><span class="p">)</span> <span class="o">+</span> <span class="n">times</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>        <span class="c1"># must be scalar</span>
+        <span class="n">timekey</span> <span class="o">=</span> <span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">jd</span><span class="p">,)</span>
+    <span class="c1"># make hashable thing from targets coords</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="s1">&#39;frame&#39;</span><span class="p">):</span>
+            <span class="c1"># treat as a SkyCoord object. Accessing the longitude</span>
+            <span class="c1"># attribute of the frame data should be unique and is</span>
+            <span class="c1"># quicker than accessing the ra attribute.</span>
+            <span class="n">targkey</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">targets</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span> <span class="o">+</span> <span class="n">targets</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># assume targets is a string.</span>
+            <span class="n">targkey</span> <span class="o">=</span> <span class="p">(</span><span class="n">targets</span><span class="p">,)</span>
+    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+        <span class="n">targkey</span> <span class="o">=</span> <span class="p">(</span><span class="n">targets</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lon</span><span class="p">,)</span>
+    <span class="k">return</span> <span class="n">timekey</span> <span class="o">+</span> <span class="n">targkey</span>
+
+
+<span class="k">def</span> <span class="nf">_get_altaz</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">force_zero_pressure</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate alt/az for ``target`` at times linearly spaced between</span>
+<span class="sd">    the two times in ``time_range`` with grid spacing ``time_resolution``</span>
+<span class="sd">    for ``observer``.</span>
+
+<span class="sd">    Cache the result on the ``observer`` object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    times : `~astropy.time.Time`</span>
+<span class="sd">        Array of times on which to test the constraint.</span>
+<span class="sd">    targets : {list, `~astropy.coordinates.SkyCoord`, `~astroplan.FixedTarget`}</span>
+<span class="sd">        Target or list of targets.</span>
+<span class="sd">    observer : `~astroplan.Observer`</span>
+<span class="sd">        The observer who has constraints ``constraints``.</span>
+<span class="sd">    force_zero_pressure : bool</span>
+<span class="sd">        Forcefully use 0 pressure.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    altaz_dict : dict</span>
+<span class="sd">        Dictionary containing two key-value pairs. (1) &#39;times&#39; contains the</span>
+<span class="sd">        times for the alt/az computations, (2) &#39;altaz&#39; contains the</span>
+<span class="sd">        corresponding alt/az coordinates at those times.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="s1">&#39;_altaz_cache&#39;</span><span class="p">):</span>
+        <span class="n">observer</span><span class="o">.</span><span class="n">_altaz_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># convert times, targets to tuple for hashing</span>
+    <span class="n">aakey</span> <span class="o">=</span> <span class="n">_make_cache_key</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">aakey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">observer</span><span class="o">.</span><span class="n">_altaz_cache</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">force_zero_pressure</span><span class="p">:</span>
+                <span class="n">observer_old_pressure</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">pressure</span>
+                <span class="n">observer</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">altaz</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">altaz</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">observer</span><span class="o">.</span><span class="n">_altaz_cache</span><span class="p">[</span><span class="n">aakey</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+                                                <span class="n">altaz</span><span class="o">=</span><span class="n">altaz</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">force_zero_pressure</span><span class="p">:</span>
+                <span class="n">observer</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="n">observer_old_pressure</span>
+
+    <span class="k">return</span> <span class="n">observer</span><span class="o">.</span><span class="n">_altaz_cache</span><span class="p">[</span><span class="n">aakey</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_get_moon_data</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">force_zero_pressure</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate moon altitude az and illumination for an array of times for</span>
+<span class="sd">    ``observer``.</span>
+
+<span class="sd">    Cache the result on the ``observer`` object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    times : `~astropy.time.Time`</span>
+<span class="sd">        Array of times on which to test the constraint.</span>
+<span class="sd">    observer : `~astroplan.Observer`</span>
+<span class="sd">        The observer who has constraints ``constraints``.</span>
+<span class="sd">    force_zero_pressure : bool</span>
+<span class="sd">        Forcefully use 0 pressure.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    moon_dict : dict</span>
+<span class="sd">        Dictionary containing three key-value pairs. (1) &#39;times&#39; contains the</span>
+<span class="sd">        times for the computations, (2) &#39;altaz&#39; contains the</span>
+<span class="sd">        corresponding alt/az coordinates at those times and (3) contains</span>
+<span class="sd">        the moon illumination for those times.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="s1">&#39;_moon_cache&#39;</span><span class="p">):</span>
+        <span class="n">observer</span><span class="o">.</span><span class="n">_moon_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># convert times to tuple for hashing</span>
+    <span class="n">aakey</span> <span class="o">=</span> <span class="n">_make_cache_key</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="s1">&#39;moon&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">aakey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">observer</span><span class="o">.</span><span class="n">_moon_cache</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">force_zero_pressure</span><span class="p">:</span>
+                <span class="n">observer_old_pressure</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">pressure</span>
+                <span class="n">observer</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">altaz</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">moon_altaz</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+            <span class="n">illumination</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">moon_illumination</span><span class="p">(</span><span class="n">times</span><span class="p">))</span>
+            <span class="n">observer</span><span class="o">.</span><span class="n">_moon_cache</span><span class="p">[</span><span class="n">aakey</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+                                               <span class="n">illum</span><span class="o">=</span><span class="n">illumination</span><span class="p">,</span>
+                                               <span class="n">altaz</span><span class="o">=</span><span class="n">altaz</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">force_zero_pressure</span><span class="p">:</span>
+                <span class="n">observer</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="n">observer_old_pressure</span>
+
+    <span class="k">return</span> <span class="n">observer</span><span class="o">.</span><span class="n">_moon_cache</span><span class="p">[</span><span class="n">aakey</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_get_meridian_transit_times</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate next meridian transit for an array of times for ``targets`` and</span>
+<span class="sd">    ``observer``.</span>
+
+<span class="sd">    Cache the result on the ``observer`` object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    times : `~astropy.time.Time`</span>
+<span class="sd">        Array of times on which to test the constraint</span>
+<span class="sd">    observer : `~astroplan.Observer`</span>
+<span class="sd">        The observer who has constraints ``constraints``</span>
+<span class="sd">    targets : {list, `~astropy.coordinates.SkyCoord`, `~astroplan.FixedTarget`}</span>
+<span class="sd">        Target or list of targets</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    time_dict : dict</span>
+<span class="sd">        Dictionary containing a key-value pair. &#39;times&#39; contains the</span>
+<span class="sd">        meridian_transit times.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="s1">&#39;_meridian_transit_cache&#39;</span><span class="p">):</span>
+        <span class="n">observer</span><span class="o">.</span><span class="n">_meridian_transit_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># convert times to tuple for hashing</span>
+    <span class="n">aakey</span> <span class="o">=</span> <span class="n">_make_cache_key</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">aakey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">observer</span><span class="o">.</span><span class="n">_meridian_transit_cache</span><span class="p">:</span>
+        <span class="n">meridian_transit_times</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">target_meridian_transit_time</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="n">observer</span><span class="o">.</span><span class="n">_meridian_transit_cache</span><span class="p">[</span><span class="n">aakey</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">meridian_transit_times</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">observer</span><span class="o">.</span><span class="n">_meridian_transit_cache</span><span class="p">[</span><span class="n">aakey</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.Constraint">[docs]</a><span class="nd">@abstractmethod</span>
+<span class="k">class</span> <span class="nc">Constraint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract class for objects defining observational constraints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">time_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_grid_resolution</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span>
+                 <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the constraint for this class</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        observer : `~astroplan.Observer`</span>
+<span class="sd">            the observation location from which to apply the constraints</span>
+<span class="sd">        targets : sequence of `~astroplan.Target`</span>
+<span class="sd">            The targets on which to apply the constraints.</span>
+<span class="sd">        times : `~astropy.time.Time`</span>
+<span class="sd">            The times to compute the constraint.</span>
+<span class="sd">            WHAT HAPPENS WHEN BOTH TIMES AND TIME_RANGE ARE SET?</span>
+<span class="sd">        time_range : `~astropy.time.Time` (length = 2)</span>
+<span class="sd">            Lower and upper bounds on time sequence.</span>
+<span class="sd">        time_grid_resolution : `~astropy.units.quantity`</span>
+<span class="sd">            Time-grid spacing</span>
+<span class="sd">        grid_times_targets : bool</span>
+<span class="sd">            if True, grids the constraint result with targets along the first</span>
+<span class="sd">            index and times along the second. Otherwise, we rely on broadcasting</span>
+<span class="sd">            the shapes together using standard numpy rules.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        constraint_result : 1D or 2D array of float or bool</span>
+<span class="sd">            The constraints. If 2D with targets along the first index and times along</span>
+<span class="sd">            the second.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="n">time_grid_from_range</span><span class="p">(</span><span class="n">time_range</span><span class="p">,</span>
+                                         <span class="n">time_resolution</span><span class="o">=</span><span class="n">time_grid_resolution</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">grid_times_targets</span><span class="p">:</span>
+            <span class="n">targets</span> <span class="o">=</span> <span class="n">get_skycoord</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+            <span class="c1"># TODO: these broadcasting operations are relatively slow</span>
+            <span class="c1"># but there is potential for huge speedup if the end user</span>
+            <span class="c1"># disables gridding and re-shapes the coords themselves</span>
+            <span class="c1"># prior to evaluating multiple constraints.</span>
+            <span class="k">if</span> <span class="n">targets</span><span class="o">.</span><span class="n">isscalar</span><span class="p">:</span>
+                <span class="c1"># ensure we have a (1, 1) shape coord</span>
+                <span class="n">targets</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="mi">1</span><span class="p">))[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="n">times</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">_preprocess_inputs</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_constraint</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+
+        <span class="c1"># make sure the output has the same shape as would result from</span>
+        <span class="c1"># broadcasting times and targets against each other</span>
+        <span class="k">if</span> <span class="n">targets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># broadcasting times v targets is slow due to</span>
+            <span class="c1"># complex nature of these objects. We make</span>
+            <span class="c1"># to simple numpy arrays of the same shape and</span>
+            <span class="c1"># broadcast these to find the correct shape</span>
+            <span class="n">shp1</span><span class="p">,</span> <span class="n">shp2</span> <span class="o">=</span> <span class="n">times</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">targets</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shp1</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">shp1</span><span class="p">))</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shp2</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">shp2</span><span class="p">))</span>
+            <span class="n">output_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+            <span class="k">if</span> <span class="n">output_shape</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">output_shape</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">result</span>
+
+<div class="viewcode-block" id="Constraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.Constraint.compute_constraint">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actually do the real work of computing the constraint.  Subclasses</span>
+<span class="sd">        override this.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        times : `~astropy.time.Time`</span>
+<span class="sd">            The times to compute the constraint</span>
+<span class="sd">        observer : `~astroplan.Observer`</span>
+<span class="sd">            the observaton location from which to apply the constraints</span>
+<span class="sd">        targets : sequence of `~astroplan.Target`</span>
+<span class="sd">            The targets on which to apply the constraints.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        constraint_result : 2D array of float or bool</span>
+<span class="sd">            The constraints, with targets along the first index and times along</span>
+<span class="sd">            the second.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Should be implemented on each subclass of Constraint</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+<div class="viewcode-block" id="CelestialPoleSeparationConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.CelestialPoleSeparationConstraint">[docs]</a><span class="k">class</span> <span class="nc">CelestialPoleSeparationConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constraint the separation from Vega</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">boolean_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        min : `~astropy.units.Quantity` or `None` (optional)</span>
+<span class="sd">            Minimum acceptable separation between Vega and target. `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        max : `~astropy.units.Quantity` or `None` (optional)</span>
+<span class="sd">            Minimum acceptable separation between Vega and target. `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span> <span class="k">if</span> <span class="nb">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span> <span class="k">if</span> <span class="nb">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">180</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boolean_constraint</span> <span class="o">=</span> <span class="n">boolean_constraint</span>
+
+<div class="viewcode-block" id="CelestialPoleSeparationConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.CelestialPoleSeparationConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+
+        <span class="n">celestial_pole</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">90</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+
+        <span class="c1"># Calculate separation between target and vega</span>
+        <span class="c1"># Targets are automatically converted to SkyCoord objects</span>
+        <span class="c1"># by __call__ beFore compute_constraint is called.</span>
+        <span class="n">celestial_pole_separation</span> <span class="o">=</span> <span class="n">celestial_pole</span><span class="o">.</span><span class="n">separation</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boolean_constraint</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;</span> <span class="n">celestial_pole_separation</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">celestial_pole_separation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">mask</span>
+
+        <span class="c1"># if we want to return a non-boolean score</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># rescale the vega_separation values so that they become</span>
+            <span class="c1"># scores between zero and one</span>
+            <span class="n">rescale</span> <span class="o">=</span> <span class="n">min_best_rescale</span><span class="p">(</span><span class="n">celestial_pole_separation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="n">less_than_min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">rescale</span></div></div>
+
+<div class="viewcode-block" id="AltitudeConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.AltitudeConstraint">[docs]</a><span class="k">class</span> <span class="nc">AltitudeConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain the altitude of the target.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This can misbehave if you try to constrain negative altitudes, as</span>
+<span class="sd">        the `~astropy.coordinates.AltAz` frame tends to mishandle negative</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    min : `~astropy.units.Quantity` or `None`</span>
+<span class="sd">        Minimum altitude of the target (inclusive). `None` indicates no limit.</span>
+<span class="sd">    max : `~astropy.units.Quantity` or `None`</span>
+<span class="sd">        Maximum altitude of the target (inclusive). `None` indicates no limit.</span>
+<span class="sd">    boolean_constraint : bool</span>
+<span class="sd">        If True, the constraint is treated as a boolean (True for within the</span>
+<span class="sd">        limits and False for outside).  If False, the constraint returns a</span>
+<span class="sd">        float on [0, 1], where 0 is the min altitude and 1 is the max.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">boolean_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="k">if</span> <span class="nb">max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">90</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">boolean_constraint</span> <span class="o">=</span> <span class="n">boolean_constraint</span>
+
+<div class="viewcode-block" id="AltitudeConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.AltitudeConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="n">cached_altaz</span> <span class="o">=</span> <span class="n">_get_altaz</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="n">alt</span> <span class="o">=</span> <span class="n">cached_altaz</span><span class="p">[</span><span class="s1">&#39;altaz&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">alt</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boolean_constraint</span><span class="p">:</span>
+            <span class="n">lowermask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;=</span> <span class="n">alt</span>
+            <span class="n">uppermask</span> <span class="o">=</span> <span class="n">alt</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span>
+            <span class="k">return</span> <span class="n">lowermask</span> <span class="o">&amp;</span> <span class="n">uppermask</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">max_best_rescale</span><span class="p">(</span><span class="n">alt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="AirmassConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.AirmassConstraint">[docs]</a><span class="k">class</span> <span class="nc">AirmassConstraint</span><span class="p">(</span><span class="n">AltitudeConstraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain the airmass of a target.</span>
+
+<span class="sd">    In the current implementation the airmass is approximated by the secant of</span>
+<span class="sd">    the zenith angle.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The ``max`` and ``min`` arguments appear in the order (max, min)</span>
+<span class="sd">        in this initializer to support the common case for users who care</span>
+<span class="sd">        about the upper limit on the airmass (``max``) and not the lower</span>
+<span class="sd">        limit.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    max : float or `None`</span>
+<span class="sd">        Maximum airmass of the target. `None` indicates no limit.</span>
+<span class="sd">    min : float or `None`</span>
+<span class="sd">        Minimum airmass of the target. `None` indicates no limit.</span>
+<span class="sd">    boolean_contstraint : bool</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    To create a constraint that requires the airmass be &quot;better than 2&quot;,</span>
+<span class="sd">    i.e. at a higher altitude than airmass=2::</span>
+
+<span class="sd">        AirmassConstraint(2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">boolean_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boolean_constraint</span> <span class="o">=</span> <span class="n">boolean_constraint</span>
+
+<div class="viewcode-block" id="AirmassConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.AirmassConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="n">cached_altaz</span> <span class="o">=</span> <span class="n">_get_altaz</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="n">secz</span> <span class="o">=</span> <span class="n">cached_altaz</span><span class="p">[</span><span class="s1">&#39;altaz&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">secz</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boolean_constraint</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">secz</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;=</span> <span class="n">secz</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;=</span> <span class="n">secz</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">secz</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No max and/or min specified in &quot;</span>
+                                 <span class="s2">&quot;AirmassConstraint.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">mask</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot have a float AirmassConstraint if max is None.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span>
+
+            <span class="n">mi</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span>
+            <span class="c1"># values below 1 should be disregarded</span>
+            <span class="k">return</span> <span class="n">min_best_rescale</span><span class="p">(</span><span class="n">secz</span><span class="p">,</span> <span class="n">mi</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">less_than_min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="AtNightConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.AtNightConstraint">[docs]</a><span class="k">class</span> <span class="nc">AtNightConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain the Sun to be below ``horizon``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@u</span><span class="o">.</span><span class="n">quantity_input</span><span class="p">(</span><span class="n">horizon</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_solar_altitude</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">force_pressure_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        max_solar_altitude : `~astropy.units.Quantity`</span>
+<span class="sd">            The altitude of the sun below which it is considered to be &quot;night&quot;</span>
+<span class="sd">            (inclusive).</span>
+<span class="sd">        force_pressure_zero : bool (optional)</span>
+<span class="sd">            Force the pressure to zero for solar altitude calculations. This</span>
+<span class="sd">            avoids errors in the altitude of the Sun that can occur when the</span>
+<span class="sd">            Sun is below the horizon and the corrections for atmospheric</span>
+<span class="sd">            refraction return nonsense values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_solar_altitude</span> <span class="o">=</span> <span class="n">max_solar_altitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_pressure_zero</span> <span class="o">=</span> <span class="n">force_pressure_zero</span>
+
+<div class="viewcode-block" id="AtNightConstraint.twilight_civil"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.AtNightConstraint.twilight_civil">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">twilight_civil</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Consider nighttime as time between civil twilights (-6 degrees).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">max_solar_altitude</span><span class="o">=-</span><span class="mi">6</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AtNightConstraint.twilight_nautical"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.AtNightConstraint.twilight_nautical">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">twilight_nautical</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Consider nighttime as time between nautical twilights (-12 degrees).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">max_solar_altitude</span><span class="o">=-</span><span class="mi">12</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AtNightConstraint.twilight_astronomical"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.AtNightConstraint.twilight_astronomical">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">twilight_astronomical</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Consider nighttime as time between astronomical twilights (-18 degrees).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">max_solar_altitude</span><span class="o">=-</span><span class="mi">18</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_solar_altitudes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="s1">&#39;_altaz_cache&#39;</span><span class="p">):</span>
+            <span class="n">observer</span><span class="o">.</span><span class="n">_altaz_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">aakey</span> <span class="o">=</span> <span class="n">_make_cache_key</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="s1">&#39;sun&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">aakey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">observer</span><span class="o">.</span><span class="n">_altaz_cache</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_pressure_zero</span><span class="p">:</span>
+                    <span class="n">observer_old_pressure</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">pressure</span>
+                    <span class="n">observer</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="c1"># find solar altitude at these times</span>
+                <span class="n">altaz</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">altaz</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">get_sun</span><span class="p">(</span><span class="n">times</span><span class="p">))</span>
+                <span class="n">altitude</span> <span class="o">=</span> <span class="n">altaz</span><span class="o">.</span><span class="n">alt</span>
+                <span class="c1"># cache the altitude</span>
+                <span class="n">observer</span><span class="o">.</span><span class="n">_altaz_cache</span><span class="p">[</span><span class="n">aakey</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+                                                    <span class="n">altitude</span><span class="o">=</span><span class="n">altitude</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_pressure_zero</span><span class="p">:</span>
+                    <span class="n">observer</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="n">observer_old_pressure</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">altitude</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">_altaz_cache</span><span class="p">[</span><span class="n">aakey</span><span class="p">][</span><span class="s1">&#39;altitude&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">altitude</span>
+
+<div class="viewcode-block" id="AtNightConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.AtNightConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="n">solar_altitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_solar_altitudes</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">solar_altitude</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_solar_altitude</span>
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+
+
+<div class="viewcode-block" id="SunSeparationConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.SunSeparationConstraint">[docs]</a><span class="k">class</span> <span class="nc">SunSeparationConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain the distance between the Sun and some targets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min : `~astropy.units.Quantity` or `None` (optional)</span>
+<span class="sd">            Minimum acceptable separation between Sun and target (inclusive).</span>
+<span class="sd">            `None` indicates no limit.</span>
+<span class="sd">        max : `~astropy.units.Quantity` or `None` (optional)</span>
+<span class="sd">            Minimum acceptable separation between Sun and target (inclusive).</span>
+<span class="sd">            `None` indicates no limit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+
+<div class="viewcode-block" id="SunSeparationConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.SunSeparationConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="c1"># use get_body rather than get sun here, since</span>
+        <span class="c1"># it returns the Sun&#39;s coordinates in an observer</span>
+        <span class="c1"># centred frame, so the separation is as-seen</span>
+        <span class="c1"># by the observer.</span>
+        <span class="c1"># &#39;get_sun&#39; returns ICRS coords.</span>
+        <span class="n">sun</span> <span class="o">=</span> <span class="n">get_body</span><span class="p">(</span><span class="s1">&#39;sun&#39;</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">observer</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">solar_separation</span> <span class="o">=</span> <span class="n">sun</span><span class="o">.</span><span class="n">separation</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">&gt;=</span> <span class="n">solar_separation</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;=</span> <span class="n">solar_separation</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;=</span> <span class="n">solar_separation</span><span class="p">)</span> <span class="o">&amp;</span>
+                    <span class="p">(</span><span class="n">solar_separation</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No max and/or min specified in &quot;</span>
+                             <span class="s2">&quot;SunSeparationConstraint.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+
+
+<div class="viewcode-block" id="MoonSeparationConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.MoonSeparationConstraint">[docs]</a><span class="k">class</span> <span class="nc">MoonSeparationConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain the distance between the Earth&#39;s moon and some targets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ephemeris</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min : `~astropy.units.Quantity` or `None` (optional)</span>
+<span class="sd">            Minimum acceptable separation between moon and target (inclusive).</span>
+<span class="sd">            `None` indicates no limit.</span>
+<span class="sd">        max : `~astropy.units.Quantity` or `None` (optional)</span>
+<span class="sd">            Maximum acceptable separation between moon and target (inclusive).</span>
+<span class="sd">            `None` indicates no limit.</span>
+<span class="sd">        ephemeris : str, optional</span>
+<span class="sd">            Ephemeris to use.  If not given, use the one set with</span>
+<span class="sd">            ``astropy.coordinates.solar_system_ephemeris.set`` (which is</span>
+<span class="sd">            set to &#39;builtin&#39; by default).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ephemeris</span> <span class="o">=</span> <span class="n">ephemeris</span>
+
+<div class="viewcode-block" id="MoonSeparationConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.MoonSeparationConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="c1"># removed the location argument here, which causes small &lt;1 deg</span>
+        <span class="c1"># innacuracies, but it is needed until astropy PR #5897 is released</span>
+        <span class="c1"># which should be astropy 1.3.2</span>
+        <span class="n">moon</span> <span class="o">=</span> <span class="n">get_moon</span><span class="p">(</span><span class="n">times</span><span class="p">,</span>
+                        <span class="n">ephemeris</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ephemeris</span><span class="p">)</span>
+        <span class="c1"># note to future editors - the order matters here</span>
+        <span class="c1"># moon.separation(targets) is NOT the same as targets.separation(moon)</span>
+        <span class="c1"># the former calculates the separation in the frame of the moon coord</span>
+        <span class="c1"># which is GCRS, and that is what we want.</span>
+        <span class="n">moon_separation</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">separation</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">&gt;=</span> <span class="n">moon_separation</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;=</span> <span class="n">moon_separation</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;=</span> <span class="n">moon_separation</span><span class="p">)</span> <span class="o">&amp;</span>
+                    <span class="p">(</span><span class="n">moon_separation</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No max and/or min specified in &quot;</span>
+                             <span class="s2">&quot;MoonSeparationConstraint.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+
+
+<div class="viewcode-block" id="MoonIlluminationConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.MoonIlluminationConstraint">[docs]</a><span class="k">class</span> <span class="nc">MoonIlluminationConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain the fractional illumination of the Earth&#39;s moon.</span>
+
+<span class="sd">    Constraint is also satisfied if the Moon has set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ephemeris</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min : float or `None` (optional)</span>
+<span class="sd">            Minimum acceptable fractional illumination (inclusive). `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        max : float or `None` (optional)</span>
+<span class="sd">            Maximum acceptable fractional illumination (inclusive). `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        ephemeris : str, optional</span>
+<span class="sd">            Ephemeris to use.  If not given, use the one set with</span>
+<span class="sd">            `~astropy.coordinates.solar_system_ephemeris` (which is</span>
+<span class="sd">            set to &#39;builtin&#39; by default).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ephemeris</span> <span class="o">=</span> <span class="n">ephemeris</span>
+
+<div class="viewcode-block" id="MoonIlluminationConstraint.dark"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.MoonIlluminationConstraint.dark">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">dark</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initialize a `~astroplan.constraints.MoonIlluminationConstraint`</span>
+<span class="sd">        with defaults of no minimum and a maximum of 0.25</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min : float or `None` (optional)</span>
+<span class="sd">            Minimum acceptable fractional illumination (inclusive). `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        max : float or `None` (optional)</span>
+<span class="sd">            Maximum acceptable fractional illumination (inclusive). `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MoonIlluminationConstraint.grey"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.MoonIlluminationConstraint.grey">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">grey</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initialize a `~astroplan.constraints.MoonIlluminationConstraint`</span>
+<span class="sd">        with defaults of a minimum of 0.25 and a maximum of 0.65</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min : float or `None` (optional)</span>
+<span class="sd">            Minimum acceptable fractional illumination (inclusive). `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        max : float or `None` (optional)</span>
+<span class="sd">            Maximum acceptable fractional illumination (inclusive). `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MoonIlluminationConstraint.bright"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.MoonIlluminationConstraint.bright">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">bright</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initialize a `~astroplan.constraints.MoonIlluminationConstraint`</span>
+<span class="sd">        with defaults of a minimum of 0.65 and no maximum</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min : float or `None` (optional)</span>
+<span class="sd">            Minimum acceptable fractional illumination (inclusive). `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        max : float or `None` (optional)</span>
+<span class="sd">            Maximum acceptable fractional illumination (inclusive). `None`</span>
+<span class="sd">            indicates no limit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MoonIlluminationConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.MoonIlluminationConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="c1"># first is the moon up?</span>
+        <span class="n">cached_moon</span> <span class="o">=</span> <span class="n">_get_moon_data</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">)</span>
+        <span class="n">moon_alt</span> <span class="o">=</span> <span class="n">cached_moon</span><span class="p">[</span><span class="s1">&#39;altaz&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">alt</span>
+        <span class="n">moon_down_mask</span> <span class="o">=</span> <span class="n">moon_alt</span> <span class="o">&lt;</span> <span class="mi">0</span>
+        <span class="n">moon_up_mask</span> <span class="o">=</span> <span class="n">moon_alt</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+
+        <span class="n">illumination</span> <span class="o">=</span> <span class="n">cached_moon</span><span class="p">[</span><span class="s1">&#39;illum&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">&gt;=</span> <span class="n">illumination</span><span class="p">)</span> <span class="o">|</span> <span class="n">moon_down_mask</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;=</span> <span class="n">illumination</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">moon_up_mask</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;=</span> <span class="n">illumination</span><span class="p">)</span> <span class="o">&amp;</span>
+                    <span class="p">(</span><span class="n">illumination</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">))</span> <span class="o">&amp;</span> <span class="n">moon_up_mask</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No max and/or min specified in &quot;</span>
+                             <span class="s2">&quot;MoonSeparationConstraint.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+
+
+<div class="viewcode-block" id="LocalTimeConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.LocalTimeConstraint">[docs]</a><span class="k">class</span> <span class="nc">LocalTimeConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain the observable hours.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min : `~datetime.time`</span>
+<span class="sd">            Earliest local time (inclusive). `None` indicates no limit.</span>
+
+<span class="sd">        max : `~datetime.time`</span>
+<span class="sd">            Latest local time (inclusive). `None` indicates no limit.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Constrain the observations to targets that are observable between</span>
+<span class="sd">        23:50 and 04:08 local time:</span>
+
+<span class="sd">        &gt;&gt;&gt; from astroplan import Observer</span>
+<span class="sd">        &gt;&gt;&gt; from astroplan.constraints import LocalTimeConstraint</span>
+<span class="sd">        &gt;&gt;&gt; import datetime as dt</span>
+<span class="sd">        &gt;&gt;&gt; subaru = Observer.at_site(&quot;Subaru&quot;, timezone=&quot;US/Hawaii&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; # bound times between 23:50 and 04:08 local Hawaiian time</span>
+<span class="sd">        &gt;&gt;&gt; constraint = LocalTimeConstraint(min=dt.time(23,50), max=dt.time(4,8))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You must at least supply either a minimum or a maximum time.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Time limits must be specified as datetime.time objects.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Time limits must be specified as datetime.time objects.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LocalTimeConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.LocalTimeConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+
+        <span class="n">timezone</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># get timezone from time objects, or from observer</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">timezone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">tzinfo</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">timezone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">tzinfo</span>
+
+        <span class="k">if</span> <span class="n">timezone</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">timezone</span> <span class="o">=</span> <span class="n">observer</span><span class="o">.</span><span class="n">timezone</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">min_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">min_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">max_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">max_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">59</span><span class="p">)</span>
+
+        <span class="c1"># If time limits occur on same day:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">min_time</span> <span class="o">&lt;=</span> <span class="n">t</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">max_time</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="o">.</span><span class="n">datetime</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>                <span class="c1"># use np.bool so shape queries don&#39;t cause problems</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">(</span><span class="n">min_time</span> <span class="o">&lt;=</span> <span class="n">times</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">max_time</span><span class="p">)</span>
+
+        <span class="c1"># If time boundaries straddle midnight:</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">t</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">min_time</span><span class="p">)</span> <span class="ow">or</span>
+                                <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">max_time</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="o">.</span><span class="n">datetime</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">((</span><span class="n">times</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">min_time</span><span class="p">)</span> <span class="ow">or</span>
+                                <span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">max_time</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+
+
+<div class="viewcode-block" id="TimeConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.TimeConstraint">[docs]</a><span class="k">class</span> <span class="nc">TimeConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Constrain the observing time to be within certain time limits.</span>
+
+<span class="sd">    An example use case for this class would be to associate an acceptable</span>
+<span class="sd">    time range with a specific observing block. This can be useful if not</span>
+<span class="sd">    all observing blocks are valid over the time limits used in calls</span>
+<span class="sd">    to `is_observable` or `is_always_observable`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min : `~astropy.time.Time`</span>
+<span class="sd">            Earliest time (inclusive). `None` indicates no limit.</span>
+
+<span class="sd">        max : `~astropy.time.Time`</span>
+<span class="sd">            Latest time (inclusive). `None` indicates no limit.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Constrain the observations to targets that are observable between</span>
+<span class="sd">        2016-03-28 and 2016-03-30:</span>
+
+<span class="sd">        &gt;&gt;&gt; from astroplan import Observer</span>
+<span class="sd">        &gt;&gt;&gt; from astropy.time import Time</span>
+<span class="sd">        &gt;&gt;&gt; subaru = Observer.at_site(&quot;Subaru&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; t1 = Time(&quot;2016-03-28T12:00:00&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; t2 = Time(&quot;2016-03-30T12:00:00&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; constraint = TimeConstraint(t1,t2)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You must at least supply either a minimum or a &quot;</span>
+                             <span class="s2">&quot;maximum time.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">Time</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Time limits must be specified as &quot;</span>
+                                <span class="s2">&quot;astropy.time.Time objects.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="n">Time</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Time limits must be specified as &quot;</span>
+                                <span class="s2">&quot;astropy.time.Time objects.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TimeConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.TimeConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+            <span class="n">min_time</span> <span class="o">=</span> <span class="n">Time</span><span class="p">(</span><span class="s2">&quot;1950-01-01T00:00:00&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span>
+            <span class="n">max_time</span> <span class="o">=</span> <span class="n">Time</span><span class="p">(</span><span class="s2">&quot;2120-01-01T00:00:00&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">times</span> <span class="o">&gt;</span> <span class="n">min_time</span><span class="p">,</span> <span class="n">times</span> <span class="o">&lt;</span> <span class="n">max_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+
+
+<div class="viewcode-block" id="PrimaryEclipseConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.PrimaryEclipseConstraint">[docs]</a><span class="k">class</span> <span class="nc">PrimaryEclipseConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain observations to times during primary eclipse.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eclipsing_system</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        eclipsing_system : `~astroplan.periodic.EclipsingSystem`</span>
+<span class="sd">            System which must be in primary eclipse.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eclipsing_system</span> <span class="o">=</span> <span class="n">eclipsing_system</span>
+
+<div class="viewcode-block" id="PrimaryEclipseConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.PrimaryEclipseConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eclipsing_system</span><span class="o">.</span><span class="n">in_primary_eclipse</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+
+
+<div class="viewcode-block" id="SecondaryEclipseConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.SecondaryEclipseConstraint">[docs]</a><span class="k">class</span> <span class="nc">SecondaryEclipseConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain observations to times during secondary eclipse.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eclipsing_system</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        eclipsing_system : `~astroplan.periodic.EclipsingSystem`</span>
+<span class="sd">            System which must be in secondary eclipse.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eclipsing_system</span> <span class="o">=</span> <span class="n">eclipsing_system</span>
+
+<div class="viewcode-block" id="SecondaryEclipseConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.SecondaryEclipseConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eclipsing_system</span><span class="o">.</span><span class="n">in_secondary_eclipse</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+
+
+<div class="viewcode-block" id="PhaseConstraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.PhaseConstraint">[docs]</a><span class="k">class</span> <span class="nc">PhaseConstraint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constrain observations to times in some range of phases for a periodic event</span>
+<span class="sd">    (e.g.~transiting exoplanets, eclipsing binaries).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">periodic_event</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        periodic_event : `~astroplan.periodic.PeriodicEvent` or subclass</span>
+<span class="sd">            System on which to compute the phase. For example, the system</span>
+<span class="sd">            could be an eclipsing or non-eclipsing binary, or exoplanet system.</span>
+<span class="sd">        min : float (optional)</span>
+<span class="sd">            Minimum phase (inclusive) on interval [0, 1). Default is zero.</span>
+<span class="sd">        max : float (optional)</span>
+<span class="sd">            Maximum phase (inclusive) on interval [0, 1). Default is one.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        To constrain observations on orbital phases between 0.4 and 0.6,</span>
+<span class="sd">        &gt;&gt;&gt; from astroplan import PeriodicEvent</span>
+<span class="sd">        &gt;&gt;&gt; from astropy.time import Time</span>
+<span class="sd">        &gt;&gt;&gt; import astropy.units as u</span>
+<span class="sd">        &gt;&gt;&gt; binary = PeriodicEvent(epoch=Time(&#39;2017-01-01 02:00&#39;), period=1*u.day)</span>
+<span class="sd">        &gt;&gt;&gt; constraint = PhaseConstraint(binary, min=0.4, max=0.6)</span>
+
+<span class="sd">        The minimum and maximum phase must be described on the interval [0, 1).</span>
+<span class="sd">        To constrain observations on orbital phases between 0.6 and 1.2, for</span>
+<span class="sd">        example, you should subtract one from the second number:</span>
+<span class="sd">        &gt;&gt;&gt; constraint = PhaseConstraint(binary, min=0.6, max=0.2)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">periodic_event</span> <span class="o">=</span> <span class="n">periodic_event</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">min</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">min</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">max</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">max</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The minimum of the PhaseConstraint must be within&#39;</span>
+                             <span class="s1">&#39; the interval [0, 1).&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span> <span class="k">if</span> <span class="nb">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span> <span class="k">if</span> <span class="nb">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">1.0</span>
+
+<div class="viewcode-block" id="PhaseConstraint.compute_constraint"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.PhaseConstraint.compute_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">compute_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">observer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">phase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">periodic_event</span><span class="o">.</span><span class="n">phase</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">phase</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">phase</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">),</span>
+                        <span class="p">(</span><span class="n">phase</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">phase</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+
+
+<div class="viewcode-block" id="is_always_observable"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.is_always_observable">[docs]</a><span class="k">def</span> <span class="nf">is_always_observable</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">time_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_grid_resolution</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">hour</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to determine whether ``targets`` are always observable throughout</span>
+<span class="sd">    ``time_range`` given constraints in the ``constraints_list`` for a</span>
+<span class="sd">    particular ``observer``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    constraints : list or `~astroplan.constraints.Constraint`</span>
+<span class="sd">        Observational constraint(s)</span>
+
+<span class="sd">    observer : `~astroplan.Observer`</span>
+<span class="sd">        The observer who has constraints ``constraints``</span>
+
+<span class="sd">    targets : {list, `~astropy.coordinates.SkyCoord`, `~astroplan.FixedTarget`}</span>
+<span class="sd">        Target or list of targets</span>
+
+<span class="sd">    times : `~astropy.time.Time` (optional)</span>
+<span class="sd">        Array of times on which to test the constraint</span>
+
+<span class="sd">    time_range : `~astropy.time.Time` (optional)</span>
+<span class="sd">        Lower and upper bounds on time sequence, with spacing</span>
+<span class="sd">        ``time_resolution``. This will be passed as the first argument into</span>
+<span class="sd">        `~astroplan.time_grid_from_range`.</span>
+
+<span class="sd">    time_grid_resolution : `~astropy.units.Quantity` (optional)</span>
+<span class="sd">        If ``time_range`` is specified, determine whether constraints are met</span>
+<span class="sd">        between test times in ``time_range`` by checking constraint at</span>
+<span class="sd">        linearly-spaced times separated by ``time_resolution``. Default is 0.5</span>
+<span class="sd">        hours.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ever_observable : list</span>
+<span class="sd">        List of booleans of same length as ``targets`` for whether or not each</span>
+<span class="sd">        target is observable in the time range given the constraints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span>
+        <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraints</span><span class="p">]</span>
+
+    <span class="n">applied_constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraint</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+                                      <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">,</span>
+                                      <span class="n">time_grid_resolution</span><span class="o">=</span><span class="n">time_grid_resolution</span><span class="p">,</span>
+                                      <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">]</span>
+    <span class="n">constraint_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">applied_constraints</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">constraint_arr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_observable"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.is_observable">[docs]</a><span class="k">def</span> <span class="nf">is_observable</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">time_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_grid_resolution</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">hour</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines if the ``targets`` are observable during ``time_range`` given</span>
+<span class="sd">    constraints in ``constraints_list`` for a particular ``observer``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    constraints : list or `~astroplan.constraints.Constraint`</span>
+<span class="sd">        Observational constraint(s)</span>
+
+<span class="sd">    observer : `~astroplan.Observer`</span>
+<span class="sd">        The observer who has constraints ``constraints``</span>
+
+<span class="sd">    targets : {list, `~astropy.coordinates.SkyCoord`, `~astroplan.FixedTarget`}</span>
+<span class="sd">        Target or list of targets</span>
+
+<span class="sd">    times : `~astropy.time.Time` (optional)</span>
+<span class="sd">        Array of times on which to test the constraint</span>
+
+<span class="sd">    time_range : `~astropy.time.Time` (optional)</span>
+<span class="sd">        Lower and upper bounds on time sequence, with spacing</span>
+<span class="sd">        ``time_resolution``. This will be passed as the first argument into</span>
+<span class="sd">        `~astroplan.time_grid_from_range`.</span>
+
+<span class="sd">    time_grid_resolution : `~astropy.units.Quantity` (optional)</span>
+<span class="sd">        If ``time_range`` is specified, determine whether constraints are met</span>
+<span class="sd">        between test times in ``time_range`` by checking constraint at</span>
+<span class="sd">        linearly-spaced times separated by ``time_resolution``. Default is 0.5</span>
+<span class="sd">        hours.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ever_observable : list</span>
+<span class="sd">        List of booleans of same length as ``targets`` for whether or not each</span>
+<span class="sd">        target is ever observable in the time range given the constraints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span>
+        <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraints</span><span class="p">]</span>
+
+    <span class="n">applied_constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraint</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+                                      <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">,</span>
+                                      <span class="n">time_grid_resolution</span><span class="o">=</span><span class="n">time_grid_resolution</span><span class="p">,</span>
+                                      <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">]</span>
+    <span class="n">constraint_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">applied_constraints</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">constraint_arr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_event_observable"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.is_event_observable">[docs]</a><span class="k">def</span> <span class="nf">is_event_observable</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">times_ingress_egress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines if the ``target`` is observable at each time in ``times``, given</span>
+<span class="sd">    constraints in ``constraints`` for a particular ``observer``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    constraints : list or `~astroplan.constraints.Constraint`</span>
+<span class="sd">        Observational constraint(s)</span>
+
+<span class="sd">    observer : `~astroplan.Observer`</span>
+<span class="sd">        The observer who has constraints ``constraints``</span>
+
+<span class="sd">    target : {list, `~astropy.coordinates.SkyCoord`, `~astroplan.FixedTarget`}</span>
+<span class="sd">        Target</span>
+
+<span class="sd">    times : `~astropy.time.Time` (optional)</span>
+<span class="sd">        Array of mid-event times on which to test the constraints</span>
+
+<span class="sd">    times_ingress_egress : `~astropy.time.Time` (optional)</span>
+<span class="sd">        Array of ingress and egress times for ``N`` events, with shape</span>
+<span class="sd">        (``N``, 2).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    event_observable : `~numpy.ndarray`</span>
+<span class="sd">        Array of booleans of same length as ``times`` for whether or not the</span>
+<span class="sd">        target is ever observable at each time, given the constraints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span>
+        <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraints</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">applied_constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraint</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+                                          <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">]</span>
+        <span class="n">constraint_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">applied_constraints</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">times_ing</span> <span class="o">=</span> <span class="n">times_ingress_egress</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">times_egr</span> <span class="o">=</span> <span class="n">times_ingress_egress</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">applied_constraints_ing</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraint</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times_ing</span><span class="p">,</span>
+                                              <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                   <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">]</span>
+        <span class="n">applied_constraints_egr</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraint</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times_egr</span><span class="p">,</span>
+                                              <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                   <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">]</span>
+
+        <span class="n">constraint_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">applied_constraints_ing</span><span class="p">),</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">applied_constraints_egr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">constraint_arr</span></div>
+
+
+<div class="viewcode-block" id="months_observable"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.months_observable">[docs]</a><span class="k">def</span> <span class="nf">months_observable</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span>
+                      <span class="n">time_grid_resolution</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">hour</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines which month the specified ``targets`` are observable for a</span>
+<span class="sd">    specific ``observer``, given the supplied ``constriants``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    constraints : list or `~astroplan.constraints.Constraint`</span>
+<span class="sd">        Observational constraint(s)</span>
+
+<span class="sd">    observer : `~astroplan.Observer`</span>
+<span class="sd">        The observer who has constraints ``constraints``</span>
+
+<span class="sd">    targets : {list, `~astropy.coordinates.SkyCoord`, `~astroplan.FixedTarget`}</span>
+<span class="sd">        Target or list of targets</span>
+
+<span class="sd">    time_grid_resolution : `~astropy.units.Quantity` (optional)</span>
+<span class="sd">        If ``time_range`` is specified, determine whether constraints are met</span>
+<span class="sd">        between test times in ``time_range`` by checking constraint at</span>
+<span class="sd">        linearly-spaced times separated by ``time_resolution``. Default is 0.5</span>
+<span class="sd">        hours.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    observable_months : list</span>
+<span class="sd">        List of sets of unique integers representing each month that a target is</span>
+<span class="sd">        observable, one set per target. These integers are 1-based so that</span>
+<span class="sd">        January maps to 1, February maps to 2, etc.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: This method could be sped up a lot by dropping to the trigonometric</span>
+    <span class="c1"># altitude calculations.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span>
+        <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraints</span><span class="p">]</span>
+
+    <span class="c1"># Calculate throughout the year of 2014 so as not to require forward</span>
+    <span class="c1"># extrapolation off of the IERS tables</span>
+    <span class="n">time_range</span> <span class="o">=</span> <span class="n">Time</span><span class="p">([</span><span class="s1">&#39;2014-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2014-12-31&#39;</span><span class="p">])</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="n">time_grid_from_range</span><span class="p">(</span><span class="n">time_range</span><span class="p">,</span> <span class="n">time_grid_resolution</span><span class="p">)</span>
+
+    <span class="c1"># TODO: This method could be sped up a lot by dropping to the trigonometric</span>
+    <span class="c1"># altitude calculations.</span>
+
+    <span class="n">applied_constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraint</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span>
+                                      <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+                                      <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">]</span>
+    <span class="n">constraint_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">applied_constraints</span><span class="p">)</span>
+
+    <span class="n">months_observable</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">target</span><span class="p">,</span> <span class="n">observable</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="n">constraint_arr</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">[</span><span class="n">observable</span><span class="p">]])</span>
+        <span class="n">months_observable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">months_observable</span></div>
+
+
+<div class="viewcode-block" id="observability_table"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.observability_table">[docs]</a><span class="k">def</span> <span class="nf">observability_table</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">time_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_grid_resolution</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">hour</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a table with information about observability for all  the ``targets``</span>
+<span class="sd">    over the requested ``time_range``, given the constraints in</span>
+<span class="sd">    ``constraints_list`` for ``observer``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    constraints : list or `~astroplan.constraints.Constraint`</span>
+<span class="sd">        Observational constraint(s)</span>
+
+<span class="sd">    observer : `~astroplan.Observer`</span>
+<span class="sd">        The observer who has constraints ``constraints``</span>
+
+<span class="sd">    targets : {list, `~astropy.coordinates.SkyCoord`, `~astroplan.FixedTarget`}</span>
+<span class="sd">        Target or list of targets</span>
+
+<span class="sd">    times : `~astropy.time.Time` (optional)</span>
+<span class="sd">        Array of times on which to test the constraint</span>
+
+<span class="sd">    time_range : `~astropy.time.Time` (optional)</span>
+<span class="sd">        Lower and upper bounds on time sequence, with spacing</span>
+<span class="sd">        ``time_resolution``. This will be passed as the first argument into</span>
+<span class="sd">        `~astroplan.time_grid_from_range`. If a single (scalar) time, the table</span>
+<span class="sd">        will be for a 24 hour period centered on that time.</span>
+
+<span class="sd">    time_grid_resolution : `~astropy.units.Quantity` (optional)</span>
+<span class="sd">        If ``time_range`` is specified, determine whether constraints are met</span>
+<span class="sd">        between test times in ``time_range`` by checking constraint at</span>
+<span class="sd">        linearly-spaced times separated by ``time_resolution``. Default is 0.5</span>
+<span class="sd">        hours.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    observability_table : `~astropy.table.Table`</span>
+<span class="sd">        A Table containing the observability information for each of the</span>
+<span class="sd">        ``targets``. The table contains four columns with information about the</span>
+<span class="sd">        target and it&#39;s observability: ``&#39;target name&#39;``, ``&#39;ever observable&#39;``,</span>
+<span class="sd">        ``&#39;always observable&#39;``, and ``&#39;fraction of time observable&#39;``. The</span>
+<span class="sd">        column ``&#39;time observable&#39;`` will also be present if the ``time_range``</span>
+<span class="sd">        is given as a scalar. It also contains metadata entries ``&#39;times&#39;``</span>
+<span class="sd">        (with an array of all the times), ``&#39;observer&#39;`` (the</span>
+<span class="sd">        `~astroplan.Observer` object), and ``&#39;constraints&#39;`` (containing the</span>
+<span class="sd">        supplied ``constraints``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span>
+        <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraints</span><span class="p">]</span>
+
+    <span class="n">is_24hr_table</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">time_range</span><span class="p">,</span> <span class="s1">&#39;isscalar&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">time_range</span><span class="o">.</span><span class="n">isscalar</span><span class="p">:</span>
+        <span class="n">time_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">time_range</span><span class="o">-</span><span class="mi">12</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span> <span class="n">time_range</span><span class="o">+</span><span class="mi">12</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
+        <span class="n">is_24hr_table</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">applied_constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">constraint</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+                                      <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">,</span>
+                                      <span class="n">time_grid_resolution</span><span class="o">=</span><span class="n">time_grid_resolution</span><span class="p">,</span>
+                                      <span class="n">grid_times_targets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">]</span>
+    <span class="n">constraint_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">applied_constraints</span><span class="p">)</span>
+
+    <span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;target name&#39;</span><span class="p">,</span> <span class="s1">&#39;ever observable&#39;</span><span class="p">,</span> <span class="s1">&#39;always observable&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;fraction of time observable&#39;</span><span class="p">]</span>
+
+    <span class="n">target_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">]</span>
+    <span class="n">ever_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">constraint_arr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">always_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">constraint_arr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">frac_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">constraint_arr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">constraint_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">tab</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">colnames</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">target_names</span><span class="p">,</span> <span class="n">ever_obs</span><span class="p">,</span> <span class="n">always_obs</span><span class="p">,</span>
+                                            <span class="n">frac_obs</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">time_grid_from_range</span><span class="p">(</span><span class="n">time_range</span><span class="p">,</span>
+                                     <span class="n">time_resolution</span><span class="o">=</span><span class="n">time_grid_resolution</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_24hr_table</span><span class="p">:</span>
+        <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;time observable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tab</span><span class="p">[</span><span class="s1">&#39;fraction of time observable&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">24</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">hour</span>
+
+    <span class="n">tab</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">times</span><span class="o">.</span><span class="n">datetime</span>
+    <span class="n">tab</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;observer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">observer</span>
+    <span class="n">tab</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;constraints&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constraints</span>
+
+    <span class="k">return</span> <span class="n">tab</span></div>
+
+
+<div class="viewcode-block" id="min_best_rescale"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.min_best_rescale">[docs]</a><span class="k">def</span> <span class="nf">min_best_rescale</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">less_than_min</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    rescales an input array ``vals`` to be a score (between zero and one),</span>
+<span class="sd">    where the ``min_val`` goes to one, and the ``max_val`` goes to zero.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vals : array-like</span>
+<span class="sd">        the values that need to be rescaled to be between 0 and 1</span>
+<span class="sd">    min_val : float</span>
+<span class="sd">        worst acceptable value (rescales to 0)</span>
+<span class="sd">    max_val : float</span>
+<span class="sd">        best value cared about (rescales to 1)</span>
+<span class="sd">    less_than_min : 0 or 1</span>
+<span class="sd">        what is returned for ``vals`` below ``min_val``. (in some cases</span>
+<span class="sd">        anything less than ``min_val`` should also return one,</span>
+<span class="sd">        in some cases it should return zero)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array of floats between 0 and 1 inclusive rescaled so that</span>
+<span class="sd">    ``vals`` equal to ``max_val`` equal 0 and those equal to</span>
+<span class="sd">    ``min_val`` equal 1</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    rescale airmasses to between 0 and 1, with the best (1)</span>
+<span class="sd">    and worst (2.25). All values outside the range should</span>
+<span class="sd">    return 0.</span>
+<span class="sd">    &gt;&gt;&gt; from astroplan.constraints import min_best_rescale</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; airmasses = np.array([1, 1.5, 2, 3, 0])</span>
+<span class="sd">    &gt;&gt;&gt; min_best_rescale(airmasses, 1, 2.25, less_than_min = 0)  # doctest: +FLOAT_CMP</span>
+<span class="sd">    array([ 1. ,  0.6,  0.2,  0. , 0. ])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rescaled</span> <span class="o">=</span> <span class="p">(</span><span class="n">vals</span> <span class="o">-</span> <span class="n">max_val</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">min_val</span> <span class="o">-</span> <span class="n">max_val</span><span class="p">)</span>
+    <span class="n">below</span> <span class="o">=</span> <span class="n">vals</span> <span class="o">&lt;</span> <span class="n">min_val</span>
+    <span class="n">above</span> <span class="o">=</span> <span class="n">vals</span> <span class="o">&gt;</span> <span class="n">max_val</span>
+    <span class="n">rescaled</span><span class="p">[</span><span class="n">below</span><span class="p">]</span> <span class="o">=</span> <span class="n">less_than_min</span>
+    <span class="n">rescaled</span><span class="p">[</span><span class="n">above</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">rescaled</span></div>
+
+
+<div class="viewcode-block" id="max_best_rescale"><a class="viewcode-back" href="../../eScheduler.html#eScheduler.constraints_spc.max_best_rescale">[docs]</a><span class="k">def</span> <span class="nf">max_best_rescale</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">greater_than_max</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    rescales an input array ``vals`` to be a score (between zero and one),</span>
+<span class="sd">    where the ``max_val`` goes to one, and the ``min_val`` goes to zero.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vals : array-like</span>
+<span class="sd">        the values that need to be rescaled to be between 0 and 1</span>
+<span class="sd">    min_val : float</span>
+<span class="sd">        worst acceptable value (rescales to 0)</span>
+<span class="sd">    max_val : float</span>
+<span class="sd">        best value cared about (rescales to 1)</span>
+<span class="sd">    greater_than_max : 0 or 1</span>
+<span class="sd">        what is returned for ``vals`` above ``max_val``. (in some cases</span>
+<span class="sd">        anything higher than ``max_val`` should also return one,</span>
+<span class="sd">        in some cases it should return zero)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array of floats between 0 and 1 inclusive rescaled so that</span>
+<span class="sd">    ``vals`` equal to ``min_val`` equal 0 and those equal to</span>
+<span class="sd">    ``max_val`` equal 1</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    rescale an array of altitudes to be between 0 and 1,</span>
+<span class="sd">    with the best (60) going to 1 and worst (35) going to</span>
+<span class="sd">    0. For values outside the range, the rescale should</span>
+<span class="sd">    return 0 below 35 and 1 above 60.</span>
+<span class="sd">    &gt;&gt;&gt; from astroplan.constraints import max_best_rescale</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; altitudes = np.array([20, 30, 40, 45, 55, 70])</span>
+<span class="sd">    &gt;&gt;&gt; max_best_rescale(altitudes, 35, 60)  # doctest: +FLOAT_CMP</span>
+<span class="sd">    array([ 0. , 0. , 0.2, 0.4, 0.8, 1. ])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rescaled</span> <span class="o">=</span> <span class="p">(</span><span class="n">vals</span> <span class="o">-</span> <span class="n">min_val</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_val</span> <span class="o">-</span> <span class="n">min_val</span><span class="p">)</span>
+    <span class="n">below</span> <span class="o">=</span> <span class="n">vals</span> <span class="o">&lt;</span> <span class="n">min_val</span>
+    <span class="n">above</span> <span class="o">=</span> <span class="n">vals</span> <span class="o">&gt;</span> <span class="n">max_val</span>
+    <span class="n">rescaled</span><span class="p">[</span><span class="n">below</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">rescaled</span><span class="p">[</span><span class="n">above</span><span class="p">]</span> <span class="o">=</span> <span class="n">greater_than_max</span>
+
+    <span class="k">return</span> <span class="n">rescaled</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Elsa Ducrot.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
