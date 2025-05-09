@@ -11,7 +11,7 @@ description: Documentation for the SPOCK project
 include:
   - headers 
   - assets
-  - examples/tutorials
+  - /examples/tutorials/notebooks/
 
 exclude:
   - Gemfile
