@@ -1,0 +1,2 @@
+target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
+Sp2029+5750 "2021-07-19 20:45:40.012" "2021-07-20 05:40:00.012" 534.3333333333333 20.0 29.0 11.982480000026499 57.0 50.0 31.66440000002524 "{'filt': 'I+z', 'texp': '31'}"

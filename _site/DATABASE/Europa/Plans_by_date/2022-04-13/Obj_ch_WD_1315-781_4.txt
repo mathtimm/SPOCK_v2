@@ -1,0 +1,23 @@
+;
+; ch_WD_1315-781_4
+;
+; None
+;
+#waituntil 1, 05:45
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220413
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 150.0
+#TAG Donuts=on
+ch_WD_1315-781_4	13 19 25.56	-78 23 28.17
+;
+#quitat 06:15
+#chain Obj_ch_WD_1350-090_4.txt
+;

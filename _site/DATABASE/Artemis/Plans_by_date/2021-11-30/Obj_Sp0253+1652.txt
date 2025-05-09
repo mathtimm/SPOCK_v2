@@ -1,0 +1,23 @@
+;
+; Sp0253+1652
+;
+; 35227046884571776
+;
+#waituntil 1, 2021/11/30 18:49:20
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter r
+#interval 89
+#TAG Donuts=on
+Sp0253+1652	02 53 01.05	+16 52 52.64
+;
+#quitat 00:50
+#chain Obj_Sp0714+3702.txt
+;

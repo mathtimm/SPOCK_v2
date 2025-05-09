@@ -1,0 +1,2 @@
+target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
+"ch_HATS-69 b" "2021-07-30 23:30:00.000" "2021-07-31 04:30:00.000" 300.0000002235174 19.0 17.0 11.364100000023143 -60.0 -53.0 -30.057999999986578 "{'filt': ""r'"", 'texp': 21.0}"

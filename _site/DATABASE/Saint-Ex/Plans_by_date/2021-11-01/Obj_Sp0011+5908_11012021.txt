@@ -1,0 +1,22 @@
+;
+; Sp0011+5908
+;
+; 423027104407576576
+;
+#waituntil 1, 11/02/2021 01:28:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 10
+#TAG Donuts=on
+Sp0011+5908	00 11 30.93	+59 08 39.89
+;
+#quitat 11/02/2021 03:16:00
+#chain Obj_Trappist-1e_11012021.txt
+;

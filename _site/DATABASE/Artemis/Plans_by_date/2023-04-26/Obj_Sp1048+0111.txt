@@ -1,0 +1,22 @@
+;
+; Sp1048+0111
+;
+; 3808159454810609280
+;
+#waituntil 1, 2023/04/26 20:17:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 101
+#TAG Donuts=on
+Sp1048+0111	10 48 42.81	+01 11 58.22
+;
+#quitat 01:44
+#chain Obj_TOI-6034.01.txt
+;

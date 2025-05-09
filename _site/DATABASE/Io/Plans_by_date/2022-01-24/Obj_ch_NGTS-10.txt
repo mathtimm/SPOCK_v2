@@ -1,0 +1,23 @@
+;
+; ch_NGTS-10
+;
+; None
+;
+#waituntil 1, 05:32
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220124
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 37.0
+#TAG Donuts=on
+ch_NGTS-10	06 07 29.34	-25 35 41.68
+;
+#quitat 07:26
+#chain Cal_flatdawn.txt
+;

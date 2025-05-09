@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+TOI-4306,2022-01-08 19:56:20.011,2022-01-09 00:23:00.011,266.6666666666666,4.0,16.0,31.418400000004496,-28.0,-18.0,-56.847600000002956,"{'filt': 'I+z', 'texp': '80'}"

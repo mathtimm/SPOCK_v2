@@ -1,0 +1,22 @@
+;
+; TOI-1955
+;
+; 6113245033659187200
+;
+#waituntil 1, 22:49
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+TOI-1955	13 44 25.22	-40 20 11.05
+;
+#quitat 03:55
+#chain Obj_dome_rot.txt
+;

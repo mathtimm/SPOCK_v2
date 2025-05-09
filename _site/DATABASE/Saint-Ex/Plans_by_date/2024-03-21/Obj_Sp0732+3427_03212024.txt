@@ -1,0 +1,22 @@
+;
+; Sp0732+3427
+;
+; 893653883934749824
+;
+#waituntil 1, 03/22/2024 02:29:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 58
+#TAG Donuts=on
+Sp0732+3427	07 32 18.59	+34 27 01.58
+;
+#quitat 03/22/2024 07:44:40
+#chain Obj_Sp1356+4342_03212024.txt
+;

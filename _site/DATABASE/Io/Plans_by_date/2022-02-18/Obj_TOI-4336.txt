@@ -1,0 +1,22 @@
+;
+; TOI-4336
+;
+; None
+;
+#waituntil 1, 03:24
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 20
+#TAG Donuts=on
+TOI-4336	13 44 25.22	-40 20 11.05
+;
+#quitat 09:53
+#chain Cal_flatdawn.txt
+;

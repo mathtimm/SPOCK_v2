@@ -1,0 +1,25 @@
+;
+; dome_rot
+;
+; None
+;
+#waituntil 1, 00:34
+;#domeopen
+;#chill -60
+#dir C:\Users\SPIRIT\Documents\ACP Astronomy\Images\Dome_rot
+#waitinlimits 600
+#nopointing
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 1
+#binning 1
+#filter zYJ
+#interval 10
+#TAG Donuts=off
+dome_rot	17 54 11.15	+03 52 43.90
+;
+#dir
+#quitat 00:36
+#chain Obj_Trappist-1b.txt
+;

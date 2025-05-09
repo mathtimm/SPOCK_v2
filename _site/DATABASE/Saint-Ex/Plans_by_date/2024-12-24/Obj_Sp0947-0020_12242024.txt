@@ -1,0 +1,22 @@
+;
+; Sp0947-0020
+;
+; 3833990796878014720
+;
+#waituntil 1, 12/25/2024 07:39:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 76
+#TAG Donuts=on
+Sp0947-0020	09 47 20.07	-00 20 09.53
+;
+#quitat 12/25/2024 14:00:40
+#chain Cal_flatdawn_12242024.txt
+;

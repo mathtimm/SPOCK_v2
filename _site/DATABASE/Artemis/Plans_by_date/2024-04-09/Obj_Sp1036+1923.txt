@@ -1,0 +1,22 @@
+;
+; Sp1036+1923
+;
+; 3987041475434695936
+;
+#waituntil 1, 2024/04/09 20:07:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 16
+#TAG Donuts=on
+Sp1036+1923	10 36 08.73	+19 23 30.65
+;
+#quitat 03:13
+#chain Obj_Sp1606+4054.txt
+;

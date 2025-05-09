@@ -1,0 +1,15 @@
+; == Startup ==
+;
+;
+#waituntil 1, 2022/12/03 18:05:10
+#domeopen
+;
+#chill -60
+;
+#waituntil 1, 2022/12/03 18:15:10
+#duskflats Cal_flatexo_evening.txt
+;
+#quitat 2022/12/03 18:49:40
+;
+#chain Obj_Trappist-1.txt
+;

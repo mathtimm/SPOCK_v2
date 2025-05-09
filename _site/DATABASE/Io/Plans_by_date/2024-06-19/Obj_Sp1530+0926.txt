@@ -1,0 +1,22 @@
+;
+; Sp1530+0926
+;
+; 1165479168642900992
+;
+#waituntil 1, 2024/06/19 22:41:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 38
+#TAG Donuts=on
+Sp1530+0926	15 30 30.33	+09 26 01.44
+;
+#quitat 04:39
+#chain Obj_dome_rot.txt
+;

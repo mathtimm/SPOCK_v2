@@ -1,0 +1,22 @@
+;
+; TOI-2267
+;
+; None
+;
+#waituntil 1, 19:35
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 10
+#TAG Donuts=on
+TOI-2267	04 20 14.76	+84 54 02.97
+;
+#quitat 06:12
+#chain Cal_flatdawn.txt
+;

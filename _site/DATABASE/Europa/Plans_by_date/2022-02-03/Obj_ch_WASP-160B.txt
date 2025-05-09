@@ -1,0 +1,23 @@
+;
+; ch_WASP-160B
+;
+; None
+;
+#waituntil 1, 2022/02/04 00:30:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220203
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 11.0
+#TAG Donuts=on
+ch_WASP-160B	05 50 43.06	-27 37 23.42
+;
+#quitat 05:00
+#chain Obj_dome_rot.txt
+;

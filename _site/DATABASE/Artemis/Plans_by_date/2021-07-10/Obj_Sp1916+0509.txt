@@ -1,0 +1,22 @@
+;
+; Sp1916+0509
+;
+; 4293315765165489536
+;
+#waituntil 1, 20:51
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 11
+#TAG Donuts=on
+Sp1916+0509	19 16 57.61	+05 09 01.59
+;
+#quitat 05:24
+#chain Cal_flatdawn.txt
+;

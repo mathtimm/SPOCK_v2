@@ -1,0 +1,25 @@
+;
+; dome_rot
+;
+; None
+;
+#waituntil 1, 02:12
+;#domeopen
+;#chill -60
+#dir C:\Users\SPIRIT\Documents\ACP Astronomy\Images\Dome_rot
+#waitinlimits 600
+#nopointing
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 1
+#binning 1
+#filter zYJ
+#interval 10
+#TAG Donuts=off
+dome_rot	23 25 00.30	-07 24 52.68
+;
+#dir
+#quitat 02:14
+#chain Obj_Nemesis-12.01.txt
+;

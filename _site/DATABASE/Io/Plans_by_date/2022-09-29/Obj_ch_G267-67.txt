@@ -1,0 +1,23 @@
+;
+; ch_G267-67
+;
+; None
+;
+#waituntil 1, 2022/09/29 23:30:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220929
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 100.0
+#TAG Donuts=on
+ch_G267-67	00 18 30.36	-35 01 44.70
+;
+#quitat 04:45
+#chain Obj_dome_rot.txt
+;

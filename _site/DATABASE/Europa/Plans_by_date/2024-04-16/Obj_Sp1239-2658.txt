@@ -1,0 +1,22 @@
+;
+; Sp1239-2658
+;
+; 3496355755520065408
+;
+#waituntil 1, 2024/04/16 23:02:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 12
+#TAG Donuts=on
+Sp1239-2658	12 39 36.36	-26 58 10.96
+;
+#quitat 04:37
+#chain Obj_dome_rot.txt
+;

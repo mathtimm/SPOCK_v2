@@ -1,0 +1,22 @@
+;
+; Sp1646+3434
+;
+; 1326893351115617024
+;
+#waituntil 1, 06/02/2021 03:21:00
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 35
+#TAG Donuts=on
+Sp1646+3434	16 46 31.44	+34 34 55.17
+;
+#quitat 06/02/2021 11:59:20
+#chain Cal_flatdawn_06012021.txt
+;

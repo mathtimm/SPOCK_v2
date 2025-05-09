@@ -1,0 +1,22 @@
+;
+; Sp1739+5532
+;
+; 1421042126620559104
+;
+#waituntil 1, 04/30/2024 07:39:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 78
+#TAG Donuts=on
+Sp1739+5532	17 39 53.23	+55 32 41.75
+;
+#quitat 04/30/2024 12:20:40
+#chain Cal_flatdawn_04292024.txt
+;

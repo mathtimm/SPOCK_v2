@@ -1,0 +1,22 @@
+;
+; Sp0215-3040
+;
+; 4971892010576979840
+;
+#waituntil 1, 23:53
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 30
+#TAG Donuts=on
+Sp0215-3040	02 15 08.17	-30 40 01.40
+;
+#quitat 03:40
+#chain Obj_dome_rot.txt
+;

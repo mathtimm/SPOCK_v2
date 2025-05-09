@@ -1,0 +1,22 @@
+;
+; Sp0838-5856
+;
+; 5302788969813884160
+;
+#waituntil 1, 2024/03/13 23:35:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 15
+#TAG Donuts=on
+Sp0838-5856	08 38 02.11	-58 55 58.40
+;
+#quitat 04:47
+#chain Obj_dome_rot.txt
+;

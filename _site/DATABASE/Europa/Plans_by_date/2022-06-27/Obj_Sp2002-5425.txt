@@ -1,0 +1,22 @@
+;
+; Sp2002-5425
+;
+; 6473160651658069120
+;
+#waituntil 1, 04:43
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 22
+#TAG Donuts=on
+Sp2002-5425	20 02 13.49	-54 25 55.91
+;
+#quitat 06:03
+#chain Obj_TOI-3288.01.txt
+;

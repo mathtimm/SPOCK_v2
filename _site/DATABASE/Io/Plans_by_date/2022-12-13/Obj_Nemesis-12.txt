@@ -1,0 +1,22 @@
+;
+; Nemesis-12
+;
+; 4808732662634331520
+;
+#waituntil 1, 2022/12/14 00:07:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 17
+#TAG Donuts=on
+Nemesis-12	05 32 24.83	-39 50 01.73
+;
+#quitat 04:36
+#chain Obj_dome_rot.txt
+;

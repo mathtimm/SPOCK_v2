@@ -1,0 +1,22 @@
+;
+; TOI-4508.01
+;
+; 4877792060261482752
+;
+#waituntil 1, 00:12
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 92
+#TAG Donuts=on
+TOI-4508.01	04 38 27.54	-31 11 21.61
+;
+#quitat 02:29
+#chain Obj_Sp0351-0052_2.txt
+;

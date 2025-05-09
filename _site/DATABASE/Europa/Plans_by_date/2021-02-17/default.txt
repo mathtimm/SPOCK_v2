@@ -1,0 +1,15 @@
+; == Startup ==
+;
+;
+#waituntil 1, 2021/02/17 23:17:12
+#domeopen
+;
+#chill -60
+;
+#waituntil 1, 2021/02/17 23:27:12
+#duskflats Cal_flatexo.txt
+;
+#quitat 2021/02/18 00:12:20
+;
+#chain Obj_Sp0830+0947.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp0227-6447
+;
+; 4699699420265887232
+;
+#waituntil 1, 2021/11/18 23:47:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 54
+#TAG Donuts=on
+Sp0227-6447	02 27 14.88	-64 47 44.47
+;
+#quitat 04:22
+#chain Obj_dome_rot.txt
+;

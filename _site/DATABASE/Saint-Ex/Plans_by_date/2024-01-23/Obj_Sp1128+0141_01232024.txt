@@ -1,0 +1,22 @@
+;
+; Sp1128+0141
+;
+; 3798684825675497472
+;
+#waituntil 1, 01/24/2024 07:50:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 44
+#TAG Donuts=on
+Sp1128+0141	11 28 07.02	+01 41 30.05
+;
+#quitat 01/24/2024 14:01:40
+#chain Cal_flatdawn_01232024.txt
+;

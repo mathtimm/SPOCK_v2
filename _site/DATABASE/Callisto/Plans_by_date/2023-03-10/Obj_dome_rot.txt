@@ -1,0 +1,25 @@
+;
+; dome_rot
+;
+; None
+;
+#waituntil 1, 03:53
+;#domeopen
+;#chill -60
+#dir C:\Users\SPIRIT\Documents\ACP Astronomy\Images\Dome_rot
+#waitinlimits 600
+#nopointing
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 1
+#binning 1
+#filter zYJ
+#interval 10
+#TAG Donuts=off
+dome_rot	11 50 03.97	-40 46 53.75
+;
+#dir
+#quitat 03:55
+#chain Obj_Sp1255-5928.txt
+;

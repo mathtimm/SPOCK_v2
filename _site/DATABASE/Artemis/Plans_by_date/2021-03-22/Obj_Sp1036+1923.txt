@@ -1,0 +1,22 @@
+;
+; Sp1036+1923
+;
+; 3987041475434695936
+;
+#waituntil 1, 20:10
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z
+#interval 33
+#TAG Donuts=on
+Sp1036+1923	10 36 08.73	+19 23 30.65
+;
+#quitat 22:18
+#chain Obj_TOI-2267.02.txt
+;

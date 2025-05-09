@@ -1,0 +1,22 @@
+;
+; Sp2334+1933
+;
+; 2824567482526264576
+;
+#waituntil 1, 2023/10/21 23:28:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 64
+#TAG Donuts=on
+Sp2334+1933	23 34 39.40	+19 33 04.04
+;
+#quitat 04:22
+#chain Obj_dome_rot.txt
+;

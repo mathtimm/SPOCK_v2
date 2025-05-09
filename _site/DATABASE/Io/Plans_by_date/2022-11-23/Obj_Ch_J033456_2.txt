@@ -1,0 +1,23 @@
+;
+; Ch_J033456
+;
+; None
+;
+#waituntil 1, 04:31
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20221123
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 900
+#TAG Donuts=on
+Ch_J033456	03 34 56.95	00 02 22.70
+;
+#quitat 08:00
+#chain Cal_flatdawn.txt
+;

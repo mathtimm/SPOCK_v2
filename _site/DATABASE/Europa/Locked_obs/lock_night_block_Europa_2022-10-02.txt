@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+TOI-2496.01,2022-10-03 05:00:20.031,2022-10-03 09:30:20.031,270.0,6.0,4.0,47.07720000000556,-32.0,-34.0,-48.70919999999387,"{'filt': 'z', 'texp': '41'}"

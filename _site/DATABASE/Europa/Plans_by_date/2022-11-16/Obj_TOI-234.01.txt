@@ -1,0 +1,22 @@
+;
+; TOI-234.01
+;
+; None
+;
+#waituntil 1, 00:38
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 80
+#TAG Donuts=on
+TOI-234.01	00 10 16.52	-26 16 56.67
+;
+#quitat 05:59
+#chain Obj_Sp0544-2433.txt
+;

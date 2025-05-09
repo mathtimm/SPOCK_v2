@@ -1,0 +1,23 @@
+;
+; Sp0435-1606
+;
+; 3171631420210205056
+;
+#waituntil 1, 2022/01/14 19:11:20
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 14
+#TAG Donuts=on
+Sp0435-1606	04 35 16.15	-16 06 57.25
+;
+#quitat 21:09
+#chain Obj_Sp0720-0846.txt
+;

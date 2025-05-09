@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+HIP41378f,2022-11-12 05:40:00.032,2022-11-12 09:09:20.032,209.33333333333334,8.0,8.0,7.999920000005716,10.0,4.0,49.00007999999744,"{'filt': 'r', 'texp': '10'}"

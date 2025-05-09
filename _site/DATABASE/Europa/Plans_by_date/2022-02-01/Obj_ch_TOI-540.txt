@@ -1,0 +1,23 @@
+;
+; ch_TOI-540
+;
+; None
+;
+#waituntil 1, 2022/02/02 00:30:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220201
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 37.0
+#TAG Donuts=on
+ch_TOI-540	05 05 14.43	-47 56 15.53
+;
+#quitat 02:50
+#chain Obj_dome_rot.txt
+;

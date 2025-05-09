@@ -1,0 +1,22 @@
+;
+; Sp2042-0500
+;
+; 6914281796143286784
+;
+#waituntil 1, 19:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 38
+#TAG Donuts=on
+Sp2042-0500	20 42 45.18	-05 00 19.18
+;
+#quitat 19:53
+#chain Obj_TOI-1759.01.txt
+;

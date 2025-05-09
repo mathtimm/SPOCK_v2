@@ -1,0 +1,22 @@
+;
+; Sp1929+1101
+;
+; 4314878631298620160
+;
+#waituntil 1, 2024/08/29 23:06:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 32
+#TAG Donuts=on
+Sp1929+1101	19 29 43.80	+11 01 57.08
+;
+#quitat 04:38
+#chain Obj_dome_rot.txt
+;

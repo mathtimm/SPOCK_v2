@@ -1,0 +1,2 @@
+target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
+Em01_048117 "2024-11-28 00:40:00.000" "2024-11-28 08:20:00.000" 459.99999940395355 3.0 16.0 21.571200000002975 -27.0 -59.0 -10.284000000002038 "{'filt': ""r'"", 'texp': 60}"

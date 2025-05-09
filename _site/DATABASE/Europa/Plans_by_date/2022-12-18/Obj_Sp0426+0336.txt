@@ -1,0 +1,22 @@
+;
+; Sp0426+0336
+;
+; 3280675417175220224
+;
+#waituntil 1, 2022/12/19 00:10:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 22
+#TAG Donuts=on
+Sp0426+0336	04 26 19.94	+03 36 36.17
+;
+#quitat 04:34
+#chain Obj_dome_rot.txt
+;

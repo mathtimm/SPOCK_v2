@@ -1,0 +1,22 @@
+;
+; Sp2157+7537
+;
+; 2280379251923776896
+;
+#waituntil 1, 08/13/2021 07:43:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 134
+#TAG Donuts=on
+Sp2157+7537	21 57 44.51	+75 37 55.32
+;
+#quitat 08/13/2021 12:30:40
+#chain Cal_flatdawn_08122021.txt
+;

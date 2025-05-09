@@ -1,0 +1,22 @@
+;
+; Sp0539+4038
+;
+; 191109281417914880
+;
+#waituntil 1, 01/16/2024 01:39:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 30
+#TAG Donuts=on
+Sp0539+4038	05 39 25.02	+40 38 42.84
+;
+#quitat 01/16/2024 07:47:00
+#chain Obj_Sp0939+2935_01152024.txt
+;

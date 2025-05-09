@@ -1,0 +1,22 @@
+;
+; J0608
+;
+; 5494443978353833088
+;
+#waituntil 1, 01:43
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+J0608	06 08 31.94	-59 32 27.55
+;
+#quitat 09:07
+#chain Cal_flatdawn.txt
+;

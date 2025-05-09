@@ -1,0 +1,22 @@
+;
+; TOI-4184.01
+;
+; 4620574887039870720
+;
+#waituntil 1, 03:16
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 150
+#TAG Donuts=on
+TOI-4184.01	02 55 18.83	-79 24 52.93
+;
+#quitat 09:05
+#chain Obj_Sp0227-6447_2.txt
+;

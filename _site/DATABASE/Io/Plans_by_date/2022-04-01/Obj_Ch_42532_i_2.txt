@@ -1,0 +1,23 @@
+;
+; Ch_42532_i
+;
+; None
+;
+#waituntil 1, 03:57
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220401
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 60
+#TAG Donuts=on
+Ch_42532_i	12 52 55.10	00 55 55.10
+;
+#quitat 04:12
+#chain Obj_Ch_42532_g_3.txt
+;

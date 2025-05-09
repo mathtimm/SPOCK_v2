@@ -1,0 +1,22 @@
+;
+; TOI-4446.01
+;
+; None
+;
+#waituntil 1, 23:12
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter i
+#interval 110
+#TAG Donuts=on
+TOI-4446.01	19 31 29.50	+41 03 51.02
+;
+#quitat 05:14
+#chain Cal_flatdawn.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp0833-5336
+;
+; 5321049521489667328
+;
+#waituntil 1, 00:31
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 30
+#TAG Donuts=on
+Sp0833-5336	08 33 43.01	-53 36 41.24
+;
+#quitat 04:49
+#chain Obj_dome_rot.txt
+;

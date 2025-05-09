@@ -1,0 +1,22 @@
+;
+; Sp1826+3014
+;
+; 4588438567346043776
+;
+#waituntil 1, 03:30
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 52
+#TAG Donuts=on
+Sp1826+3014	18 26 11.00	+30 14 18.88
+;
+#quitat 04:45
+#chain Obj_Sp1430+5943_2.txt
+;

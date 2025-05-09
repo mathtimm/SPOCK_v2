@@ -1,0 +1,22 @@
+;
+; TIC-291320884
+;
+; None
+;
+#waituntil 1, 09:29
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 116
+#TAG Donuts=on
+TIC-291320884	17 23 49.35	-57 24 41.53
+;
+#quitat 09:27
+#chain Cal_flatdawn.txt
+;

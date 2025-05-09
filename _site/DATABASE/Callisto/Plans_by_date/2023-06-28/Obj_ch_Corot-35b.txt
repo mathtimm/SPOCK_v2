@@ -1,0 +1,23 @@
+;
+; ch_Corot-35b
+;
+; None
+;
+#waituntil 1, 02:02
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20230628
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 25
+#TAG Donuts=on
+ch_Corot-35b	19 17 15.44	-02 46 28.95
+;
+#quitat 10:00
+#chain Cal_flatdawn.txt
+;

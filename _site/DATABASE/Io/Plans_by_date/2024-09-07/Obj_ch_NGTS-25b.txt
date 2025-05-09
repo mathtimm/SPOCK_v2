@@ -1,0 +1,23 @@
+;
+; ch_NGTS-25b
+;
+; None
+;
+#waituntil 1, 2024/09/07 23:20:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20240907
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 35
+#TAG Donuts=on
+ch_NGTS-25b	20 29 45.00	-39 01 00.00
+;
+#quitat 03:10
+#chain Obj_dome_rot.txt
+;

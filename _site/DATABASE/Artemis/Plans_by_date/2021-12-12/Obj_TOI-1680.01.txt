@@ -1,0 +1,22 @@
+;
+; TOI-1680.01
+;
+; 2242756094328104576
+;
+#waituntil 1, 19:06
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 105
+#TAG Donuts=on
+TOI-1680.01	19 29 15.35	+65 58 25.69
+;
+#quitat 21:15
+#chain Obj_Sp0320+1854_2.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp1245-5721
+;
+; 6060965630906108672
+;
+#waituntil 1, 2022/04/04 23:13:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 23
+#TAG Donuts=on
+Sp1245-5721	12 45 16.82	-57 21 34.77
+;
+#quitat 04:40
+#chain Obj_dome_rot.txt
+;

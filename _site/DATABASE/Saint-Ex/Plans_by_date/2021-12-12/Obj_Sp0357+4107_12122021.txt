@@ -1,0 +1,22 @@
+;
+; Sp0357+4107
+;
+; 230171768457140736
+;
+#waituntil 1, 12/13/2021 01:18:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 24
+#TAG Donuts=on
+Sp0357+4107	03 57 19.91	+41 07 42.64
+;
+#quitat 12/13/2021 07:32:00
+#chain Obj_Sp0840+1824_12122021.txt
+;

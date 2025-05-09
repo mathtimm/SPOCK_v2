@@ -1,0 +1,22 @@
+;
+; TOI-6384.01
+;
+; None
+;
+#waituntil 1, 02:04
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter g
+#interval 180
+#TAG Donuts=on
+TOI-6384.01	06 50 44.30	+40 52 22.31
+;
+#quitat 05:54
+#chain Obj_Sp0900+2150_2.txt
+;

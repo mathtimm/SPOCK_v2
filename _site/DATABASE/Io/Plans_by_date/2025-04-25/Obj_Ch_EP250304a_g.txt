@@ -1,0 +1,23 @@
+;
+; Ch_EP250304a_g
+;
+; None
+;
+#waituntil 1, 04:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20250425
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 1200
+#TAG Donuts=on
+Ch_EP250304a_g	13 53 34.68	-42 48 16.71
+;
+#quitat 06:00
+#chain Obj_Ch_EP250304a_r.txt
+;

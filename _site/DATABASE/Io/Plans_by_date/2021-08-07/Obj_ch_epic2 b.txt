@@ -1,0 +1,23 @@
+;
+; ch_epic2 b
+;
+; None
+;
+#waituntil 1, 04:02
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20210807
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 11.0
+#TAG Donuts=on
+ch_epic2 b	19 10 02.61	-16 47 36.58
+;
+#quitat 07:25
+#chain Obj_ch_HATS-46.txt
+;

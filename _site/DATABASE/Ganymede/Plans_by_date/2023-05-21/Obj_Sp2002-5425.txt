@@ -1,0 +1,22 @@
+;
+; Sp2002-5425
+;
+; 6473160651658069120
+;
+#waituntil 1, 04:36
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 22
+#TAG Donuts=on
+Sp2002-5425	20 02 13.49	-54 25 55.91
+;
+#quitat 10:35
+#chain Cal_flatdawn.txt
+;

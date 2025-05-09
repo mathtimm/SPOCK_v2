@@ -1,0 +1,22 @@
+;
+; Sp1731+2721
+;
+; 4595127343251508992
+;
+#waituntil 1, 2023/06/22 21:05:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 47
+#TAG Donuts=on
+Sp1731+2721	17 31 29.73	+27 21 23.24
+;
+#quitat 23:30
+#chain Obj_TOI-5205.01.txt
+;

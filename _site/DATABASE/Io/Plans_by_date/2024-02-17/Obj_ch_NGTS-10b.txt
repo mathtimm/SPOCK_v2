@@ -1,0 +1,23 @@
+;
+; ch_NGTS-10b
+;
+; None
+;
+#waituntil 1, 02:02
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20240217
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 20
+#TAG Donuts=on
+ch_NGTS-10b	06 07 29.35	-25 35 41.63
+;
+#quitat 05:35
+#chain Obj_ch_NGTS-5b.txt
+;

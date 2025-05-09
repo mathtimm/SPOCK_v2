@@ -1,0 +1,22 @@
+;
+; Sp1411-4132
+;
+; 6109949904687424640
+;
+#waituntil 1, 2023/05/10 22:46:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 41
+#TAG Donuts=on
+Sp1411-4132	14 11 59.66	-41 32 22.05
+;
+#quitat 04:34
+#chain Obj_dome_rot.txt
+;

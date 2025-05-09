@@ -1,0 +1,22 @@
+;
+; TOI-687.01
+;
+; None
+;
+#waituntil 1, 2022/02/04 00:08:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+TOI-687.01	09 10 41.48	-45 05 55.84
+;
+#quitat 04:55
+#chain Obj_dome_rot.txt
+;

@@ -1,0 +1,23 @@
+;
+; ch_sn2014gep_g
+;
+; None
+;
+#waituntil 1, 02:15
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20240808
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 120
+#TAG Donuts=on
+ch_sn2014gep_g	14 28 35.52	-37 35 39.41
+;
+#quitat 03:00
+#chain Obj_ch_sn2024ahv_g.txt
+;

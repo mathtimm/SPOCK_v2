@@ -1,0 +1,22 @@
+;
+; J150835.15-013106.3
+;
+; None
+;
+#waituntil 1, 2024/05/21 00:00:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 204
+#TAG Donuts=on
+J150835.15-013106.3	15 08 35.15	-01 31 06.30
+;
+#quitat 04:00
+#chain Obj_dome_rot.txt
+;

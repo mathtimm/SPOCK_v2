@@ -1,0 +1,23 @@
+;
+; ch_K2-61
+;
+; None
+;
+#waituntil 1, 03:32
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20210823
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10.0
+#TAG Donuts=on
+ch_K2-61	22 38 41.94	-13 33 36.05
+;
+#quitat 08:00
+#chain Obj_ch_LHS 1140.txt
+;

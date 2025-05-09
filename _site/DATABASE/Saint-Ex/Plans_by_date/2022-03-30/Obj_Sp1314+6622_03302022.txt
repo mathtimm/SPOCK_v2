@@ -1,0 +1,22 @@
+;
+; Sp1314+6622
+;
+; 1678489647527832320
+;
+#waituntil 1, 03/31/2022 02:35:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 39
+#TAG Donuts=on
+Sp1314+6622	13 14 23.23	+66 22 32.78
+;
+#quitat 03/31/2022 07:46:00
+#chain Obj_Sp1444+3002_03302022.txt
+;

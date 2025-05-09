@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+Nemesis-12,2022-11-19 01:14:20.023,2022-11-19 09:06:20.023,472.0,5.0,32.0,24.825600000006602,-39.0,-50.0,-1.7267999999972972,"{'filt': 'I+z', 'texp': '17'}"

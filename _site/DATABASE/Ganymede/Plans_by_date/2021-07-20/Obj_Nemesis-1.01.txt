@@ -1,0 +1,22 @@
+;
+; Nemesis-1.01
+;
+; 6518484857416423168
+;
+#waituntil 1, 05:37
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 72
+#TAG Donuts=on
+Nemesis-1.01	22 27 08.12	-47 13 45.42
+;
+#quitat 10:45
+#chain Cal_flatdawn.txt
+;

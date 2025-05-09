@@ -1,0 +1,2 @@
+target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
+Sp1438+6408 "2024-04-15 20:25:20.011" "2024-04-16 05:47:00.011" 561.6666666666666 14.0 38.0 9.129600000008224 64.0 8.0 36.30119999999806 "{'filt': 'I+z', 'texp': '107'}"

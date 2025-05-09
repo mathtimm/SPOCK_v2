@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+LP890-9.02,2023-10-05 03:10:20.027,2023-10-05 06:26:20.027,195.99999999999994,4.0,16.0,31.418400000004496,-28.0,-18.0,-56.847600000002956,"{'filt': 'I+z', 'texp': '35'}"

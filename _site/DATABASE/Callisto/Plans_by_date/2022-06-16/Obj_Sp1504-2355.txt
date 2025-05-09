@@ -1,0 +1,22 @@
+;
+; Sp1504-2355
+;
+; 6227871564690336512
+;
+#waituntil 1, 2022/06/16 22:40:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter zYJ
+#interval 14
+#TAG Donuts=on
+Sp1504-2355	15 04 16.15	-23 55 56.58
+;
+#quitat 04:38
+#chain Obj_dome_rot.txt
+;

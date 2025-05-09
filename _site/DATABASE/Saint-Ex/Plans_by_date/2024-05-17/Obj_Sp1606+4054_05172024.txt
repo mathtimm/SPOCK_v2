@@ -1,0 +1,22 @@
+;
+; Sp1606+4054
+;
+; 1380293091823646720
+;
+#waituntil 1, 05/18/2024 03:11:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 25
+#TAG Donuts=on
+Sp1606+4054	16 06 33.56	+40 54 22.03
+;
+#quitat 05/18/2024 07:38:20
+#chain Obj_Sp1739+5532_05172024.txt
+;

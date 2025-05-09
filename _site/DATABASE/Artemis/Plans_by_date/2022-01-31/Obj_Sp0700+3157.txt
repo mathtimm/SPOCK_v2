@@ -1,0 +1,23 @@
+;
+; Sp0700+3157
+;
+; 890663968222557440
+;
+#waituntil 1, 2022/01/31 19:24:20
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 81
+#TAG Donuts=on
+Sp0700+3157	07 00 36.73	+31 57 25.51
+;
+#quitat 00:33
+#chain Obj_Sp1253+4034.txt
+;

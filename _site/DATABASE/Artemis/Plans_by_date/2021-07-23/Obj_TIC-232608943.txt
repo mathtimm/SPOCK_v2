@@ -1,0 +1,22 @@
+;
+; TIC-232608943
+;
+; None
+;
+#waituntil 1, 20:43
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter r
+#interval 10
+#TAG Donuts=on
+TIC-232608943	17 13 48.09	+64 33 58.22
+;
+#quitat 04:15
+#chain Obj_Sp0036+1821.txt
+;

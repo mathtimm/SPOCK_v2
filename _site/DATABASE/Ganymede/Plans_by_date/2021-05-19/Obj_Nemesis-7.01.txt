@@ -1,0 +1,22 @@
+;
+; Nemesis-7.01
+;
+; 6537725932945011200
+;
+#waituntil 1, 07:31
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 70
+#TAG Donuts=on
+Nemesis-7.01	23 48 13.24	-38 41 03.26
+;
+#quitat 10:20
+#chain Obj_Sp1841-4347_2.txt
+;

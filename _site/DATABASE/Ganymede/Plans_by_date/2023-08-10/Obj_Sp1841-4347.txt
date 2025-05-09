@@ -1,0 +1,22 @@
+;
+; Sp1841-4347
+;
+; 6709964635600548992
+;
+#waituntil 1, 2023/08/10 22:59:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 18
+#TAG Donuts=on
+Sp1841-4347	18 41 09.50	-43 47 32.74
+;
+#quitat 04:43
+#chain Obj_dome_rot.txt
+;

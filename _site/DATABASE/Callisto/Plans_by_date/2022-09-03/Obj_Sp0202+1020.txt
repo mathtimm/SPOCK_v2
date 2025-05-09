@@ -1,0 +1,22 @@
+;
+; Sp0202+1020
+;
+; 2571094283835172736
+;
+#waituntil 1, 04:38
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter zYJ
+#interval 2
+#TAG Donuts=on
+Sp0202+1020	02 02 16.23	+10 20 13.95
+;
+#quitat 10:14
+#chain Cal_flatdawn.txt
+;

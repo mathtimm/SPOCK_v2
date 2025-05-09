@@ -1,0 +1,22 @@
+;
+; NGTS-11
+;
+; 2453680078509741056
+;
+#waituntil 1, 19:05
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g
+#interval 10
+#TAG Donuts=on
+NGTS-11	01 34 05.15	-14 25 08.94
+;
+#quitat 00:49
+#chain Obj_Sp0840+1824.txt
+;

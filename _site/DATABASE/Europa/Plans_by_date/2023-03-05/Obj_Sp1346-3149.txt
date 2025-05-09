@@ -1,0 +1,22 @@
+;
+; Sp1346-3149
+;
+; 6171593062022433920
+;
+#waituntil 1, 04:51
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 12
+#TAG Donuts=on
+Sp1346-3149	13 46 45.99	-31 49 25.53
+;
+#quitat 10:02
+#chain Cal_flatdawn.txt
+;

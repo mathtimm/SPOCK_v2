@@ -1,0 +1,22 @@
+;
+; Sp2151-4017
+;
+; 6572811211549713792
+;
+#waituntil 1, 04:39
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter zYJ
+#interval 8
+#TAG Donuts=on
+Sp2151-4017	21 51 31.52	-40 17 23.16
+;
+#quitat 05:56
+#chain Obj_Trappist-1c.txt
+;

@@ -1,0 +1,15 @@
+; == Startup ==
+;
+;
+#waituntil 1, 2020/11/19 18:07:07
+#domeopen
+;
+#chill -60
+;
+#waituntil 1, 2020/11/19 18:17:07
+#duskflats Cal_flatexo_evening.txt
+;
+#quitat 2020/11/19 19:05:00
+;
+#chain Obj_Trappist-1b.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp1555-0956
+;
+; 4346523537966269824
+;
+#waituntil 1, 2023/06/11 22:50:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 90
+#TAG Donuts=on
+Sp1555-0956	15 55 15.79	-09 56 06.04
+;
+#quitat 04:37
+#chain Obj_dome_rot.txt
+;

@@ -1,0 +1,22 @@
+;
+; HAT-P-27c
+;
+; 1159336403336463872
+;
+#waituntil 1, 2024/07/20 20:44:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter z
+#interval 14
+#TAG Donuts=on
+HAT-P-27c	14 51 04.16	+05 56 50.51
+;
+#quitat 00:20
+#chain Obj_Sp2012+1246.txt
+;

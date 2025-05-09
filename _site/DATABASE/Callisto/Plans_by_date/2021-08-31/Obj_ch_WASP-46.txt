@@ -1,0 +1,23 @@
+;
+; ch_WASP-46
+;
+; None
+;
+#waituntil 1, 06:40
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20210831
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10.0
+#TAG Donuts=on
+ch_WASP-46	21 14 56.86	-55 52 18.46
+;
+#quitat 09:10
+#chain Cal_flatdawn.txt
+;

@@ -1,0 +1,23 @@
+;
+; ch_WASP-124b
+;
+; None
+;
+#waituntil 1, 2024/10/20 00:00:01
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20241019
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 10
+#TAG Donuts=on
+ch_WASP-124b	22 10 31.50	-30 45 10.00
+;
+#quitat 04:10
+#chain Obj_dome_rot.txt
+;

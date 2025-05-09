@@ -1,0 +1,23 @@
+;
+; ch_GaiaEDR3_4497367599768691712
+;
+; None
+;
+#waituntil 1, 2022/07/29 22:54:21
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220729
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 100.0
+#TAG Donuts=on
+ch_GaiaEDR3_4497367599768691712	18 09 29.20	+13 56 23.24
+;
+#quitat 01:30
+#chain Obj_dome_rot.txt
+;

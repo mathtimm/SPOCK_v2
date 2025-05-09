@@ -1,0 +1,23 @@
+;
+; ch_WASP-177b
+;
+; None
+;
+#waituntil 1, 06:30
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20230730
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 10
+#TAG Donuts=on
+ch_WASP-177b	22 19 11.28	-01 50 03.95
+;
+#quitat 10:05
+#chain Cal_flatdawn.txt
+;

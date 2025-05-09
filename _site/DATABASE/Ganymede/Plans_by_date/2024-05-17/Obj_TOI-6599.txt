@@ -1,0 +1,22 @@
+;
+; TOI-6599
+;
+; 6113324752547911040
+;
+#waituntil 1, 2024/05/17 22:42:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 13
+#TAG Donuts=on
+TOI-6599	13 43 41.74	-40 02 30.75
+;
+#quitat 07:49
+#chain Obj_dome_rot.txt
+;

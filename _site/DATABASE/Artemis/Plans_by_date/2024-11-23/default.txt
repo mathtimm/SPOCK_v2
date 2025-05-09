@@ -1,0 +1,15 @@
+; == Startup ==
+;
+;
+#waituntil 1, 2024/11/23 18:05:59
+#domeopen
+;
+#chill -60
+;
+#waituntil 1, 2024/11/23 18:15:59
+#duskflats Cal_flatexo_evening.txt
+;
+#quitat 2024/11/23 18:50:00
+;
+#chain Obj_Trappist-1.txt
+;

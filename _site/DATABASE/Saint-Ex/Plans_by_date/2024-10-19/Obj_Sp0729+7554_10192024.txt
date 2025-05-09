@@ -1,0 +1,22 @@
+;
+; Sp0729+7554
+;
+; 1136496317013163392
+;
+#waituntil 1, 10/20/2024 07:23:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 62
+#TAG Donuts=on
+Sp0729+7554	07 29 18.74	+75 54 03.00
+;
+#quitat 10/20/2024 13:14:00
+#chain Cal_flatdawn_10192024.txt
+;

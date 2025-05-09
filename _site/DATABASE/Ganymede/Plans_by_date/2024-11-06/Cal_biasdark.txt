@@ -1,0 +1,13 @@
+#domeclose 
+#nopreview 
+;
+; == bias dark exoplanet ==
+;
+#count 7,7,7,7,7,7,7,7
+#binning 1,1,1,1,1,1,1,1
+#interval 0,10,13,15,30,60,78,120
+#dark 
+#shutdown 
+;
+;END
+;

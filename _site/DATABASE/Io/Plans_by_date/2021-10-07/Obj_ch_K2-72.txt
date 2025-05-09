@@ -1,0 +1,23 @@
+;
+; ch_K2-72
+;
+; None
+;
+#waituntil 1, 01:47
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20211007
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 59.0
+#TAG Donuts=on
+ch_K2-72	22 18 29.25	-09 36 44.38
+;
+#quitat 05:40
+#chain Obj_ch_Corot-13 b.txt
+;

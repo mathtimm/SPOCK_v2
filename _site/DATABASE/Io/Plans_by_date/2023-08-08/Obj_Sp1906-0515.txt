@@ -1,0 +1,22 @@
+;
+; Sp1906-0515
+;
+; 4206320171755704320
+;
+#waituntil 1, 2023/08/08 22:58:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 100
+#TAG Donuts=on
+Sp1906-0515	19 06 06.93	-05 15 04.33
+;
+#quitat 04:43
+#chain Obj_dome_rot.txt
+;

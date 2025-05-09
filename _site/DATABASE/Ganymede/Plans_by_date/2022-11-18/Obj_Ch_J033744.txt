@@ -1,0 +1,23 @@
+;
+; Ch_J033744
+;
+; None
+;
+#waituntil 1, 2022/11/19 00:47:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20221118
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 900
+#TAG Donuts=on
+Ch_J033744	03 37 44.17	00 05 47.61
+;
+#quitat 04:27
+#chain Obj_dome_rot.txt
+;

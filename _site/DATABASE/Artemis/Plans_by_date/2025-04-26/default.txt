@@ -1,0 +1,15 @@
+; == Startup ==
+;
+;
+#waituntil 1, 2025/04/26 19:34:04
+#domeopen
+;
+#chill -60
+;
+#waituntil 1, 2025/04/26 19:44:04
+#duskflats Cal_flatexo_evening.txt
+;
+#quitat 2025/04/26 20:17:20
+;
+#chain Obj_TOI-3884.txt
+;

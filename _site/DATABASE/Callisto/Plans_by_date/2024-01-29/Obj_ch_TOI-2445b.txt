@@ -1,0 +1,23 @@
+;
+; ch_TOI-2445b
+;
+; None
+;
+#waituntil 1, 2024/01/30 00:20:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20240129
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 15
+#TAG Donuts=on
+ch_TOI-2445b	02 52 59.50	00 04 40.00
+;
+#quitat 02:55
+#chain Obj_dome_rot.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp0711+4329
+;
+; 950075494911661568
+;
+#waituntil 1, 01/21/2024 01:44:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 13
+#TAG Donuts=on
+Sp0711+4329	07 11 11.38	+43 29 59.00
+;
+#quitat 01/21/2024 07:49:20
+#chain Obj_Sp1016+2751_01202024.txt
+;

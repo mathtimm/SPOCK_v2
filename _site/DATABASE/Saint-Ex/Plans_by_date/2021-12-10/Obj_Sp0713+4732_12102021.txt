@@ -1,0 +1,22 @@
+;
+; Sp0713+4732
+;
+; 977910937439738240
+;
+#waituntil 1, 12/11/2021 07:32:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 177
+#TAG Donuts=on
+Sp0713+4732	07 13 25.64	+47 32 52.62
+;
+#quitat 12/11/2021 13:52:40
+#chain Cal_flatdawn_12102021.txt
+;

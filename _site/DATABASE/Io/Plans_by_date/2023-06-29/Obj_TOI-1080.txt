@@ -1,0 +1,22 @@
+;
+; TOI-1080
+;
+; 6653968157663516672
+;
+#waituntil 1, 23:19
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 10
+#TAG Donuts=on
+TOI-1080	18 25 28.40	-52 12 52.46
+;
+#quitat 09:57
+#chain Obj_Sp2039-2926.txt
+;

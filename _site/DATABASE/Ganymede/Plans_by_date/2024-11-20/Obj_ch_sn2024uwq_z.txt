@@ -1,0 +1,23 @@
+;
+; ch_sn2024uwq_z
+;
+; None
+;
+#waituntil 1, 2024/11/21 00:29:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20241120
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 120
+#TAG Donuts=on
+ch_sn2024uwq_z	20 24 36.76	-43 40 09.88
+;
+#quitat 00:45
+#chain Obj_dome_rot.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp0840+1824
+;
+; 659464504288593536
+;
+#waituntil 1, 11/29/2020 07:27:00
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 63
+#TAG Donuts=on
+Sp0840+1824	08 40 29.63	+18 24 08.73
+;
+#quitat 11/29/2020 13:25:20
+#chain Cal_flatdawn_11282020.txt
+;

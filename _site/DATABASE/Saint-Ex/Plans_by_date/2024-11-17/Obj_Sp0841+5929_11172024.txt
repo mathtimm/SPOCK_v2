@@ -1,0 +1,22 @@
+;
+; Sp0841+5929
+;
+; 1040827088726734976
+;
+#waituntil 1, 11/18/2024 07:24:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 17
+#TAG Donuts=on
+Sp0841+5929	08 41 19.87	+59 29 50.44
+;
+#quitat 11/18/2024 13:35:40
+#chain Cal_flatdawn_11172024.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp0008+4918
+;
+; 393621524910343296
+;
+#waituntil 1, 2024/09/16 20:01:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter z
+#interval 13
+#TAG Donuts=on
+Sp0008+4918	00 08 55.36	+49 18 56.31
+;
+#quitat 01:01
+#chain Obj_Sp0109+2949.txt
+;

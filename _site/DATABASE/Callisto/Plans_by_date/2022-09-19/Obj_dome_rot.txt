@@ -1,0 +1,25 @@
+;
+; dome_rot
+;
+; None
+;
+#waituntil 1, 00:06
+;#domeopen
+;#chill -60
+#dir C:\Users\SPIRIT\Documents\ACP Astronomy\Images\Dome_rot
+#waitinlimits 600
+#nopointing
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 1
+#binning 1
+#filter zYJ
+#interval 10
+#TAG Donuts=off
+dome_rot	17 23 27.51	-24 10 19.62
+;
+#dir
+#quitat 00:08
+#chain Obj_TOI-2341.01.txt
+;

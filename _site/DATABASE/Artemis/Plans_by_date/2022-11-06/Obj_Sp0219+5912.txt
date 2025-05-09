@@ -1,0 +1,22 @@
+;
+; Sp0219+5912
+;
+; 459215468053012096
+;
+#waituntil 1, 2022/11/06 19:10:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 15
+#TAG Donuts=on
+Sp0219+5912	02 19 56.13	+59 19 27.30
+;
+#quitat 00:45
+#chain Obj_Sp0602+3910.txt
+;

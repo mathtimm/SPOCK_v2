@@ -1,0 +1,22 @@
+;
+; Sp1130+4848
+;
+; 789148567894210560
+;
+#waituntil 1, 00:28
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 62
+#TAG Donuts=on
+Sp1130+4848	11 30 06.41	+48 48 23.21
+;
+#quitat 07:03
+#chain Cal_flatdawn.txt
+;

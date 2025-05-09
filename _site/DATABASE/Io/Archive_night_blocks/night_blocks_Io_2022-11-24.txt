@@ -1,0 +1,2 @@
+target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
+Ch_J033456 "2022-11-25 00:59:00.000" "2022-11-25 08:00:00.000" 421.0000003874302 3.0 34.0 56.952000000001135 0.0 2.0 22.69680000000001 "{'filt': ""g'"", 'texp': 900}"

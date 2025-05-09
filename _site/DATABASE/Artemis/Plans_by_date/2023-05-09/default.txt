@@ -1,0 +1,15 @@
+; == Startup ==
+;
+;
+#waituntil 1, 2023/05/09 19:41:26
+#domeopen
+;
+#chill -60
+;
+#waituntil 1, 2023/05/09 19:51:26
+#duskflats Cal_flatexo_evening.txt
+;
+#quitat 2023/05/09 20:41:20
+;
+#chain Obj_Sp1501+2250.txt
+;

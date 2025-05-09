@@ -1,0 +1,15 @@
+; == Startup ==
+;
+;
+#waituntil 1, 2022/08/29 19:26:46
+#domeopen
+;
+#chill -60
+;
+#waituntil 1, 2022/08/29 19:36:46
+#duskflats Cal_flatexo_evening.txt
+;
+#quitat 2022/08/29 20:09:00
+;
+#chain Obj_Kepler-460b.txt
+;

@@ -1,0 +1,22 @@
+;
+; NGTS-10b
+;
+; None
+;
+#waituntil 1, 2022/03/02 23:46:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 14
+#TAG Donuts=on
+NGTS-10b	06 07 29.35	-25 35 41.63
+;
+#quitat 04:46
+#chain Obj_dome_rot.txt
+;

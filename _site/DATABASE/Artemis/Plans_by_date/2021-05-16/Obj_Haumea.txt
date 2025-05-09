@@ -1,0 +1,17 @@
+;
+; 136108 Haumea
+;
+;
+#waituntil 1, 2021/05/16 21:00:30
+#domeopen
+#count 5000
+#binning 2
+#filter Exo
+#interval 240
+D6108    0.25  0.15 K20CH 218.20478  239.04083  122.16594   28.21367  0.1964232  0.00348135  43.1159298  2 MPO600179  2875  27 1955-2021 0.36 M-v 3Ek Pan        000A (136108) Haumea  
+2021-05-16
+#chain Obj_other_05162021.txt
+;
+#quitat 02:00
+#chain Obj_other.txt
+;

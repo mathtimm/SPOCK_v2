@@ -1,0 +1,22 @@
+;
+; Sp1444+3002
+;
+; 1282632682337912832
+;
+#waituntil 1, 05/19/2024 03:12:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 50
+#TAG Donuts=on
+Sp1444+3002	14 44 17.16	+30 02 14.23
+;
+#quitat 05/19/2024 07:34:40
+#chain Obj_Sp1739+5532_05182024.txt
+;

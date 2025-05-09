@@ -1,0 +1,22 @@
+;
+; WASP-85Ab
+;
+; None
+;
+#waituntil 1, 01:49
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 10
+#TAG Donuts=on
+WASP-85Ab	11 43 37.93	+06 33 49.63
+;
+#quitat 08:45
+#chain Obj_Sp1534-1418.txt
+;

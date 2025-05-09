@@ -1,0 +1,22 @@
+;
+; Sp0331-3042
+;
+; 5055805741577757824
+;
+#waituntil 1, 2022/12/03 23:59:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 17
+#TAG Donuts=on
+Sp0331-3042	03 31 30.26	-30 42 38.83
+;
+#quitat 01:02
+#chain Obj_dome_rot.txt
+;

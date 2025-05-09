@@ -1,0 +1,22 @@
+;
+; Sp0551+5511
+;
+; 265201384281320448
+;
+#waituntil 1, 23:16
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 50
+#TAG Donuts=on
+Sp0551+5511	05 51 25.09	+55 11 20.83
+;
+#quitat 01:03
+#chain Obj_Sp0841+5929.txt
+;

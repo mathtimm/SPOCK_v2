@@ -1,0 +1,22 @@
+;
+; Sp1841+2421
+;
+; 4535850438020392704
+;
+#waituntil 1, 06/07/2021 07:37:00
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 95
+#TAG Donuts=on
+Sp1841+2421	18 41 47.91	+24 21 59.70
+;
+#quitat 06/07/2021 11:58:00
+#chain Cal_flatdawn_06062021.txt
+;

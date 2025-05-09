@@ -1,0 +1,22 @@
+;
+; EBLM_J0608-59
+;
+; None
+;
+#waituntil 1, 04:48
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+EBLM_J0608-59	06 08 31.94	-59 32 27.55
+;
+#quitat 09:17
+#chain Cal_flatdawn.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp2049+3336.01
+;
+; None
+;
+#waituntil 1, 02:30
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 19
+#TAG Donuts=on
+Sp2049+3336.01	20 49 27.40	+33 36 50.97
+;
+#quitat 03:57
+#chain Obj_Sp2037-1137_2.txt
+;

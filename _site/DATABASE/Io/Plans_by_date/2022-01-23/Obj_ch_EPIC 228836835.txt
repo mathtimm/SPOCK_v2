@@ -1,0 +1,23 @@
+;
+; ch_EPIC 228836835
+;
+; None
+;
+#waituntil 1, 05:22
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220123
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 100.0
+#TAG Donuts=on
+ch_EPIC 228836835	12 38 18.09	-05 14 40.81
+;
+#quitat 08:30
+#chain Cal_flatdawn.txt
+;

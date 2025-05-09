@@ -1,0 +1,22 @@
+;
+; Sp1530+0926
+;
+; 1165479168642900992
+;
+#waituntil 1, 06/01/2024 03:20:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 16
+#TAG Donuts=on
+Sp1530+0926	15 30 30.33	+09 26 01.44
+;
+#quitat 06/01/2024 07:36:00
+#chain Obj_Sp1843+4040_05312024.txt
+;

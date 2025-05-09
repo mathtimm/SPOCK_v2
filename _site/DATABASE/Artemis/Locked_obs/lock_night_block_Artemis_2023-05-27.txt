@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+TOI-5688.01,2023-05-27 23:14:00.018,2023-05-28 05:12:40.018,358.66666666666674,17.0,47.0,41.54400000000635,47.0,42.0,18.176400000008925,"{'filt': 'I+z', 'texp': '37'}"

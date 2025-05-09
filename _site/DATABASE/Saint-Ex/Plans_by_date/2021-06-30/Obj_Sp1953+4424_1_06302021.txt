@@ -1,0 +1,22 @@
+;
+; Sp1953+4424_1
+;
+; 2079073928612819840
+;
+#waituntil 1, 07/01/2021 07:42:20
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 10
+#TAG Donuts=on
+Sp1953+4424_1	19 53 54.67	+44 24 51.34
+;
+#quitat 07/01/2021 12:02:20
+#chain Cal_flatdawn_06302021.txt
+;

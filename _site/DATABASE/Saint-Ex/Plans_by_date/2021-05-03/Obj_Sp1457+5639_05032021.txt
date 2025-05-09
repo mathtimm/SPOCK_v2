@@ -1,0 +1,22 @@
+;
+; Sp1457+5639
+;
+; 1612801833587498240
+;
+#waituntil 1, 05/04/2021 02:59:40
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 23
+#TAG Donuts=on
+Sp1457+5639	14 57 53.97	+56 39 24.47
+;
+#quitat 05/04/2021 07:38:20
+#chain Obj_Sp1646+3434_05032021.txt
+;

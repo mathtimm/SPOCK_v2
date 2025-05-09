@@ -1,0 +1,22 @@
+;
+; Sp1510-2818
+;
+; 6212595980928732032
+;
+#waituntil 1, 2023/05/28 22:40:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 50
+#TAG Donuts=on
+Sp1510-2818	15 10 47.00	-28 18 17.00
+;
+#quitat 08:22
+#chain Obj_dome_rot.txt
+;

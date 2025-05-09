@@ -1,0 +1,22 @@
+;
+; Sp0330+5413
+;
+; 445100418805396608
+;
+#waituntil 1, 12/16/2021 04:41:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 11
+#TAG Donuts=on
+Sp0330+5413	03 30 48.78	+54 13 55.17
+;
+#quitat 12/16/2021 07:33:20
+#chain Obj_Sp0840+1824_12152021.txt
+;

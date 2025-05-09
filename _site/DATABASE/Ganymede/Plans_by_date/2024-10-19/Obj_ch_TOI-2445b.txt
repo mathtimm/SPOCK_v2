@@ -1,0 +1,23 @@
+;
+; ch_TOI-2445b
+;
+; None
+;
+#waituntil 1, 07:10
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20241019
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 30
+#TAG Donuts=on
+ch_TOI-2445b	02 52 59.50	00 04 40.00
+;
+#quitat 09:10
+#chain Cal_flatdawn.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp0630-1840
+;
+; 2940211607277084672
+;
+#waituntil 1, 00:32
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 73
+#TAG Donuts=on
+Sp0630-1840	06 30 01.48	-18 40 14.83
+;
+#quitat 04:45
+#chain Obj_dome_rot.txt
+;

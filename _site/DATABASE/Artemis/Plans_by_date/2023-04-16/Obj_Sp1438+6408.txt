@@ -1,0 +1,22 @@
+;
+; Sp1438+6408
+;
+; 1668664785283445760
+;
+#waituntil 1, 2023/04/16 20:25:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 107
+#TAG Donuts=on
+Sp1438+6408	14 38 09.13	+64 08 36.30
+;
+#quitat 01:05
+#chain Obj_Sp1501+2250.txt
+;

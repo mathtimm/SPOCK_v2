@@ -1,0 +1,22 @@
+;
+; Sp1757+7042
+;
+; 1638180413086979840
+;
+#waituntil 1, 06/21/2024 03:29:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 36
+#TAG Donuts=on
+Sp1757+7042	17 57 15.42	+70 42 01.12
+;
+#quitat 06/21/2024 07:44:00
+#chain Obj_Sp2012+1246_06202024.txt
+;

@@ -1,0 +1,21 @@
+;
+; haumea
+;
+; None
+;
+#waituntil 1, 21:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+#autofocus 
+#count 5000
+#binning 1
+#filter Exo
+#interval 240
+#TAG Donuts=on
+D6108    0.26  0.15 K221L 218.88410  239.71462  122.12608   28.21248  0.1989312  0.00349648  42.9914375  1 MPO660785  3224  28 1955-2022 0.49 M-v 3Ek Pan        000A (136108) Haumea
+;
+#quitat 05:00
+#chain Obj_Sp1839+2952.txt
+;

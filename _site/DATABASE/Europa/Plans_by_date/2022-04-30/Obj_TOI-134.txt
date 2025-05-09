@@ -1,0 +1,22 @@
+;
+; TOI-134
+;
+; None
+;
+#waituntil 1, 07:57
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+TOI-134	23 20 06.86	-60 03 56.62
+;
+#quitat 10:26
+#chain Cal_flatdawn.txt
+;

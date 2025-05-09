@@ -1,0 +1,22 @@
+;
+; Sp2015-5645
+;
+; 6468714845110882048
+;
+#waituntil 1, 2022/07/31 22:55:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 50
+#TAG Donuts=on
+Sp2015-5645	20 15 21.56	-56 45 54.86
+;
+#quitat 04:44
+#chain Obj_dome_rot.txt
+;

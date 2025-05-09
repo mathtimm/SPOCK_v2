@@ -1,0 +1,22 @@
+;
+; Sp1801-2825
+;
+; 4062490612114078464
+;
+#waituntil 1, 07:34
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter zYJ
+#interval 26.239184982781413
+#TAG Donuts=on
+Sp1801-2825	18 01 07.73	-28 25 00.82
+;
+#quitat 07:54
+#chain Obj_Sp1805-2758.txt
+;

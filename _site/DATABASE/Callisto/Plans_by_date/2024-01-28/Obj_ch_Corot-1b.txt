@@ -1,0 +1,23 @@
+;
+; ch_Corot-1b
+;
+; None
+;
+#waituntil 1, 2024/01/29 00:30:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20240128
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 15
+#TAG Donuts=on
+ch_Corot-1b	06 48 19.17	-03 06 07.70
+;
+#quitat 05:05
+#chain Obj_dome_rot.txt
+;

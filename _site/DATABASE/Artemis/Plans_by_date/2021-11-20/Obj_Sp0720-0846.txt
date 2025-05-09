@@ -1,0 +1,22 @@
+;
+; Sp0720-0846
+;
+; 3048443305671969152
+;
+#waituntil 1, 06:49
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 25
+#TAG Donuts=on
+Sp0720-0846	07 20 03.25	-08 46 49.09
+;
+#quitat 06:53
+#chain Cal_biasdark.txt
+;

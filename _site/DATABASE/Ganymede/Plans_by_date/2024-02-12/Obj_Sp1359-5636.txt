@@ -1,0 +1,22 @@
+;
+; Sp1359-5636
+;
+; 5872178694156653440
+;
+#waituntil 1, 04:54
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 54
+#TAG Donuts=on
+Sp1359-5636	13 59 21.89	-56 36 31.87
+;
+#quitat 06:16
+#chain Obj_TOI-6894.01.txt
+;

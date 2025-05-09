@@ -1,0 +1,23 @@
+;
+; ch_HATS-69b
+;
+; None
+;
+#waituntil 1, 02:52
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20240603
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 15
+#TAG Donuts=on
+ch_HATS-69b	19 17 11.38	-60 53 30.34
+;
+#quitat 07:20
+#chain Obj_ch_K2-28b.txt
+;

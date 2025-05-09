@@ -1,0 +1,22 @@
+;
+; Sp1454-6604
+;
+; 5848753805085988352
+;
+#waituntil 1, 05:54
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter zYJ
+#interval 20.800987827962988
+#TAG Donuts=on
+Sp1454-6604	14 54 08.70	-66 04 47.44
+;
+#quitat 06:14
+#chain Obj_Sp1507-1627.txt
+;

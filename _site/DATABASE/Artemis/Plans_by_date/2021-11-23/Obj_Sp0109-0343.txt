@@ -1,0 +1,23 @@
+;
+; Sp0109-0343
+;
+; 2531195858721613056
+;
+#waituntil 1, 2021/11/23 18:50:00
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 66
+#TAG Donuts=on
+Sp0109-0343	01 09 51.20	-03 43 26.39
+;
+#quitat 18:57
+#chain Obj_Trappist-1c.txt
+;

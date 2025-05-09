@@ -1,0 +1,22 @@
+;
+; Sp0026-5428
+;
+; 4923179694098110848
+;
+#waituntil 1, 2022/10/02 23:18:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 47
+#TAG Donuts=on
+Sp0026-5428	00 26 56.59	-54 28 52.81
+;
+#quitat 04:30
+#chain Obj_dome_rot.txt
+;

@@ -1,0 +1,23 @@
+;
+; Sp2044+1517
+;
+; 1762523981210977664
+;
+#waituntil 1, 2022/08/26 20:12:40
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 16
+#TAG Donuts=on
+Sp2044+1517	20 44 37.49	+15 17 34.77
+;
+#quitat 22:34
+#chain Obj_Trappist-1b.txt
+;

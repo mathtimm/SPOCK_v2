@@ -1,0 +1,22 @@
+;
+; Sp0218-0617
+;
+; 2487828199544312064
+;
+#waituntil 1, 2024/11/04 23:42:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 69
+#TAG Donuts=on
+Sp0218-0617	02 18 57.90	-06 17 50.00
+;
+#quitat 04:21
+#chain Obj_dome_rot.txt
+;

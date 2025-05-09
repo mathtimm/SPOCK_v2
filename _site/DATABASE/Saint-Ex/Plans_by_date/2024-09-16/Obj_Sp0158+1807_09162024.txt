@@ -1,0 +1,22 @@
+;
+; Sp0158+1807
+;
+; 91196316201965184
+;
+#waituntil 1, 09/17/2024 07:33:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 65
+#TAG Donuts=on
+Sp0158+1807	01 58 15.72	+18 07 12.90
+;
+#quitat 09/17/2024 12:53:20
+#chain Cal_flatdawn_09162024.txt
+;

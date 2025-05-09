@@ -1,0 +1,23 @@
+;
+; ch_LHS_3844
+;
+; None
+;
+#waituntil 1, 23:20
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20210831
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 15.0
+#TAG Donuts=on
+ch_LHS_3844	22 41 58.12	-69 10 08.32
+;
+#quitat 00:45
+#chain Obj_dome_rot.txt
+;

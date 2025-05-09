@@ -1,0 +1,23 @@
+;
+; ch_LAMOST_J074024.22+202936.6
+;
+; None
+;
+#waituntil 1, 2022/05/18 22:42:16
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220518
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 100.0
+#TAG Donuts=on
+ch_LAMOST_J074024.22+202936.6	07 40 24.14	+20 29 37.00
+;
+#quitat 00:10
+#chain Obj_dome_rot.txt
+;

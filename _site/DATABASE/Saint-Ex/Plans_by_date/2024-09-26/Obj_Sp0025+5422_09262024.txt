@@ -1,0 +1,22 @@
+;
+; Sp0025+5422
+;
+; 419624356438705152
+;
+#waituntil 1, 09/27/2024 02:07:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 55
+#TAG Donuts=on
+Sp0025+5422	00 25 15.78	+54 22 54.91
+;
+#quitat 09/27/2024 06:04:40
+#chain Obj_Sp0314+1603_09262024.txt
+;

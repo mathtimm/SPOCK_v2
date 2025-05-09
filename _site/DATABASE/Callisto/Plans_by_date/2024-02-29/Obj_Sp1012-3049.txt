@@ -1,0 +1,22 @@
+;
+; Sp1012-3049
+;
+; 5461814875584141056
+;
+#waituntil 1, 2024/02/29 23:48:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 38
+#TAG Donuts=on
+Sp1012-3049	10 12 06.46	-30 49 26.34
+;
+#quitat 04:50
+#chain Obj_dome_rot.txt
+;

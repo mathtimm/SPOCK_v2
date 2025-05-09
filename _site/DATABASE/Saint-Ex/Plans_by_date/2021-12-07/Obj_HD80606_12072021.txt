@@ -1,0 +1,22 @@
+;
+; HD80606
+;
+; None
+;
+#waituntil 1, 12/08/2021 06:27:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+HD80606	09 22 37.58	+50 36 13.43
+;
+#quitat 12/08/2021 13:46:40
+#chain Cal_flatdawn_12072021.txt
+;

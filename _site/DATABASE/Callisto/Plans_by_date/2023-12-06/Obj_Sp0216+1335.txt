@@ -1,0 +1,22 @@
+;
+; Sp0216+1335
+;
+; 74203982469858816
+;
+#waituntil 1, 2023/12/07 00:01:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 14
+#TAG Donuts=on
+Sp0216+1335	02 16 29.87	+13 35 12.80
+;
+#quitat 04:28
+#chain Obj_dome_rot.txt
+;

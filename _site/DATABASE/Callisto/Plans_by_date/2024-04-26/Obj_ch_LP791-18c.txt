@@ -1,0 +1,23 @@
+;
+; ch_LP791-18c
+;
+; None
+;
+#waituntil 1, 03:37
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20240426
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 25
+#TAG Donuts=on
+ch_LP791-18c	11 02 45.72	-16 24 23.20
+;
+#quitat 06:20
+#chain Obj_ch_TOI-6768.01.txt
+;

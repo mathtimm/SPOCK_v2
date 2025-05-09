@@ -1,0 +1,23 @@
+;
+; ch_K2-146
+;
+; None
+;
+#waituntil 1, 03:52
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220107
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 130.0
+#TAG Donuts=on
+ch_K2-146	08 40 06.42	+19 05 34.43
+;
+#quitat 06:40
+#chain Obj_ch_NGTS-9.txt
+;

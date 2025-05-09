@@ -1,0 +1,22 @@
+;
+; HIP41378f
+;
+; 3146826644047097856
+;
+#waituntil 1, 2024/05/09 20:26:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter r
+#interval 10
+#TAG Donuts=on
+HIP41378f	08 26 27.80	+10 04 49.34
+;
+#quitat 22:48
+#chain Obj_Sp1606+4054.txt
+;

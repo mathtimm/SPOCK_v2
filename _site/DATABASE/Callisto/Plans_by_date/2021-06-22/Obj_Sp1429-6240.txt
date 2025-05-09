@@ -1,0 +1,22 @@
+;
+; Sp1429-6240
+;
+; 5853498713160606720
+;
+#waituntil 1, 22:41
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+Sp1429-6240	14 29 38.34	-62 40 46.19
+;
+#quitat 04:40
+#chain Obj_dome_rot.txt
+;

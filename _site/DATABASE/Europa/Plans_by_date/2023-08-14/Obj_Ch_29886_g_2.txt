@@ -1,0 +1,23 @@
+;
+; Ch9886_g
+;
+; None
+;
+#waituntil 1, 05:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20230814
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 60
+#TAG Donuts=on
+Ch9886_g	22 24 25.13	-08 51 31.55
+;
+#quitat 06:00
+#chain Obj_Ch_42532_r_1.txt
+;

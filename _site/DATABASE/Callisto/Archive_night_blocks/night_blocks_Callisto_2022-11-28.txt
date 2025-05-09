@@ -1,0 +1,2 @@
+target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
+Sp0435-1606 "2022-11-29 00:09:00.019" "2022-11-29 09:04:00.019" 535.0 4.0 35.0 16.153680000004158 -16.0 -6.0 -57.254400000001624 "{'filt': 'zYJ', 'texp': '3'}"

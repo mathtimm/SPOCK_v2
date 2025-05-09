@@ -1,0 +1,22 @@
+;
+; Sp1003-0105
+;
+; 3830128624846458752
+;
+#waituntil 1, 2025/03/18 23:30:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter zYJ
+#interval 18
+#TAG Donuts=on
+Sp1003-0105	10 03 19.16	-01 05 08.01
+;
+#quitat 02:09
+#chain Obj_dome_rot.txt
+;

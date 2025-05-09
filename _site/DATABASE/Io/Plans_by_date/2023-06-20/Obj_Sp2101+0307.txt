@@ -1,0 +1,22 @@
+;
+; Sp2101+0307
+;
+; 1731137528439917568
+;
+#waituntil 1, 04:41
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 23
+#TAG Donuts=on
+Sp2101+0307	21 01 04.79	+03 07 04.97
+;
+#quitat 10:46
+#chain Cal_flatdawn.txt
+;

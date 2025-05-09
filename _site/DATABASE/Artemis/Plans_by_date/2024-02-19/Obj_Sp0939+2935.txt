@@ -1,0 +1,22 @@
+;
+; Sp0939+2935
+;
+; 696501553469122304
+;
+#waituntil 1, 2024/02/19 19:50:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 30
+#TAG Donuts=on
+Sp0939+2935	09 39 23.25	+29 43 27.12
+;
+#quitat 00:04
+#chain Obj_TOI-6894.01.txt
+;

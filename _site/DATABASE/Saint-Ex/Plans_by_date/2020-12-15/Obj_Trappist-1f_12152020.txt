@@ -1,0 +1,22 @@
+;
+; Trappist-1f
+;
+; 2635476908753563008
+;
+#waituntil 1, 12/16/2020 02:53:00
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 60
+#TAG Donuts=on
+Trappist-1f	23 06 29.00	-05 02 28.00
+;
+#quitat 12/16/2020 04:56:00
+#chain Obj_Sp0351-0052_2_12152020.txt
+;

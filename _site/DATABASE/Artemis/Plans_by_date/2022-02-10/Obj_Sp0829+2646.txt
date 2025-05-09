@@ -1,0 +1,22 @@
+;
+; Sp0829+2646
+;
+; 703790044252850688
+;
+#waituntil 1, 00:32
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter r
+#interval 63
+#TAG Donuts=on
+Sp0829+2646	08 29 49.22	+26 46 33.63
+;
+#quitat 01:16
+#chain Obj_Sp1253+4034.txt
+;

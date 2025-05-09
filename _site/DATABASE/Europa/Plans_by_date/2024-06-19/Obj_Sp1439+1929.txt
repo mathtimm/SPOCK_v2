@@ -1,0 +1,22 @@
+;
+; Sp1439+1929
+;
+; 1237730036207891072
+;
+#waituntil 1, 2024/06/19 22:41:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 109
+#TAG Donuts=on
+Sp1439+1929	14 39 28.36	+19 29 14.09
+;
+#quitat 04:39
+#chain Obj_dome_rot.txt
+;

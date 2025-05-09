@@ -1,0 +1,22 @@
+;
+; Nemesis-3.01
+;
+; 4920061410401733632
+;
+#waituntil 1, 05:16
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 10
+#TAG Donuts=on
+Nemesis-3.01	00 23 57.34	-55 31 43.59
+;
+#quitat 10:47
+#chain Obj_dome_rot.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp1805-1422
+;
+; 4147112604476417792
+;
+#waituntil 1, 22:54
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 46
+#TAG Donuts=on
+Sp1805-1422	18 05 44.64	-14 22 42.48
+;
+#quitat 04:44
+#chain Obj_dome_rot.txt
+;

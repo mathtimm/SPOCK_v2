@@ -1,0 +1,22 @@
+;
+; EBLM_J0608-59
+;
+; 5494443978353833088
+;
+#waituntil 1, 2022/01/05 00:15:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+EBLM_J0608-59	06 08 31.94	-59 32 27.55
+;
+#quitat 04:46
+#chain Obj_dome_rot.txt
+;

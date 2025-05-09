@@ -1,0 +1,2 @@
+target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
+ch_HATS-11 "2022-08-08 00:30:00.000" "2022-08-08 02:50:00.000" 139.99999970197678 19.0 17.0 36.180100000013056 -22.0 -23.0 -23.721000000003016 "{'filt': ""r'"", 'texp': 27.0}"

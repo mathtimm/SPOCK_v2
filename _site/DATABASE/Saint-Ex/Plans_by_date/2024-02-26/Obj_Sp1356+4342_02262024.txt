@@ -1,0 +1,22 @@
+;
+; Sp1356+4342
+;
+; 1502523188143833088
+;
+#waituntil 1, 02/27/2024 07:50:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 51
+#TAG Donuts=on
+Sp1356+4342	13 56 41.28	+43 42 59.18
+;
+#quitat 02/27/2024 13:36:20
+#chain Cal_flatdawn_02262024.txt
+;

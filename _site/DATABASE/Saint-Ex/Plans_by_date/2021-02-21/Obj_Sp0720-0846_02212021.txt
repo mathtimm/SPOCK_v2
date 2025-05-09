@@ -1,0 +1,22 @@
+;
+; Sp0720-0846
+;
+; 3048443305671969152
+;
+#waituntil 1, 02/22/2021 02:27:40
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 54
+#TAG Donuts=on
+Sp0720-0846	07 20 03.25	-08 46 49.09
+;
+#quitat 02/22/2021 07:51:20
+#chain Obj_Sp1314+6622_02212021.txt
+;

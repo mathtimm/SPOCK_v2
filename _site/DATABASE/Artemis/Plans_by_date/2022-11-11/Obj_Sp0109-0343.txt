@@ -1,0 +1,22 @@
+;
+; Sp0109-0343
+;
+; 2531195858721613056
+;
+#waituntil 1, 2022/11/11 19:08:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 32
+#TAG Donuts=on
+Sp0109-0343	01 09 51.20	-03 43 26.39
+;
+#quitat 00:06
+#chain Obj_Sp0804+6153.txt
+;

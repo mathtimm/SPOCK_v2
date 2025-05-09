@@ -1,0 +1,22 @@
+;
+; TOI-2015
+;
+; 6491962296196145664
+;
+#waituntil 1, 20:53
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 20
+#TAG Donuts=on
+TOI-2015	15 28 31.84	+27 21 39.86
+;
+#quitat 05:44
+#chain Cal_biasdark.txt
+;

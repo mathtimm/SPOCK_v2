@@ -1,0 +1,23 @@
+;
+; ch_TOI-3235
+;
+; None
+;
+#waituntil 1, 2023/06/03 23:30:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20230603
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 22
+#TAG Donuts=on
+ch_TOI-3235	13 49 53.72	-46 03 59.45
+;
+#quitat 06:00
+#chain Obj_dome_rot.txt
+;

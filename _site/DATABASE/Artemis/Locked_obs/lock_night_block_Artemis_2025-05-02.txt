@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+Sp1428+3310,2025-05-02 20:22:00.012,2025-05-03 05:44:20.012,562.3333333333334,14.0,28.0,42.79920000000999,33.0,10.0,28.23960000000909,"{'filt': 'I+z', 'texp': '43'}"

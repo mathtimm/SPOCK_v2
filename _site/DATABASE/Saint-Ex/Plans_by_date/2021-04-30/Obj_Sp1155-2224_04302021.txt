@@ -1,0 +1,22 @@
+;
+; Sp1155-2224
+;
+; 3493736924979792768
+;
+#waituntil 1, 05/01/2021 02:57:20
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 52
+#TAG Donuts=on
+Sp1155-2224	11 55 42.82	-22 24 58.79
+;
+#quitat 05/01/2021 07:11:00
+#chain Obj_Sp1606+4054_04302021.txt
+;

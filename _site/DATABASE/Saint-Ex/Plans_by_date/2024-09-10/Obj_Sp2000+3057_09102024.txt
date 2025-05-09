@@ -1,0 +1,22 @@
+;
+; Sp2000+3057
+;
+; 2030861099681010304
+;
+#waituntil 1, 09/11/2024 02:28:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 19
+#TAG Donuts=on
+Sp2000+3057	20 00 05.76	+30 57 32.10
+;
+#quitat 09/11/2024 07:35:00
+#chain Obj_Sp0025+5422_09102024.txt
+;

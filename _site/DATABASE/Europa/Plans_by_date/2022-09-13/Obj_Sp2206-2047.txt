@@ -1,0 +1,22 @@
+;
+; Sp2206-2047
+;
+; 6820468852720898944
+;
+#waituntil 1, 2022/09/13 23:10:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 106
+#TAG Donuts=on
+Sp2206-2047	22 06 22.80	-20 47 05.08
+;
+#quitat 04:33
+#chain Obj_dome_rot.txt
+;

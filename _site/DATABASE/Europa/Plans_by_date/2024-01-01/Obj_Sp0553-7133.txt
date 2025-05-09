@@ -1,0 +1,22 @@
+;
+; Sp0553-7133
+;
+; 4656782698309778432
+;
+#waituntil 1, 2024/01/02 00:15:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 16
+#TAG Donuts=on
+Sp0553-7133	05 53 26.48	-71 33 49.78
+;
+#quitat 04:45
+#chain Obj_dome_rot.txt
+;

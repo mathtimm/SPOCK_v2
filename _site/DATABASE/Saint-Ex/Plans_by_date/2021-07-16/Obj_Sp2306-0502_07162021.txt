@@ -1,0 +1,22 @@
+;
+; Sp2306-0502
+;
+; 2635476908753563008
+;
+#waituntil 1, 07/17/2021 07:45:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 37
+#TAG Donuts=on
+Sp2306-0502	23 06 29.37	-05 02 29.03
+;
+#quitat 07/17/2021 12:11:20
+#chain Cal_flatdawn_07162021.txt
+;

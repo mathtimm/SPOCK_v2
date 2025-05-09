@@ -1,0 +1,22 @@
+;
+; Sp0801+5624
+;
+; 1081127557137725696
+;
+#waituntil 1, 01/25/2021 02:06:20
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 99
+#TAG Donuts=on
+Sp0801+5624	08 01 21.11	+56 24 04.02
+;
+#quitat 01/25/2021 07:50:20
+#chain Obj_Sp1153+0659_01242021.txt
+;

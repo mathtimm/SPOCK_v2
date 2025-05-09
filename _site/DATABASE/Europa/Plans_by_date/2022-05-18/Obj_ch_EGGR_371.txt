@@ -1,0 +1,23 @@
+;
+; ch_EGGR_371
+;
+; None
+;
+#waituntil 1, 02:30
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220518
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 90.0
+#TAG Donuts=on
+ch_EGGR_371	17 38 41.66	+05 16 07.67
+;
+#quitat 06:15
+#chain Obj_ch_GaiaEDR3_4371590994328674432.txt
+;

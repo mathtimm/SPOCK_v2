@@ -1,0 +1,22 @@
+;
+; Sp0741+1738
+;
+; 671143035762692352
+;
+#waituntil 1, 2022/02/10 00:04:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 31
+#TAG Donuts=on
+Sp0741+1738	07 41 06.78	+17 38 44.84
+;
+#quitat 04:51
+#chain Obj_dome_rot.txt
+;

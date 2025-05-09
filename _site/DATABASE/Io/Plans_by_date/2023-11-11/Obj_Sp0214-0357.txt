@@ -1,0 +1,22 @@
+;
+; Sp0214-0357
+;
+; 2492866780297999232
+;
+#waituntil 1, 2023/11/11 23:42:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 18
+#TAG Donuts=on
+Sp0214-0357	02 14 12.56	-03 57 43.58
+;
+#quitat 03:31
+#chain Obj_dome_rot.txt
+;

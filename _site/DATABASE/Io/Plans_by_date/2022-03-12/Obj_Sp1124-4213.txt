@@ -1,0 +1,22 @@
+;
+; Sp1124-4213
+;
+; 5383082833650178816
+;
+#waituntil 1, 04:04
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 26
+#TAG Donuts=on
+Sp1124-4213	11 24 39.03	-42 13 11.44
+;
+#quitat 04:51
+#chain Obj_Sp1456-2809.txt
+;

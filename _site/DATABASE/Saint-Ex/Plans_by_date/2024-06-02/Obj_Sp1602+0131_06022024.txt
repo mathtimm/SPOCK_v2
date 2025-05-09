@@ -1,0 +1,22 @@
+;
+; Sp1602+0131
+;
+; 4412417304175836544
+;
+#waituntil 1, 06/03/2024 03:21:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 21
+#TAG Donuts=on
+Sp1602+0131	16 02 41.64	+01 31 58.19
+;
+#quitat 06/03/2024 07:35:40
+#chain Obj_Sp1843+4040_06022024.txt
+;

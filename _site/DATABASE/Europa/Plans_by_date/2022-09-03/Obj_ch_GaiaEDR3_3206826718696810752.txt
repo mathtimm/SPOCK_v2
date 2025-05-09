@@ -1,0 +1,23 @@
+;
+; ch_GaiaEDR3_3206826718696810752
+;
+; None
+;
+#waituntil 1, 07:45
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220903
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 45.0
+#TAG Donuts=on
+ch_GaiaEDR3_3206826718696810752	05 18 32.06	-07 57 18.55
+;
+#quitat 10:14
+#chain Cal_flatdawn.txt
+;

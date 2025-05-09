@@ -1,0 +1,2 @@
+target "start time (UTC)" "end time (UTC)" "duration (minutes)" "ra (h)" "ra (m)" "ra (s)" "dec (d)" "dec (m)" "dec (s)" configuration
+ch_WD_0315-293 "2021-11-04 00:15:07.518" "2021-11-04 09:13:55.525" 577.8001168370247 3.0 17.0 12.097299999999223 -29.0 -11.0 -34.210999999999956 "{'filt': ""g'"", 'texp': 360.0}"

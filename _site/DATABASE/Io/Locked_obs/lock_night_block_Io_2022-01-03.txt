@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+EBLM_J0608-59,2022-01-04 00:15:40.020,2022-01-04 09:17:20.020,541.6666666666667,6.0,8.0,31.943040000003435,-59.0,-32.0,-27.54599999999698,"{'filt': ""r'"", 'texp': '10'}"

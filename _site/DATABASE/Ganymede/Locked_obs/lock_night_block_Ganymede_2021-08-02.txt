@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+TIC91542943,2021-08-03 05:44:00.032,2021-08-03 10:26:00.032,281.99999999999994,2.0,55.0,18.005246400001624,-33.0,-44.0,-44.456603999996105,"{'filt'='I+z', 'texp'=15}"

@@ -1,0 +1,23 @@
+;
+; ch_WD_0214-071
+;
+; None
+;
+#waituntil 1, 2021/12/02 23:58:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20211202
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 360.0
+#TAG Donuts=on
+ch_WD_0214-071	02 17 19.73	-06 56 28.77
+;
+#quitat 05:30
+#chain Obj_dome_rot.txt
+;

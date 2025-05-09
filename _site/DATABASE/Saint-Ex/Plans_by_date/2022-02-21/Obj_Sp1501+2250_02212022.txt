@@ -1,0 +1,22 @@
+;
+; Sp1501+2250
+;
+; 1262763648230973440
+;
+#waituntil 1, 02/22/2022 07:55:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 83
+#TAG Donuts=on
+Sp1501+2250	15 01 08.18	+22 50 02.12
+;
+#quitat 02/22/2022 13:41:20
+#chain Cal_flatdawn_02212022.txt
+;

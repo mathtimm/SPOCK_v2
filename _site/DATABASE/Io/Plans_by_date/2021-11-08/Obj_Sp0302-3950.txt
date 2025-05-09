@@ -1,0 +1,22 @@
+;
+; Sp0302-3950
+;
+; 5044297634405581696
+;
+#waituntil 1, 2021/11/08 23:40:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 11
+#TAG Donuts=on
+Sp0302-3950	03 02 06.19	-39 50 51.91
+;
+#quitat 04:25
+#chain Obj_dome_rot.txt
+;

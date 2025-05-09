@@ -1,0 +1,22 @@
+;
+; Sp0646-2150
+;
+; 2926033267402660224
+;
+#waituntil 1, 2022/01/04 00:16:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 15
+#TAG Donuts=on
+Sp0646-2150	06 46 41.07	-21 50 16.10
+;
+#quitat 04:46
+#chain Obj_dome_rot.txt
+;

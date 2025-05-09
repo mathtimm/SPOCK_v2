@@ -1,0 +1,23 @@
+;
+; TOI-4616
+;
+; 2777125789169639296
+;
+#waituntil 1, 2022/01/03 19:03:00
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 18
+#TAG Donuts=on
+TOI-4616	00 59 16.34	+13 51 38.86
+;
+#quitat 23:47
+#chain Obj_Sp0510+2714.txt
+;

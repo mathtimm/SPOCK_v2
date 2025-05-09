@@ -1,0 +1,22 @@
+;
+; Sp2001+0647
+;
+; 4249108800619148032
+;
+#waituntil 1, 2024/08/15 23:12:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 114
+#TAG Donuts=on
+Sp2001+0647	20 01 57.21	+06 47 29.85
+;
+#quitat 04:42
+#chain Obj_dome_rot.txt
+;

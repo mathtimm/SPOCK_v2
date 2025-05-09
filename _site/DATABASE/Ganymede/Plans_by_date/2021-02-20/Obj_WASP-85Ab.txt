@@ -1,0 +1,22 @@
+;
+; WASP-85Ab
+;
+; 3909745223886018432
+;
+#waituntil 1, 02:24
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 10
+#TAG Donuts=on
+WASP-85Ab	11 43 37.93	+06 33 49.63
+;
+#quitat 09:41
+#chain Cal_flatdawn.txt
+;

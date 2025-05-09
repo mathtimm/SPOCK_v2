@@ -1,0 +1,22 @@
+;
+; Sp0225+6229
+;
+; 513688675702458880
+;
+#waituntil 1, 09/29/2021 07:28:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 70
+#TAG Donuts=on
+Sp0225+6229	02 25 26.62	+62 29 58.06
+;
+#quitat 09/29/2021 13:00:00
+#chain Cal_flatdawn_09282021.txt
+;

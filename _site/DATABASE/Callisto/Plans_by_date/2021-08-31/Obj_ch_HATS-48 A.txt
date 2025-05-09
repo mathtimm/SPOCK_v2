@@ -1,0 +1,23 @@
+;
+; ch_HATS-48 A
+;
+; None
+;
+#waituntil 1, 02:45
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20210831
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 37.0
+#TAG Donuts=on
+ch_HATS-48 A	19 14 41.27	-59 34 45.76
+;
+#quitat 06:40
+#chain Obj_ch_WASP-46.txt
+;

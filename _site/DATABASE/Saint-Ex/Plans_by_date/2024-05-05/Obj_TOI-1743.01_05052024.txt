@@ -1,0 +1,22 @@
+;
+; TOI-1743.01
+;
+; 1651807592698185728
+;
+#waituntil 1, 05/06/2024 08:42:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 17
+#TAG Donuts=on
+TOI-1743.01	17 10 59.36	+71 52 19.93
+;
+#quitat 05/06/2024 11:07:40
+#chain Obj_Sp1457+5639_2_05052024.txt
+;

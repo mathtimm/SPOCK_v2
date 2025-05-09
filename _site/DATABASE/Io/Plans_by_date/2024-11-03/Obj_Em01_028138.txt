@@ -1,0 +1,22 @@
+;
+; Em01_028138
+;
+; None
+;
+#waituntil 1, 2024/11/04 00:20:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 60
+#TAG Donuts=on
+Em01_028138	01 51 51.87	-47 38 27.49
+;
+#quitat 04:20
+#chain Obj_dome_rot.txt
+;

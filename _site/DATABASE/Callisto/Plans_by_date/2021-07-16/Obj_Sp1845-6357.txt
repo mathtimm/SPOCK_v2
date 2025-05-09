@@ -1,0 +1,22 @@
+;
+; Sp1845-6357
+;
+; 6439125097425259776
+;
+#waituntil 1, 03:57
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter i'
+#interval 20
+#TAG Donuts=on
+Sp1845-6357	18 45 08.66	-63 57 47.46
+;
+#quitat 04:44
+#chain Obj_Sp2330-4736.txt
+;

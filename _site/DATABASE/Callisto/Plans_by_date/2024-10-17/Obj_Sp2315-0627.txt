@@ -1,0 +1,22 @@
+;
+; Sp2315-0627
+;
+; 2631857350835259392
+;
+#waituntil 1, 2024/10/17 23:26:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 12
+#TAG Donuts=on
+Sp2315-0627	23 15 54.51	-06 27 46.43
+;
+#quitat 04:22
+#chain Obj_dome_rot.txt
+;

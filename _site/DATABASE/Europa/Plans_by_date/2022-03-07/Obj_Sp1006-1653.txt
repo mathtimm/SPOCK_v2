@@ -1,0 +1,22 @@
+;
+; Sp1006-1653
+;
+; 5673602319993218560
+;
+#waituntil 1, 2022/03/07 23:42:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 32
+#TAG Donuts=on
+Sp1006-1653	10 06 31.93	-16 53 26.31
+;
+#quitat 04:48
+#chain Obj_dome_rot.txt
+;

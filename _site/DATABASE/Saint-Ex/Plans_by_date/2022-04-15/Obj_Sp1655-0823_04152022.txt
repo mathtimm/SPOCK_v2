@@ -1,0 +1,22 @@
+;
+; Sp1655-0823
+;
+; 4339417394313320192
+;
+#waituntil 1, 04/16/2022 07:42:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 11
+#TAG Donuts=on
+Sp1655-0823	16 55 35.25	-08 23 40.75
+;
+#quitat 04/16/2022 12:37:20
+#chain Cal_flatdawn_04152022.txt
+;

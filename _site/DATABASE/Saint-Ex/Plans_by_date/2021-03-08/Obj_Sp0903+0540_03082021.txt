@@ -1,0 +1,22 @@
+;
+; Sp0903+0540
+;
+; 583370740503160704
+;
+#waituntil 1, 03/09/2021 02:38:00
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 44
+#TAG Donuts=on
+Sp0903+0540	09 03 20.96	+05 40 14.05
+;
+#quitat 03/09/2021 07:48:20
+#chain Obj_Sp1428+1356_03082021.txt
+;

@@ -1,0 +1,2 @@
+target,start time (UTC),end time (UTC),duration (minutes),ra (h),ra (m),ra (s),dec (d),dec (m),dec (s),configuration
+TIC445501347.02,2023-10-20 00:06:00.020,2023-10-20 06:18:20.020,372.3333333333333,1.0,59.0,24.148080000001215,58.0,31.0,13.119599999998286,"{'filt': 'r', 'texp': '10'}"

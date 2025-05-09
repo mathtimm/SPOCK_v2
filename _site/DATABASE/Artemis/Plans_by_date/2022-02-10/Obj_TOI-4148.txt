@@ -1,0 +1,23 @@
+;
+; TOI-4148
+;
+; 561865083339210752
+;
+#waituntil 1, 2022/02/10 19:31:40
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter z
+#interval 17
+#TAG Donuts=on
+TOI-4148	02 00 05.20	+77 22 08.40
+;
+#quitat 00:32
+#chain Obj_Sp0829+2646.txt
+;

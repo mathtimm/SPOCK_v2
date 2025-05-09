@@ -1,0 +1,22 @@
+;
+; Em01_060135
+;
+; None
+;
+#waituntil 1, 04:39
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 30
+#TAG Donuts=on
+Em01_060135	03 56 46.53	-44 48 20.02
+;
+#quitat 08:46
+#chain Cal_flatdawn.txt
+;

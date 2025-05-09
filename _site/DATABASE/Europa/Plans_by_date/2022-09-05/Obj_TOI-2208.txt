@@ -1,0 +1,22 @@
+;
+; TOI-2208
+;
+; 4678187647067684992
+;
+#waituntil 1, 04:33
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 220
+#TAG Donuts=on
+TOI-2208	04 22 06.91	-61 22 06.92
+;
+#quitat 10:12
+#chain Cal_flatdawn.txt
+;

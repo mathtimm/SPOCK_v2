@@ -1,0 +1,23 @@
+;
+; Sp0320+1854
+;
+; 56252256123908096
+;
+#waituntil 1, 2021/12/04 18:50:20
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 51
+#TAG Donuts=on
+Sp0320+1854	03 20 59.73	+18 54 22.77
+;
+#quitat 22:01
+#chain Obj_TOI-2267.01.txt
+;

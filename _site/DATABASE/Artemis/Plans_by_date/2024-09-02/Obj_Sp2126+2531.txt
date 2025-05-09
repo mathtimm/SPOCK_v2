@@ -1,0 +1,22 @@
+;
+; Sp2126+2531
+;
+; 1798588409277193984
+;
+#waituntil 1, 2024/09/02 20:17:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 76
+#TAG Donuts=on
+Sp2126+2531	21 26 57.85	+25 31 06.62
+;
+#quitat 01:01
+#chain Obj_Sp0008+4918.txt
+;

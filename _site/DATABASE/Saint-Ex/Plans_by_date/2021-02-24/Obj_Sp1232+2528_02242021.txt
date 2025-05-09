@@ -1,0 +1,22 @@
+;
+; Sp1232+2528
+;
+; 3960456315067417600
+;
+#waituntil 1, 02/25/2021 07:51:20
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 105
+#TAG Donuts=on
+Sp1232+2528	12 32 23.93	+25 28 25.96
+;
+#quitat 02/25/2021 13:20:20
+#chain Cal_flatdawn_02242021.txt
+;

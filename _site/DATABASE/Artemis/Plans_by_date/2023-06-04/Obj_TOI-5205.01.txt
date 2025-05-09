@@ -1,0 +1,22 @@
+;
+; TOI-5205.01
+;
+; 1842656663520849024
+;
+#waituntil 1, 00:59
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter r
+#interval 67
+#TAG Donuts=on
+TOI-5205.01	20 55 04.96	+24 21 39.52
+;
+#quitat 05:10
+#chain Cal_flatdawn.txt
+;

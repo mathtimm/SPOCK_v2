@@ -1,0 +1,22 @@
+;
+; TOI-4552
+;
+; 5948579462188230144
+;
+#waituntil 1, 2024/10/19 23:27:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 10
+#TAG Donuts=on
+TOI-4552	17 38 51.42	-47 38 13.37
+;
+#quitat 01:43
+#chain Obj_dome_rot.txt
+;

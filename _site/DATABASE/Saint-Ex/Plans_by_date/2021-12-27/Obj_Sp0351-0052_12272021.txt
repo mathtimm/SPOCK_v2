@@ -1,0 +1,22 @@
+;
+; Sp0351-0052
+;
+; 3257243312560240000
+;
+#waituntil 1, 12/28/2021 01:25:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 35
+#TAG Donuts=on
+Sp0351-0052	03 51 00.03	-00 52 44.92
+;
+#quitat 12/28/2021 07:39:20
+#chain Obj_Sp0900+2150_12272021.txt
+;

@@ -1,0 +1,23 @@
+;
+; ch_HATS-74 A
+;
+; None
+;
+#waituntil 1, 02:32
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220327
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 330.0
+#TAG Donuts=on
+ch_HATS-74 A	11 24 04.00	-19 33 26.00
+;
+#quitat 05:40
+#chain Obj_ch_K2-351.txt
+;

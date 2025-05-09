@@ -1,0 +1,22 @@
+;
+; TOI-1680
+;
+; None
+;
+#waituntil 1, 00:59
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 25
+#TAG Donuts=on
+TOI-1680	19 29 15.35	+65 58 25.69
+;
+#quitat 05:19
+#chain Cal_flatdawn.txt
+;

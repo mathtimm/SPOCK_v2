@@ -1,0 +1,22 @@
+;
+; Sp0433+5635
+;
+; 277483990023898240
+;
+#waituntil 1, 2022/12/05 19:05:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 47
+#TAG Donuts=on
+Sp0433+5635	04 33 30.11	+56 35 32.35
+;
+#quitat 00:14
+#chain Obj_Sp0900+2150.txt
+;

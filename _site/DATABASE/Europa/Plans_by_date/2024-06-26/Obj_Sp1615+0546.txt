@@ -1,0 +1,22 @@
+;
+; Sp1615+0546
+;
+; 4438043930922131072
+;
+#waituntil 1, 2024/06/26 22:43:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 97
+#TAG Donuts=on
+Sp1615+0546	16 15 42.46	+05 46 40.07
+;
+#quitat 04:41
+#chain Obj_dome_rot.txt
+;

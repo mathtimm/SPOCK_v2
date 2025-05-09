@@ -1,0 +1,23 @@
+;
+; Ch_J194827-131733_313
+;
+; None
+;
+#waituntil 1, 09:41
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20240612
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 90
+#TAG Donuts=on
+Ch_J194827-131733_313	19 48 27.74	-13 17 33.81
+;
+#quitat 09:43
+#chain Obj_Ch_J194827-131733_314.txt
+;

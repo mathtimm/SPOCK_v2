@@ -1,0 +1,22 @@
+;
+; TOI-3714.01
+;
+; 178924390478792320
+;
+#waituntil 1, 01:03
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter g
+#interval 120
+#TAG Donuts=on
+TOI-3714.01	04 38 12.56	+39 27 28.81
+;
+#quitat 06:32
+#chain Cal_biasdark.txt
+;

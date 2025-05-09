@@ -1,0 +1,22 @@
+;
+; Sp1155-3727
+;
+; 3460806448649173504
+;
+#waituntil 1, 22:58
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 36
+#TAG Donuts=on
+Sp1155-3727	11 55 39.55	-37 27 35.51
+;
+#quitat 04:36
+#chain Obj_dome_rot.txt
+;

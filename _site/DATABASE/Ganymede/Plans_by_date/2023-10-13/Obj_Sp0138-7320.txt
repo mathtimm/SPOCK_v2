@@ -1,0 +1,22 @@
+;
+; Sp0138-7320
+;
+; 4686584548650372736
+;
+#waituntil 1, 2023/10/13 23:23:20
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 19
+#TAG Donuts=on
+Sp0138-7320	01 38 21.52	-73 20 58.46
+;
+#quitat 04:27
+#chain Obj_dome_rot.txt
+;

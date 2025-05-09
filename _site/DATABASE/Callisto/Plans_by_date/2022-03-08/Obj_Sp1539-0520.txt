@@ -1,0 +1,22 @@
+;
+; Sp1539-0520
+;
+; 4400638923299410048
+;
+#waituntil 1, 07:14
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter zYJ
+#interval 40.95339690481681
+#TAG Donuts=on
+Sp1539-0520	15 39 41.93	-05 20 42.76
+;
+#quitat 07:34
+#chain Obj_Sp1801-2825.txt
+;

@@ -1,0 +1,22 @@
+;
+; TOI-2444.01
+;
+; 5156648687468486784
+;
+#waituntil 1, 08:50
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 34
+#TAG Donuts=on
+TOI-2444.01	02 49 03.31	-16 33 33.41
+;
+#quitat 10:17
+#chain Obj_Sp0207-3721_2.txt
+;

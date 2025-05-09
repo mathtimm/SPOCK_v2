@@ -1,0 +1,23 @@
+;
+; Ch_72076_r_3
+;
+; None
+;
+#waituntil 1, 04:30
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20221213
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 300
+#TAG Donuts=on
+Ch_72076_r_3	05 57 12.68	+20 55 43.97
+;
+#quitat 05:00
+#chain Obj_Ch_102450_r_4.txt
+;

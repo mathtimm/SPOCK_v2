@@ -1,0 +1,22 @@
+;
+; Sp0314+2840
+;
+; 121843656638575872
+;
+#waituntil 1, 19:07
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 22
+#TAG Donuts=on
+Sp0314+2840	03 14 12.51	+28 40 39.56
+;
+#quitat 00:26
+#chain Obj_TOI-2096.01.txt
+;

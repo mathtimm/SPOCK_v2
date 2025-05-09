@@ -1,0 +1,22 @@
+;
+; Sp1632-0631
+;
+; 4352307381441947392
+;
+#waituntil 1, 22:42
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 77
+#TAG Donuts=on
+Sp1632-0631	16 32 58.82	-06 31 48.40
+;
+#quitat 22:55
+#chain Obj_dome_rot.txt
+;

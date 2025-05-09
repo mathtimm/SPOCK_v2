@@ -1,0 +1,22 @@
+;
+; Sp1423+5146
+;
+; 1604901876901703168
+;
+#waituntil 1, 20:21
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 57
+#TAG Donuts=on
+Sp1423+5146	14 23 02.80	+51 46 30.52
+;
+#quitat 20:35
+#chain Obj_Sp1122+3755.txt
+;

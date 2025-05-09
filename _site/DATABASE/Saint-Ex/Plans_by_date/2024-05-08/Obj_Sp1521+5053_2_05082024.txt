@@ -1,0 +1,22 @@
+;
+; Sp1521+5053
+;
+; 1595520568815311744
+;
+#waituntil 1, 05/09/2024 05:12:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 85
+#TAG Donuts=on
+Sp1521+5053	15 21 01.08	+50 53 22.79
+;
+#quitat 05/09/2024 12:12:40
+#chain Cal_flatdawn_05082024.txt
+;

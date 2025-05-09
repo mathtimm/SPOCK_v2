@@ -1,0 +1,23 @@
+;
+; ch_HATS-42b
+;
+; None
+;
+#waituntil 1, 2023/12/29 00:20:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20231228
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 13
+#TAG Donuts=on
+ch_HATS-42b	07 13 48.58	-33 26 14.45
+;
+#quitat 05:10
+#chain Obj_dome_rot.txt
+;

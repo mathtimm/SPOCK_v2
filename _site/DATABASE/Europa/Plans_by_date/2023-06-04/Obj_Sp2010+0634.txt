@@ -1,0 +1,22 @@
+;
+; Sp2010+0634
+;
+; 4250327781042868224
+;
+#waituntil 1, 04:36
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 70
+#TAG Donuts=on
+Sp2010+0634	20 10 35.39	+06 34 36.83
+;
+#quitat 10:40
+#chain Cal_flatdawn.txt
+;

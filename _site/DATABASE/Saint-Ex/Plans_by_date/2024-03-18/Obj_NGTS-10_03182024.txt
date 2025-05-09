@@ -1,0 +1,22 @@
+;
+; NGTS-10
+;
+; 2911987212510959232
+;
+#waituntil 1, 03/19/2024 02:31:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 31
+#TAG Donuts=on
+NGTS-10	06 07 29.35	-25 35 41.63
+;
+#quitat 03/19/2024 03:47:20
+#chain Obj_Sp1036+1923_2_03182024.txt
+;

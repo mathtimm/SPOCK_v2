@@ -1,0 +1,22 @@
+;
+; Em01_092117
+;
+; None
+;
+#waituntil 1, 2025/01/05 01:05:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 60
+#TAG Donuts=on
+Em01_092117	06 05 36.44	-25 59 46.64
+;
+#quitat 04:47
+#chain Obj_dome_rot.txt
+;

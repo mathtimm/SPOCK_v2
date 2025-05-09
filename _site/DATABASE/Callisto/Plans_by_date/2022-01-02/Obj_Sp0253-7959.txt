@@ -1,0 +1,22 @@
+;
+; Sp0253-7959
+;
+; 4620448786799883136
+;
+#waituntil 1, 2022/01/03 00:16:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 17
+#TAG Donuts=on
+Sp0253-7959	02 53 44.85	-79 59 13.25
+;
+#quitat 04:42
+#chain Obj_dome_rot.txt
+;

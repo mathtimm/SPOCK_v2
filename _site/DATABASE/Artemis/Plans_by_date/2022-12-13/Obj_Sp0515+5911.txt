@@ -1,0 +1,22 @@
+;
+; Sp0515+5911
+;
+; 281261607033049472
+;
+#waituntil 1, 2022/12/13 19:06:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 16
+#TAG Donuts=on
+Sp0515+5911	05 15 31.07	+59 11 17.43
+;
+#quitat 20:31
+#chain Obj_Trappist-1c.txt
+;

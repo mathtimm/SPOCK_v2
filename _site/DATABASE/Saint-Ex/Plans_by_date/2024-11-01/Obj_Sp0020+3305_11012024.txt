@@ -1,0 +1,22 @@
+;
+; Sp0020+3305
+;
+; 2863419584886542080
+;
+#waituntil 1, 11/02/2024 01:28:40
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 12
+#TAG Donuts=on
+Sp0020+3305	00 20 29.62	+33 05 06.42
+;
+#quitat 11/02/2024 07:21:40
+#chain Obj_Sp0539+4038_11012024.txt
+;

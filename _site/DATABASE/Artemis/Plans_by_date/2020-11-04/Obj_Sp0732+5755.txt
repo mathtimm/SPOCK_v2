@@ -1,0 +1,22 @@
+;
+; Sp0732+5755
+;
+; 989380492985184768
+;
+#waituntil 1, 00:46
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 53
+#TAG Donuts=on
+Sp0732+5755	07 32 01.75	+57 55 43.87
+;
+#quitat 06:28
+#chain Cal_flatdawn.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp1741+0940
+;
+; 4489306942580947584
+;
+#waituntil 1, 04:36
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 29
+#TAG Donuts=on
+Sp1741+0940	17 41 54.40	+09 40 53.94
+;
+#quitat 10:28
+#chain Cal_flatdawn.txt
+;

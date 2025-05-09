@@ -1,0 +1,22 @@
+;
+; Sp0627+5651
+;
+; 998219810558747904
+;
+#waituntil 1, 00:46
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 61
+#TAG Donuts=on
+Sp0627+5651	06 27 38.23	+56 51 40.47
+;
+#quitat 06:27
+#chain Cal_flatdawn.txt
+;

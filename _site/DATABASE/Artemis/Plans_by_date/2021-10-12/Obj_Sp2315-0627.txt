@@ -1,0 +1,22 @@
+;
+; Sp2315-0627
+;
+; 2631857350835259392
+;
+#waituntil 1, 19:17
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 25
+#TAG Donuts=on
+Sp2315-0627	23 15 54.51	-06 27 46.43
+;
+#quitat 21:53
+#chain Obj_Trappist-1d.txt
+;

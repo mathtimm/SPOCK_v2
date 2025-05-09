@@ -1,0 +1,22 @@
+;
+; Sp0302-3950
+;
+; 5044297634405581696
+;
+#waituntil 1, 03:48
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter z'
+#interval 11
+#TAG Donuts=on
+Sp0302-3950	03 02 06.19	-39 50 51.91
+;
+#quitat 09:36
+#chain Cal_flatdawn.txt
+;

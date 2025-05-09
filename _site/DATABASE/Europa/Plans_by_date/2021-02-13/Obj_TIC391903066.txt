@@ -1,0 +1,22 @@
+;
+; TIC391903066
+;
+; 5212899427468921088
+;
+#waituntil 1, 00:15
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 38
+#TAG Donuts=on
+TIC391903066	07 06 07.16	-75 49 10.41
+;
+#quitat 05:00
+#chain Obj_dome_rot.txt
+;

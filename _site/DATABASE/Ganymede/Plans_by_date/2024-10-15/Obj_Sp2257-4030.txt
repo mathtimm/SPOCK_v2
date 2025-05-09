@@ -1,0 +1,22 @@
+;
+; Sp2257-4030
+;
+; 6546160179266900864
+;
+#waituntil 1, 2024/10/15 23:25:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 82
+#TAG Donuts=on
+Sp2257-4030	22 57 04.34	-40 30 15.38
+;
+#quitat 04:23
+#chain Obj_dome_rot.txt
+;

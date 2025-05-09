@@ -1,0 +1,23 @@
+;
+; ch_HATS-2
+;
+; None
+;
+#waituntil 1, 05:02
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220203
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 19.0
+#TAG Donuts=on
+ch_HATS-2	11 46 57.37	-22 33 46.82
+;
+#quitat 09:20
+#chain Cal_flatdawn.txt
+;

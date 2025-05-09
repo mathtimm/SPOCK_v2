@@ -1,0 +1,23 @@
+;
+; ch_K2-131b
+;
+; None
+;
+#waituntil 1, 2023/07/05 23:00:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20230705
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+ch_K2-131b	12 11 00.00	-09 45 55.00
+;
+#quitat 01:50
+#chain Obj_dome_rot.txt
+;

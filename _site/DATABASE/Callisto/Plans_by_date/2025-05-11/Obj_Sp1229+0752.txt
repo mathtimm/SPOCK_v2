@@ -1,0 +1,22 @@
+;
+; Sp1229+0752
+;
+; 3901165013100805248
+;
+#waituntil 1, 2025/05/11 22:45:40
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter zYJ
+#interval 15
+#TAG Donuts=on
+Sp1229+0752	12 29 45.31	+07 52 37.79
+;
+#quitat 04:38
+#chain Obj_dome_rot.txt
+;

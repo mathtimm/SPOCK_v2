@@ -1,0 +1,23 @@
+;
+; TOI-2015
+;
+; 6491962296196145664
+;
+#waituntil 1, 2022/06/15 20:47:40
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 10
+#TAG Donuts=on
+TOI-2015	15 28 31.84	+27 21 39.86
+;
+#quitat 03:57
+#chain Obj_Sp1843+4040.txt
+;

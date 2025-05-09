@@ -1,0 +1,22 @@
+;
+; TIC-2913208
+;
+; None
+;
+#waituntil 1, 2022/07/25 22:53:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter g'
+#interval 116
+#TAG Donuts=on
+TIC-2913208	17 23 49.35	-57 24 41.53
+;
+#quitat 07:18
+#chain Obj_Sp2346+1129.txt
+;

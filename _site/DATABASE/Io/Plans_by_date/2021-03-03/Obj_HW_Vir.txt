@@ -1,0 +1,22 @@
+;
+; HW_Vir
+;
+; None
+;
+#waituntil 1, 07:25
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 10
+#TAG Donuts=on
+HW_Vir	12 44 19.99	-08 40 15.96
+;
+#quitat 09:48
+#chain Obj_dome_rot.txt
+;

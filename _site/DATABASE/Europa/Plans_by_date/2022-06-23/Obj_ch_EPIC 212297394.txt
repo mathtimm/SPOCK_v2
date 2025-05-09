@@ -1,0 +1,23 @@
+;
+; ch_EPIC 212297394
+;
+; None
+;
+#waituntil 1, 2022/06/23 23:50:00
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220623
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 40.0
+#TAG Donuts=on
+ch_EPIC 212297394	13 48 49.49	-17 36 35.63
+;
+#quitat 03:45
+#chain Obj_dome_rot.txt
+;

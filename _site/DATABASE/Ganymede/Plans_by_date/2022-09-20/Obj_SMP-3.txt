@@ -1,0 +1,22 @@
+;
+; SMP-3
+;
+; None
+;
+#waituntil 1, 01:32
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter Clear
+#interval 10
+#TAG Donuts=on
+SMP-3	22 02 25.24	-11 42 58.00
+;
+#quitat 02:00
+#chain Obj_Sp2355-5800_2.txt
+;

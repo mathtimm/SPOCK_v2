@@ -1,0 +1,22 @@
+;
+; Sp0011+5908
+;
+; 423027104407576576
+;
+#waituntil 1, 22:51
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter z
+#interval 12
+#TAG Donuts=on
+Sp0011+5908	00 11 30.93	+59 08 39.89
+;
+#quitat 00:08
+#chain Obj_Sp0644+7206.txt
+;

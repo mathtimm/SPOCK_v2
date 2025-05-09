@@ -1,0 +1,22 @@
+;
+; Sp2049-1716
+;
+; 6858958940879829248
+;
+#waituntil 1, 19:52
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 53
+#TAG Donuts=on
+Sp2049-1716	20 49 52.75	-17 16 08.46
+;
+#quitat 21:40
+#chain Obj_TOI-2267.02.txt
+;

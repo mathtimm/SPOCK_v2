@@ -1,0 +1,22 @@
+;
+; Sp0807+3213
+;
+; 901941452829250560
+;
+#waituntil 1, 02/05/2024 01:56:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 79
+#TAG Donuts=on
+Sp0807+3213	08 07 26.00	+32 13 10.07
+;
+#quitat 02/05/2024 07:52:00
+#chain Obj_Sp1356+4342_02042024.txt
+;

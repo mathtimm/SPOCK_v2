@@ -1,0 +1,22 @@
+;
+; Sp1416+1348
+;
+; 1227133699053734528
+;
+#waituntil 1, 06:34
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter zYJ
+#interval 23.507225300112108
+#TAG Donuts=on
+Sp1416+1348	14 16 24.08	+13 48 26.18
+;
+#quitat 06:54
+#chain Obj_Sp1425-3650.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp1925+0938
+;
+; 4308488780772030336
+;
+#waituntil 1, 2023/09/08 23:09:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 13
+#TAG Donuts=on
+Sp1925+0938	19 25 30.91	+09 38 23.29
+;
+#quitat 04:35
+#chain Obj_dome_rot.txt
+;

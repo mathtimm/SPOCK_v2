@@ -1,0 +1,22 @@
+;
+; Sp0306-2647.01
+;
+; 5072067381112863104
+;
+#waituntil 1, 07:38
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 58
+#TAG Donuts=on
+Sp0306-2647.01	03 06 01.78	-26 47 48.29
+;
+#quitat 10:22
+#chain Obj_Sp0027-5401_2.txt
+;

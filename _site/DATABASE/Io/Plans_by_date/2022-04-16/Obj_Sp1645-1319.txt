@@ -1,0 +1,22 @@
+;
+; Sp1645-1319
+;
+; 4327580052130121728
+;
+#waituntil 1, 04:39
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 82
+#TAG Donuts=on
+Sp1645-1319	16 45 22.08	-13 19 52.26
+;
+#quitat 08:53
+#chain Obj_TOI-134.txt
+;

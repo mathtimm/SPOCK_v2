@@ -1,0 +1,23 @@
+;
+; Sp1105+4331
+;
+; 778947608243864320
+;
+#waituntil 1, 2022/03/17 19:53:00
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter r
+#interval 82
+#TAG Donuts=on
+Sp1105+4331	11 05 29.19	+43 31 17.89
+;
+#quitat 01:10
+#chain Obj_Sp1430+5943.txt
+;

@@ -1,0 +1,22 @@
+;
+; TOI-4341
+;
+; None
+;
+#waituntil 1, 23:10
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 26
+#TAG Donuts=on
+TOI-4341	19 26 08.37	-43 11 13.88
+;
+#quitat 05:51
+#chain Obj_dome_rot.txt
+;

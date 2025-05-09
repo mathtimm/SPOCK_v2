@@ -1,0 +1,22 @@
+;
+; Sp0810+1420
+;
+; 653799751664331520
+;
+#waituntil 1, 12/10/2021 07:31:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 133
+#TAG Donuts=on
+Sp0810+1420	08 10 58.65	+14 20 38.78
+;
+#quitat 12/10/2021 13:52:00
+#chain Cal_flatdawn_12092021.txt
+;

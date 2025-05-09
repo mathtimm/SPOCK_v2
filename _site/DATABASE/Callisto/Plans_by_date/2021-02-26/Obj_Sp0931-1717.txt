@@ -1,0 +1,22 @@
+;
+; Sp0931-1717
+;
+; 5682008056323530368
+;
+#waituntil 1, 00:04
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 20
+#TAG Donuts=on
+Sp0931-1717	09 31 22.30	-17 17 42.32
+;
+#quitat 04:50
+#chain Obj_dome_rot.txt
+;

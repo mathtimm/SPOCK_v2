@@ -1,0 +1,22 @@
+;
+; TOI-3288
+;
+; 6685431748042347776
+;
+#waituntil 1, 2022/08/12 23:00:00
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 17
+#TAG Donuts=on
+TOI-3288	19 48 26.48	-43 01 04.80
+;
+#quitat 08:16
+#chain Obj_dome_rot.txt
+;

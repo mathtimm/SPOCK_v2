@@ -1,0 +1,23 @@
+;
+; ch_Corot-29
+;
+; None
+;
+#waituntil 1, 23:50
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20210817
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 110.0
+#TAG Donuts=on
+ch_Corot-29	18 35 36.50	+06 28 46.68
+;
+#quitat 05:00
+#chain Obj_dome_rot.txt
+;

@@ -1,0 +1,22 @@
+;
+; Sp0315+8122
+;
+; 568406902646099328
+;
+#waituntil 1, 00:48
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 78
+#TAG Donuts=on
+Sp0315+8122	03 15 59.25	+81 22 45.35
+;
+#quitat 06:29
+#chain Cal_biasdark.txt
+;

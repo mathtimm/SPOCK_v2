@@ -1,0 +1,23 @@
+;
+; Ch_LSE44_r_
+;
+; None
+;
+#waituntil 1, 01:29
+#domeopen
+#chill -60
+#dir C:\Users\speculoos\Documents\ACP Astronomy\Images\Chilean\20220401
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r'
+#interval 30
+#TAG Donuts=on
+Ch_LSE44_r_	13 52 48.10	-48 09 05.10
+;
+#quitat 01:42
+#chain Obj_Ch_LSE44_i_.txt
+;

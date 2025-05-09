@@ -1,0 +1,22 @@
+;
+; Sp1925+0938
+;
+; 4308488780772030336
+;
+#waituntil 1, 07/14/2024 03:27:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 29
+#TAG Donuts=on
+Sp1925+0938	19 25 30.91	+09 38 23.29
+;
+#quitat 07/14/2024 07:44:20
+#chain Obj_Sp1757+7042_07132024.txt
+;

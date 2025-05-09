@@ -1,0 +1,22 @@
+;
+; TOI-5688.01
+;
+; 1363205856494897024
+;
+#waituntil 1, 00:15
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter i
+#interval 80
+#TAG Donuts=on
+TOI-5688.01	17 47 41.54	+47 42 18.18
+;
+#quitat 04:46
+#chain Obj_Sp1739+5532.txt
+;

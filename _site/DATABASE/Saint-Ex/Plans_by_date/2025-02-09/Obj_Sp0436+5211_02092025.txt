@@ -1,0 +1,22 @@
+;
+; Sp0436+5211
+;
+; 272752039871123712
+;
+#waituntil 1, 02/10/2025 02:01:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 59
+#TAG Donuts=on
+Sp0436+5211	04 36 22.60	+52 11 50.57
+;
+#quitat 02/10/2025 07:52:20
+#chain Obj_Sp1253+4034_02092025.txt
+;

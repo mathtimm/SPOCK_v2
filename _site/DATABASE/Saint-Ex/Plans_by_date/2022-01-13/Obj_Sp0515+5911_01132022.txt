@@ -1,0 +1,22 @@
+;
+; Sp0515+5911
+;
+; 281261607033049472
+;
+#waituntil 1, 01/14/2022 01:38:00
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 36
+#TAG Donuts=on
+Sp0515+5911	05 15 31.07	+59 11 17.43
+;
+#quitat 01/14/2022 07:46:40
+#chain Obj_Sp1105+4331_01132022.txt
+;

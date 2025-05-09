@@ -1,0 +1,22 @@
+;
+; TOI-2267-01
+;
+; None
+;
+#waituntil 1, 11/26/2020 01:38:00
+#domeopen
+#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 17
+#TAG Donuts=on
+TOI-2267-01	04 20 14.76	+84 54 02.97
+;
+#quitat 11/26/2020 07:20:00
+#chain Obj_Sp0314+2840_11252020.txt
+;

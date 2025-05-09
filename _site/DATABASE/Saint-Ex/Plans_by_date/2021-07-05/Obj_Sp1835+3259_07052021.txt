@@ -1,0 +1,22 @@
+;
+; Sp1835+3259
+;
+; 2091177593123254016
+;
+#waituntil 1, 07/06/2021 03:29:20
+#domeopen
+;#chill -70
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 19
+#TAG Donuts=on
+Sp1835+3259	18 35 37.87	+32 59 53.31
+;
+#quitat 07/06/2021 12:04:40
+#chain Cal_flatdawn_07052021.txt
+;

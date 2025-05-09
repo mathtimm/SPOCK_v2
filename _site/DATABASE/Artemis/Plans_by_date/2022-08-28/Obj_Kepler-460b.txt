@@ -1,0 +1,23 @@
+;
+; Kepler-460b
+;
+; None
+;
+#waituntil 1, 2022/08/28 20:10:00
+#domeopen
+#chill -60
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+#autofocus 
+#count 5000
+#binning 1
+#filter I+z
+#interval 17
+#TAG Donuts=on
+Kepler-460b	19 13 53.98	+40 39 04.63
+;
+#quitat 03:12
+#chain Obj_Sp0025+5422.txt
+;

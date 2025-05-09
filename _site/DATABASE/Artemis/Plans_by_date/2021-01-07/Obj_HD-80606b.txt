@@ -1,0 +1,22 @@
+;
+; HD-80606b
+;
+; 1019003226022657920
+;
+#waituntil 1, 21:36
+#domeopen
+#chill -60
+#waitinlimits 600
+#nopreview 
+;#afinterval 60
+;#autofocus 
+#count 5000
+#binning 1
+#filter r
+#interval 10
+#TAG Donuts=on
+HD-80606b	09 22 37.67	+50 36 13.59
+;
+#quitat 07:04
+#chain Cal_flatdawn.txt
+;
