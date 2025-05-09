@@ -3,7 +3,7 @@ layout: default
 title: Welcome to SPOCK Documentation
 ---
 
-![SPOCK Logo](/assets/images/spock_v2_logo.png){: style="width: 800px; height: auto;"}
+![SPOCK Logo]({{ site.baseurl }}/assets/images/spock_v2_logo.png){: style="width: 800px; height: auto;"}
 
 # SPOCK v2 Documentation
 

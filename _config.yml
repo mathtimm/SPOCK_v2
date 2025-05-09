@@ -6,6 +6,8 @@ description: Documentation for the SPOCK project
 ## GitHub Pages base URL
 #baseurl: "."   # Name of your GitHub repo (important!)
 
+url: "https://username.github.io"
+baseurl: "/SPOCK_v2"
 
 # Files to include or exclude
 include:
@@ -41,4 +43,5 @@ exclude:
 # Optional: if you want pretty URLs
 permalink: pretty
 
-highlighter: pygments
+markdown: kramdown
+highlighter: rouge
