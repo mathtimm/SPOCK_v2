@@ -32,6 +32,7 @@ import shutil
 import SPOCK.ETC as ETC
 from SPOCK import user_portal, pwd_portal, pwd_appcs, path_spock, path_credential_json, target_list_from_stargate_path
 import SPOCK.mphot as mphot
+from requests.exceptions import ConnectionError
 
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
@@ -172,36 +173,40 @@ class Schedules:
         """
 
         if (filename_list_special is None) or (filename_follow_up is None):
-            sh = client.open('SPECULOOS WG6')
-            # Read stars lists
-            if mangos:
-                worksheet_follow_up = sh.worksheet("Annex_Targets_V1-MANGOs")
-            else:
-                worksheet_follow_up = sh.worksheet("Annex_Targets_V1-PLANETS")
-            dataframe = pd.DataFrame(worksheet_follow_up.get_all_records())
-            self.target_table_spc_follow_up = dataframe.rename(columns={"sp_id": "Sp_ID", "gaia_dr2": "Gaia_ID",
-                                                                        "period": "P", "period_e": "P_err",
-                                                                        "duration": "W", "duration_e": "W_err",
-                                                                        "dec": "DEC", "ra": "RA",
-                                                                        "dec_err": "DEC_err", "ra_err": "RA_err",
+            try:
+                sh = client.open('SPECULOOS WG6')
+                # Read stars lists
+                if mangos:
+                    worksheet_follow_up = sh.worksheet("Annex_Targets_V1-MANGOs")
+                else:
+                    worksheet_follow_up = sh.worksheet("Annex_Targets_V1-PLANETS")
+                dataframe = pd.DataFrame(worksheet_follow_up.get_all_records())
+                self.target_table_spc_follow_up = dataframe.rename(columns={"sp_id": "Sp_ID", "gaia_dr2": "Gaia_ID",
+                                                                            "period": "P", "period_e": "P_err",
+                                                                            "duration": "W", "duration_e": "W_err",
+                                                                            "dec": "DEC", "ra": "RA",
+                                                                            "dec_err": "DEC_err", "ra_err": "RA_err",
 
-                                                                        })
-            self.targets_follow_up = target_list_good_coord_format(df=self.target_table_spc_follow_up)
+                                                                            })
+                self.targets_follow_up = target_list_good_coord_format(df=self.target_table_spc_follow_up)
 
-            # Read follow up (planet candidates) list
-            self.target_table_spc_follow_up['W'] /= 24
-            self.target_table_spc_follow_up['W_err'] /= 24
+                # Read follow up (planet candidates) list
+                self.target_table_spc_follow_up['W'] /= 24
+                self.target_table_spc_follow_up['W_err'] /= 24
 
-            worksheet_special = sh.worksheet("Annex_Targets_V2-STARS")
-            dataframe = pd.DataFrame(worksheet_special.get_all_records(expected_headers= [
-                            "SPECULOOS", "Annex_Prog", "V_mag", "Alias", "Note", "Active", 
-                            "Next Obs", "spc", "soi", "twomass", "gaia", "wise", "ra", "dec", 
-                            "ra_err", "dec_err", "Filter_spc", "Filter_trap", "texp_spc", 
-                            "texp_trap", "mag_j", "mag_j_err", "SpT", "e_Spt", "Teff", "distance"  ]))
-            self.target_table_spc = dataframe.rename(columns={"spc": "Sp_ID", "gaia": "Gaia_ID", "dec": "DEC",
-                                                              "ra": "RA", "dec_err": "DEC_err", "ra_err": "RA_err",
-                                                              "mag_j": "J", "V_mag": "V"})
-            self.targets = target_list_good_coord_format(df=self.target_table_spc)
+                worksheet_special = sh.worksheet("Annex_Targets_V2-STARS")
+                dataframe = pd.DataFrame(worksheet_special.get_all_records(expected_headers= [
+                                "SPECULOOS", "Annex_Prog", "V_mag", "Alias", "Note", "Active", 
+                                "Next Obs", "spc", "soi", "twomass", "gaia", "wise", "ra", "dec", 
+                                "ra_err", "dec_err", "Filter_spc", "Filter_trap", "texp_spc", 
+                                "texp_trap", "mag_j", "mag_j_err", "SpT", "e_Spt", "Teff", "distance"  ]))
+                self.target_table_spc = dataframe.rename(columns={"spc": "Sp_ID", "gaia": "Gaia_ID", "dec": "DEC",
+                                                                "ra": "RA", "dec_err": "DEC_err", "ra_err": "RA_err",
+                                                                "mag_j": "J", "V_mag": "V"})
+                self.targets = target_list_good_coord_format(df=self.target_table_spc)
+            except ConnectionError:
+                print(Fore.RED + 'ERROR: ' + Fore.BLACK +
+                      ' there is a problem with your internet connection. ')
 
         if filename_list_special is not None:
             self.target_list_special = filename_list_special

@@ -1532,6 +1532,7 @@ class Schedules:
 
         set_targets_index = (self.priority['alt set start'] > self.Altitude_constraint) & \
                             (self.priority['alt set end'] > self.Altitude_constraint)
+        self.priority['set or rise'] = self.priority['set or rise'].astype(object)
         self.priority['set or rise'][set_targets_index] = 'set'
 
         rise_targets_index = (self.priority['alt rise start'] > self.Altitude_constraint) \
