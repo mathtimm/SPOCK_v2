@@ -188,3 +188,5 @@ old_docs_source/
 vendor/
 
 _site/
+
+.DS_Store
