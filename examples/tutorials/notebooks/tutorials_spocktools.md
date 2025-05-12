@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Tutorials
+title: Tutorials Tools
 permalink: /examples/tutorials/notebooks/tutorials_spocktools
 ---
 

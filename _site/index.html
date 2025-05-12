@@ -6,44 +6,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
       background-color: #f5f7fa;
       color: #222;
-      line-height: 1.6;
-    }
-
-    header {
-      background-color: #003366;
-      color: white;
-      padding: 1rem 2rem;
       display: flex;
-      justify-content: space-between;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 300px;
+      background-color: #21618c  ;
+      color: white;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      flex-wrap: wrap;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
+    .sidebar img {
+      max-width: 90%;
+      height: auto;
+      margin-bottom: 1.5rem;
+      border-radius: 0.5px;
+      background: black;
+      padding: 0.5rem;
     }
 
-    nav a {
+    .sidebar nav a {
+      display: block;
       color: #cce4ff;
-      margin-left: 1rem;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 5000;
+      margin: 0.5rem 0;
     }
 
-    nav a:hover {
+    .sidebar nav a:hover {
       text-decoration: underline;
+    }
+
+    .content {
+      flex: 1;
+      padding: 2rem;
+      box-sizing: border-box;
     }
 
     main {
       max-width: 900px;
-      margin: 2rem auto;
+      margin: 0 auto;
       padding: 1.5rem;
       background: white;
       border-radius: 8px;
@@ -78,24 +92,47 @@
       font-size: 0.9rem;
       margin: 2rem 0;
     }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+      }
+
+      .sidebar nav a {
+        margin: 0 1rem;
+      }
+
+      .content {
+        padding: 1rem;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>SPOCK Documentation</h1>
+  <div class="sidebar">
+    <img src="/SPOCK_v2/assets/images/sso.png" alt="SPOCK Logo">
+    <!-- Add a second logo below if needed -->
+    <!-- <img src="/SPOCK_v2/assets/images/another_logo.png" alt="Another Logo"> -->
     <nav>
-      <a href="/">Home</a>
-      <a href="/docs">Docs</a>
-      <a href="/examples/tutorials/notebooks/tutorials_spocktools">Tutorials</a>
-      
+      <a href="/SPOCK_v2/">Home</a>
+      <a href="/SPOCK_v2/docs">Docs</a>
+      <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spocktools">Tutorials Tools</a>
+      <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spockplots">Tutorials Plots</a>
     </nav>
-  </header>
+  </div>
 
-  <main>
-    
+  <div class="content">
+    <main>
+      
 
-    <p><img src="/assets/images/spock_v2_logo.png" alt="SPOCK Logo" style="width: 800px; height: auto;" /></p>
+      <p><img src="/SPOCK_v2/assets/images/spock_v2_logo.png" alt="SPOCK Logo" style="width: 800px; height: auto;" /></p>
 
 <h1 id="spock-v2-documentation">SPOCK v2 Documentation</h1>
 
@@ -108,10 +145,11 @@ neighborhood <a href="https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos
 site</a>.</p>
 
 
-  </main>
+    </main>
 
-  <footer>
-    &copy; 2025 SPOCK Project
-  </footer>
+    <footer>
+      &copy; 2025 SPOCK Project
+    </footer>
+  </div>
 </body>
 </html>
