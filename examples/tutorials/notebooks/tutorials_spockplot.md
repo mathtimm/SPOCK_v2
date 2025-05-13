@@ -13,7 +13,7 @@ permalink: /examples/tutorials/notebooks/tutorials_spockplot
 
 Here we present a function to plot the phase coverage of a given target on a range of periods. The user will have to give:
 
-* Th target name, ex: `target = 'Sp1245-5721'`
+* The target name, ex: `target = 'Sp1245-5721'`
 
 * Lower boundary of the period range, `pmin = 0.1`
 
@@ -21,7 +21,7 @@ Here we present a function to plot the phase coverage of a given target on a ran
 
 <div class="alert alert-info">
 
-**Note:** It can happen hat *SPOCK* does not find light curve for a target so the coverage appears nul when it's not. This bug will be solved shortly.
+**Note:** It can happen hat *SPOCK* does not find light curve for a target, so the coverage appears null when it's not. This bug will be solved shortly.
 
 </div>
 
