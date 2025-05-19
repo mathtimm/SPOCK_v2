@@ -4,7 +4,6 @@ title: Tutorials Plots
 permalink: /examples/tutorials/notebooks/tutorials_spockplot
 ---
 
-
 # Plot with SPOCK
 
 ## 1- Phase plot
