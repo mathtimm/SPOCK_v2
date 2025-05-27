@@ -701,22 +701,13 @@ def upload_plans(day, nb_days, telescope):
     -------
 
     """
-    if telescope.find('Callisto') is not -1:
-        upload_np_calli(day, nb_days)
-    if telescope.find('Ganymede') is not -1:
-        upload_np_gany(day, nb_days)
-    if telescope.find('Io') is not -1:
-        upload_np_io(day, nb_days)
-    if telescope.find('Europa') is not -1:
-        upload_np_euro(day, nb_days)
-    if telescope.find('Artemis') is not -1:
-        upload_np_artemis(day, nb_days)
+    if (telescope == 'Io') or telescope == ('Europa') or (telescope == 'Ganymede') or (telescope == 'Callisto') or (telescope =='Artemis')\
+            or (telescope =='Saint-Ex'):
+        upload_np(day,nb_days,telescope)
     if telescope.find('TS_La_Silla') is not -1:
         upload_np_ts(day, nb_days)
     if telescope.find('TN_Oukaimeden') is not -1:
         upload_np_tn(day, nb_days)
-    if telescope.find('Saint-Ex') is not -1:
-        upload_np_saint_ex(day, nb_days)
 
     # ------------------- update archive date by date plans folder  ------------------
 

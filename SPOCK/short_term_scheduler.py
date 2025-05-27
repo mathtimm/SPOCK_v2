@@ -23,8 +23,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import os
 import pandas as pd
 import requests
-from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
-    upload_np_calli, upload_np_tn, upload_np_ts
+from .upload_night_plans import upload_np, upload_np_tn, upload_np_ts
 from .make_night_plans import make_np, make_astra_schedule_file, offset_target_position
 import subprocess
 import sys
@@ -1271,16 +1270,23 @@ def make_plans(day, nb_days, telescope):
 
 
 def upload_plans(day, nb_days, telescope):
-    if telescope.find('Callisto') is not -1:
-        upload_np_calli(day, nb_days)
-    if telescope.find('Ganymede') is not -1:
-        upload_np_gany(day, nb_days)
-    if telescope.find('Io') is not -1:
-        upload_np_io(day, nb_days)
-    if telescope.find('Europa') is not -1:
-        upload_np_euro(day, nb_days)
-    if telescope.find('Artemis') is not -1:
-        upload_np_artemis(day, nb_days)
+    """ upload plans to DATABASE
+
+    Parameters
+    ----------
+    day : date
+        date in fmt 'yyyy-mm-dd'
+    nb_days : int
+        number of days
+    telescope : str
+        name of telescope
+
+    Returns
+    -------
+
+    """
+    if (telescope == 'Io') or telescope == ('Europa') or (telescope == 'Ganymede') or (telescope == 'Callisto') or (telescope =='Artemis') or (telescope == 'Saint-Ex'):
+        upload_np(day,nb_days,telescope)
     if telescope.find('TS_La_Silla') is not -1:
         upload_np_ts(day, nb_days)
     if telescope.find('TN_Oukaimeden') is not -1:
