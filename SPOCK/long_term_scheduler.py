@@ -40,7 +40,7 @@ iers.IERS_A_URL = 'https://datacenter.iers.org/data/9/finals2000A.all'  # 'http:
 ssl._create_default_https_context = ssl._create_unverified_context
 
 from .make_night_plans import make_np, make_astra_schedule_file, offset_target_position
-from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
+from .upload_night_plans import upload_np, upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
     upload_np_calli, upload_np_tn, upload_np_ts
 
 
@@ -1517,7 +1517,7 @@ class Schedules:
                 10 ** (4 + 1 / (1 + 200 - self.target_table_spc['nb_hours_surved'][idx_on_going]))
             self.priority['priority'][idx_to_be_done] *= \
                 10 ** (1 / (1 + 200 - self.target_table_spc['nb_hours_surved'][idx_to_be_done]))
-            self.priority['priority'][idx_prog5] *= 10 * self.target_table_spc['SNR_Spec_temp'][idx_prog5] * 0
+            self.priority['priority'][idx_prog5] *= -1 #10 * self.target_table_spc['SNR_Spec_temp'][idx_prog5] * 0
             self.priority['priority'][idx_done] = -1
             
 

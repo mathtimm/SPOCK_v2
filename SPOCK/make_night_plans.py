@@ -42,10 +42,10 @@ def offset_target_position(day_start, nb_days, telescope, ra_offset, dec_offset)
         for i in range(len(scheduler_table)):
             coord = SkyCoord(
                 str(int(scheduler_table['ra (h)'][i])) + ":" + str(int(scheduler_table['ra (m)'][i])) + ":" + str(
-                    scheduler_table['ra (s)'][i])
+                    int(scheduler_table['ra (s)'][i]))
                              + " " +
-                             str(int(scheduler_table['dec (d)'][i])) + ":" + str(int(scheduler_table['dec (m)'][i])) + ":" + str(
-                    scheduler_table['dec (s)'][i])
+                             str(int(scheduler_table['dec (d)'][i])) + ":" + str(abs(int(scheduler_table['dec (m)'][i]))) + ":" + str(
+                    abs(int(scheduler_table['dec (s)'][i])))
                             , unit=(u.hourangle, u.deg))
             
             new_c = SkyCoord(ra=coord.ra.to(u.deg) + ra_offset/3600*u.deg,
