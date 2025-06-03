@@ -4,7 +4,7 @@ title: Tutorials Tools
 permalink: /examples/tutorials/notebooks/tutorials_spocktools
 ---
 
-# Useful tools
+# Useful tools 🛠️
 
 ## 1- Transit observability predictions
 

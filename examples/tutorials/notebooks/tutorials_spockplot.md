@@ -4,7 +4,7 @@ title: Tutorials Plots
 permalink: /examples/tutorials/notebooks/tutorials_spockplot
 ---
 
-# Plot with SPOCK
+# Plot with SPOCK 📈	
 
 ## 1- Phase plot
 
@@ -18,11 +18,8 @@ Here we present a function to plot the phase coverage of a given target on a ran
 
 * upper boundary of the period range, `pmax = 3.1`
 
-<div class="alert alert-info">
 
 **Note:** It can happen that *SPOCK* does not find light curve for a target, so the coverage appears null when it's not. This bug will be solved shortly.
-
-</div>
 
 
 ```python
