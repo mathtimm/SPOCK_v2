@@ -172,11 +172,11 @@ SPOCKplot.airmass_altitude_plot_given_target(name_observatory="SSO",\
     
 
 
-## 3- Gant chart of <span style="background-color:lightyellow"><font color='orangered'> **night_blocks** </font></span> 
+## 3- Gant chart of <span style="background-color:lightyellow"><font color='orangered'> night_blocks </font></span> 
 
-SPOCKplot gives the possibility to draw a gant chart of all observations on your local database scheduled with *SPOCK* or on a give date range. The plot will be automatic open in another window and is interactive. When passing on a block <span style="background-color:lightyellow"><font color='orangered'> **night_blocks** </font></span> start time, filter and exposure time will be displayed.
+SPOCKplot gives the possibility to draw a gant chart of all observations on your local database scheduled with *SPOCK* or on a give date range. The plot will be automatic open in another window and is interactive. When passing on a block <span style="background-color:lightyellow"><font color='orangered'> night_blocks </font></span> start time, filter and exposure time will be displayed.
 
-### All <span style="background-color:lightyellow"><font color='orangered'> **night_blocks** </font></span>  ever produced
+### All <span style="background-color:lightyellow"><font color='orangered'> night_blocks </font></span>  ever produced
 
 With ``gantt_chart_all()`` the user plots the night blocks from the whole **local** databse (can take up to 30-40 seconds).
 
@@ -187,7 +187,7 @@ import SPOCK.plots_scheduler as SPOCKplot
 SPOCKplot.gantt_chart_all()
 ```
 
-###  <span style="background-color:lightyellow"><font color='orangered'> **night_blocks** </font></span>  on a specific date range
+###  <span style="background-color:lightyellow"><font color='orangered'> night_blocks </font></span>  on a specific date range
 
 In this case the user must specify `date_start` and `date_end` in addition to a list of SPECULOOS telescopes.
 
