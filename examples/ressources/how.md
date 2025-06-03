@@ -1,11 +1,10 @@
 ---
 layout: default
 title: How SPOCK works
-permalink: /examples/tutorials/ressources/
+permalink: /examples/ressources/how
 ---
 
-
-# How *SPOCK* works
+# How *SPOCK* works 💡
 
 
 ## 1/ How `spock.long_term_scheduler` works

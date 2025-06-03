@@ -141,15 +141,15 @@
     <!-- <img src="{{ site.baseurl }}/assets/images/another_logo.png" alt="Another Logo"> -->
     <nav>
       <a href="{{ site.baseurl }}/">Home</a>
-      <a href="{{ site.baseurl }}/docs">Docs</a>
+      <a href="{{ site.baseurl }}/examples/ressources/installation">Installation</a>
       <a href="{{ site.baseurl }}/examples/tutorials/notebooks/tutorials_SPOCKApp">Tutorials SPOCK App</a>
       <a href="{{ site.baseurl }}/examples/tutorials/notebooks/tutorials_spocktools">Tutorials Tools</a>
       <a href="{{ site.baseurl }}/examples/tutorials/notebooks/tutorials_spockplot">Tutorials Plots</a>
-      <a href="{{ site.baseurl }}/examples/tutorials/notebooks/tutorials_SPOCKApp">Tutorials SPOCK App</a>
       <a href="{{ site.baseurl }}/examples/ressources/how">How SPOCK works</a>
 
       <!-- Auto TOC insertion -->
       <div id="sub-toc" style="margin-top: 1rem; text-align: left; font-size: 0.9rem;"></div>
+
 
     </nav>
   </div>
@@ -167,5 +167,27 @@
       &copy; {{ site.time | date: "%Y" }} SPOCK Project
     </footer>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const content = document.querySelector("main");
+      const toc = document.getElementById("sub-toc");
+
+      if (!content || !toc) return;
+
+      const headings = content.querySelectorAll("h2, h3");
+      if (!headings.length) return;
+
+      let list = "<strong>On this page:</strong><ul style='list-style:none; padding-left:0'>";
+      headings.forEach(h => {
+        const id = h.id || h.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+        h.id = id; // ensure it has an id
+        const indent = h.tagName === "H3" ? " style='margin-left:1em'" : "";
+        list += `<li${indent}><a href="#${id}" style="color:#cce4ff; text-decoration:none;">${h.textContent}</a></li>`;
+      });
+      list += "</ul>";
+      toc.innerHTML = list;
+    });
+  </script>
+
 </body>
 </html>

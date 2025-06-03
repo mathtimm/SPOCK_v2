@@ -18,4 +18,4 @@ site](https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos).
 📝 The strategy of the SPECULOOS survey and how it is implemented in SPOCK is described in [Sebastian et al. 2020](https://www.aanda.org/articles/aa/full_html/2021/01/aa38827-20/aa38827-20.html). More details are given in 
 
 
-⚠️ Only members of the SPECULOOS consortium can use SPOCK. In particular, the two persons in charge of the code are Elsa Ducrot (elsa.ducrot@cea.fr) and Mathilde Timmermans. Please contact them for any inquiries.
+⚠️ Only members of the SPECULOOS consortium can use SPOCK. In particular, the two persons in charge of the scheduling are [Elsa Ducrot](elsa.ducrot@cea.fr) and [Mathilde Timmermans](mathilde.timmermans@uliege.be). 

@@ -4,7 +4,7 @@ title: Tutorials App
 permalink: /examples/tutorials/notebooks/tutorials_SPOCKApp
 ---
 
-# SPOCKApp
+# SPOCKApp 🧩
 
 ## Quick start videos
 

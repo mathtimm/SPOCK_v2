@@ -118,6 +118,18 @@
       .content {
         padding: 1rem;
       }
+      .alert {
+        padding: 1rem;
+        border-radius: 6px;
+        margin: 1rem 0;
+        border-left: 6px solid #17a2b8;
+        background-color: #e9f7fc;
+        color: #0c5460;
+      }
+
+    .alert-info {
+        border-left-color: #17a2b8;
+      }
     }
   </style>
 </head>
@@ -129,10 +141,16 @@
     <!-- <img src="/SPOCK_v2/assets/images/another_logo.png" alt="Another Logo"> -->
     <nav>
       <a href="/SPOCK_v2/">Home</a>
-      <a href="/SPOCK_v2/docs">Docs</a>
+      <a href="/SPOCK_v2/examples/ressources/installation">Installation</a>
+      <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_SPOCKApp">Tutorials SPOCK App</a>
       <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spocktools">Tutorials Tools</a>
       <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spockplot">Tutorials Plots</a>
-      <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_SPOCKApp">Tutorials SPOCK App</a>
+      <a href="/SPOCK_v2/examples/ressources/how">How SPOCK works</a>
+
+      <!-- Auto TOC insertion -->
+      <div id="sub-toc" style="margin-top: 1rem; text-align: left; font-size: 0.9rem;"></div>
+
+
     </nav>
   </div>
 
@@ -152,9 +170,9 @@ exoplanets around the smallest and coolest stars of the solar
 neighborhood <a href="https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos">Link to
 site</a>.</p>
 
-<p>📝 The strategy of the SPECULOOS survey and how it is implemented in SPOCK is described in <a href="https://www.aanda.org/articles/aa/full_html/2021/01/aa38827-20/aa38827-20.html">Sebastian et al. 2020</a></p>
+<p>📝 The strategy of the SPECULOOS survey and how it is implemented in SPOCK is described in <a href="https://www.aanda.org/articles/aa/full_html/2021/01/aa38827-20/aa38827-20.html">Sebastian et al. 2020</a>. More details are given in</p>
 
-<p>⚠️ Only members of the SPECULOOS consortium can use SPOCK. In particular, the two persons in charge of the code are Elsa Ducrot (elsa.ducrot@cea.fr) and Mathilde Timmermans. Please contact them for any inquiries relative to <em>SPOCK</em>.</p>
+<p>⚠️ Only members of the SPECULOOS consortium can use SPOCK. In particular, the two persons in charge of the scheduling are <a href="elsa.ducrot@cea.fr">Elsa Ducrot</a> and <a href="mathilde.timmermans@uliege.be">Mathilde Timmermans</a>.</p>
 
     </main>
 
@@ -162,5 +180,27 @@ site</a>.</p>
       &copy; 2025 SPOCK Project
     </footer>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const content = document.querySelector("main");
+      const toc = document.getElementById("sub-toc");
+
+      if (!content || !toc) return;
+
+      const headings = content.querySelectorAll("h2, h3");
+      if (!headings.length) return;
+
+      let list = "<strong>On this page:</strong><ul style='list-style:none; padding-left:0'>";
+      headings.forEach(h => {
+        const id = h.id || h.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+        h.id = id; // ensure it has an id
+        const indent = h.tagName === "H3" ? " style='margin-left:1em'" : "";
+        list += `<li${indent}><a href="#${id}" style="color:#cce4ff; text-decoration:none;">${h.textContent}</a></li>`;
+      });
+      list += "</ul>";
+      toc.innerHTML = list;
+    });
+  </script>
+
 </body>
 </html>
