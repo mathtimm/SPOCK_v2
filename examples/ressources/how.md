@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Tutorials Plots
+title: How SPOCK works
 permalink: /examples/tutorials/ressources/
 ---
 
