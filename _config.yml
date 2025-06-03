@@ -44,4 +44,6 @@ exclude:
 permalink: pretty
 
 markdown: kramdown
+kramdown:
+  input: GFM
 highlighter: rouge

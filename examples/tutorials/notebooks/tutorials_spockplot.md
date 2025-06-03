@@ -20,7 +20,7 @@ Here we present a function to plot the phase coverage of a given target on a ran
 
 <div class="alert alert-info">
 
-**Note:** It can happen hat *SPOCK* does not find light curve for a target, so the coverage appears null when it's not. This bug will be solved shortly.
+**Note:** It can happen that *SPOCK* does not find light curve for a target, so the coverage appears null when it's not. This bug will be solved shortly.
 
 </div>
 
