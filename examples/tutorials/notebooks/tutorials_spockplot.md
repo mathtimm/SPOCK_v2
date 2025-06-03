@@ -201,4 +201,4 @@ SPOCKplot.gantt_chart(date_start=day,date_end=day+1,telescope=['Artemis','Io'])
 
 ```
 
-<img src="../../../_static/css/gantt.png" width="1000" align=center/>
+<img src="tutorials_spockplot_files/gantt.png" width="1000" align=center/>
