@@ -18,7 +18,7 @@ Only a few basic information are needed:
 
 * Right ascension, ex: `ra = 346.622384`  
 
-* Declinaison, ex: `dec = -5.041398`
+* Declination, ex: `dec = -5.041398`
 
 * Timing (in BJD_TDB), ex: `timing = 2457322.51505`
 
@@ -56,7 +56,7 @@ SPOCKstats.info_on_Sp_target(target = 'Sp0439-3235')
 
 ## 3- Get info on scheduled night blocks
 
-Here we propose a function to check which targets have been scheduled on the SPECULOOS telescopes by displaying its corresponding <span style="background-color:lightyellow"><font color='orangered'> __night_blocks__ </font></span>. The user will onyly have to precise the `date` and the `telescope`.
+Here we propose a function to check which targets have been scheduled on the SPECULOOS telescopes by displaying its corresponding <span style="background-color:lightyellow"><font color='orangered'> night_blocks </font></span>. The user will onyly have to precise the `date` and the `telescope`.
 
 
 ```python

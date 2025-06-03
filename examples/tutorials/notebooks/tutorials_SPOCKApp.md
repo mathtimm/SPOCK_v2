@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Tutorials Plots
+title: Tutorials App
 permalink: /examples/tutorials/notebooks/tutorials_spockplot
 ---
 
