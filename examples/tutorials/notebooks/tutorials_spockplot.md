@@ -69,7 +69,7 @@ SPOCKplot.phase_coverage_given_target(target='Nemesis-3.01',pmin=0,pmax=3.1)
 
 ### 1.2 Annulus phase plot
 
-First let's download all lighgt  curve for a given target and plot all LCs obtained by the pipeline.
+First let's download all light curve for a given target and plot all LCs obtained by the pipeline.
 
 
 ```python

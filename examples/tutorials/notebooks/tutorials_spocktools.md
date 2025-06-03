@@ -31,7 +31,7 @@ Only a few basic information are needed:
 * Number of next transits from this atart date, ex: `ntr = 4`
 
 
-Note that this tools is not suposed to be very precise as errors on timing, period and duration are **NOT** taken into account. 
+Note that this tools is not suposed to be very precise as errors on timing, period and duration are __NOT__ taken into account. 
 
 
 ```python
@@ -56,7 +56,7 @@ SPOCKstats.info_on_Sp_target(target = 'Sp0439-3235')
 
 ## 3- Get info on scheduled night blocks
 
-Here we propose a function to check which targets have been scheduled on the SPECULOOS telescopes by displaying its corresponding <span style="background-color:lightyellow"><font color='orangered'> **night_blocks** </font></span>. The user will onyly have to precise the `date` and the `telescope`.
+Here we propose a function to check which targets have been scheduled on the SPECULOOS telescopes by displaying its corresponding <span style="background-color:lightyellow"><font color='orangered'> __night_blocks__ </font></span>. The user will onyly have to precise the `date` and the `telescope`.
 
 
 ```python
