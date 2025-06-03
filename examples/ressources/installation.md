@@ -59,11 +59,12 @@ Upgrading
 - In a terminal in *SPOCK* source code folder:
 
     - Make sure your forked version is in sync
-    - run the following command on your terminal when in the repository
-        ```python
+    - Just run the following command on your terminal when in the repository
 
+        ```python
             git pull
         ```
+
 - If you wish to propose enhancements or find an error in the code please make a pull request on GitHub.
 
 
