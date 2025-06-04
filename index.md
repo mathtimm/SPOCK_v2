@@ -22,4 +22,4 @@ site](https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos).
 
 🧩 To make it more convenient for users, we have also created a GUI-like interface called SPOCKApp that gathers all SPOCK’s functionality with widgets. Check the tab [SPOCKApp](https://educrot22.github.io/SPOCK_v2/examples/tutorials/notebooks/tutorials_SPOCKApp) for more info.
 
-⚠️ Only members of the SPECULOOS consortium can use SPOCK. In particular, the two persons in charge of the scheduling are [Elsa Ducrot](mailto:elsa.ducrot@cea.fr) and [Mathilde Timmermans](mailto:mathilde.timmermans@uliege.be). 
+⚠️ Only members of the SPECULOOS consortium can use *SPOCK*. In particular, the two persons in charge of the scheduling are [Elsa Ducrot](mailto:elsa.ducrot@cea.fr) and [Mathilde Timmermans](mailto:m.timmermans@bham.ac.uk). 
