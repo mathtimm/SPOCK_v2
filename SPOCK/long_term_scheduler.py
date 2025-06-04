@@ -40,8 +40,7 @@ iers.IERS_A_URL = 'https://datacenter.iers.org/data/9/finals2000A.all'  # 'http:
 ssl._create_default_https_context = ssl._create_unverified_context
 
 from .make_night_plans import make_np, make_astra_schedule_file, offset_target_position
-from .upload_night_plans import upload_np, upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
-    upload_np_calli, upload_np_tn, upload_np_ts
+from .upload_night_plans import upload_np, upload_np_tn, upload_np_ts
 
 
 def get_hours_files_sno(username='speculoos', password=pwd_SNO_Reduc1):
