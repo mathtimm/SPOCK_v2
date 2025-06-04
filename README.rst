@@ -7,7 +7,7 @@
 **SPOCK_v2** (Speculoos Observatory SChedule maKer) is a python package developed to handle the
 planification of observation of the SPECULOOS telescopes. The project SPECULOOS -Search for habitable Planets EClipsing ULtra-cOOl Stars –
 searches for potentially habitable exoplanets around the smallest and coolest stars
-of the solar neighborhood `Link to site <https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos>`_. `v2`_ is the second version of the package, which is similar to the first version but suited to Python 3.12. The main goal of this new version is to be more modular and to allow the use of the package by all members of the SPECULOOS consortium.
+of the solar neighborhood `Link to site <https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos>`_. **SPOCK_v2** is the second version of the package, which is similar to the first version but suited to Python 3.12. The main goal of this new version is to be more modular and to allow the use of the package by all members of the SPECULOOS consortium.
 
 *SPOCK_v2* allows you to schedule SPECULOOS core program targets on several criteria:
 
