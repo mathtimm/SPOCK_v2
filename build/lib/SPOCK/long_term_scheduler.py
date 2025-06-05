@@ -40,8 +40,7 @@ iers.IERS_A_URL = 'https://datacenter.iers.org/data/9/finals2000A.all'  # 'http:
 ssl._create_default_https_context = ssl._create_unverified_context
 
 from .make_night_plans import make_np, make_astra_schedule_file, offset_target_position
-from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
-    upload_np_calli, upload_np_tn, upload_np_ts
+from .upload_night_plans import upload_np, upload_np_tn, upload_np_ts
 
 
 def get_hours_files_sno(username='speculoos', password=pwd_SNO_Reduc1):
@@ -701,22 +700,13 @@ def upload_plans(day, nb_days, telescope):
     -------
 
     """
-    if telescope.find('Callisto') is not -1:
-        upload_np_calli(day, nb_days)
-    if telescope.find('Ganymede') is not -1:
-        upload_np_gany(day, nb_days)
-    if telescope.find('Io') is not -1:
-        upload_np_io(day, nb_days)
-    if telescope.find('Europa') is not -1:
-        upload_np_euro(day, nb_days)
-    if telescope.find('Artemis') is not -1:
-        upload_np_artemis(day, nb_days)
+    if (telescope == 'Io') or telescope == ('Europa') or (telescope == 'Ganymede') or (telescope == 'Callisto') or (telescope =='Artemis')\
+            or (telescope =='Saint-Ex'):
+        upload_np(day,nb_days,telescope)
     if telescope.find('TS_La_Silla') is not -1:
         upload_np_ts(day, nb_days)
     if telescope.find('TN_Oukaimeden') is not -1:
         upload_np_tn(day, nb_days)
-    if telescope.find('Saint-Ex') is not -1:
-        upload_np_saint_ex(day, nb_days)
 
     # ------------------- update archive date by date plans folder  ------------------
 
@@ -1512,6 +1502,7 @@ class Schedules:
             idx_prog1 = np.where((self.target_table_spc['Program'] == 1))
             idx_prog2 = np.where((self.target_table_spc['Program'] == 2))
             idx_prog3 = np.where((self.target_table_spc['Program'] == 3))
+            idx_prog5 = np.where((self.target_table_spc['Program'] == 5))
             self.priority['priority'][idx_prog0] *= 0.1
 
             if self.telescope == "Callisto":
@@ -1525,10 +1516,13 @@ class Schedules:
                 10 ** (4 + 1 / (1 + 200 - self.target_table_spc['nb_hours_surved'][idx_on_going]))
             self.priority['priority'][idx_to_be_done] *= \
                 10 ** (1 / (1 + 200 - self.target_table_spc['nb_hours_surved'][idx_to_be_done]))
+            self.priority['priority'][idx_prog5] *= -1 #10 * self.target_table_spc['SNR_Spec_temp'][idx_prog5] * 0
             self.priority['priority'][idx_done] = -1
+            
 
         set_targets_index = (self.priority['alt set start'] > self.Altitude_constraint) & \
                             (self.priority['alt set end'] > self.Altitude_constraint)
+        self.priority['set or rise'] = self.priority['set or rise'].astype(object)
         self.priority['set or rise'][set_targets_index] = 'set'
 
         rise_targets_index = (self.priority['alt rise start'] > self.Altitude_constraint) \
@@ -1576,7 +1570,7 @@ class Schedules:
             self.priority['priority'][idx_texp_too_long] = -1000
             if self.telescope == 'Callisto':
                 texp = self.target_table_spc['texp_spirit']
-                idx_texp_too_short = np.where((texp < 6))
+                idx_texp_too_short = np.where((texp < 2))
                 self.priority['priority'][idx_texp_too_short] = -1000
                 print(
                     Fore.GREEN + 'INFO: ' + Fore.BLACK + 'For ' + self.telescope + ' the minimal exposure time is set to 6s')

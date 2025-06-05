@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from scipy.integrate import simps
+from scipy.integrate import simpson
 from scipy.interpolate import griddata
 import matplotlib.pyplot as plt
 import os
@@ -78,7 +78,7 @@ def generateFluxBase(sResponse):
             for temperature in temperature_values:
                 atmosphere_trans = gridSauce[str(pwv) + '_' + str(airmass)] 
                 simStar = gridSauce[str(temperature) + 'K']
-                response = simps(gridSauce[1]*atmosphere_trans*simStar, gridSauce.index)
+                response = simpson(gridSauce[1]*atmosphere_trans*simStar, gridSauce.index)
 
                 atm_grid.append((pwv, airmass, temperature, response))
 
@@ -135,7 +135,7 @@ def generateRadianceBase(sResponse):
         for airmass in airmass_values:
             for temperature in temperature_values:
                 atmosphere_flux = gridSauce[str(pwv) + '_' + str(airmass)] 
-                response = simps(gridSauce[1]*atmosphere_flux, gridSauce.index)
+                response = simpson(gridSauce[1]*atmosphere_flux, gridSauce.index)
 
                 atm_grid.append((pwv, airmass, temperature, response))
 
@@ -193,7 +193,7 @@ def int_time(fwhm, N_star, N_sky, N_dc, N_rn, plate_scale, well_depth, well_fill
     x = np.linspace(-0.5, 0.5, 100)
     y = x
     
-    t = (well_depth*well_fill - bias_level) / ( N_star * simps(gaus(y, sigma_IR), y) * simps(gaus(x, sigma_IR), x) + (N_sky + N_dc) )
+    t = (well_depth*well_fill - bias_level) / ( N_star * simpson(gaus(y, sigma_IR), y) * simpson(gaus(x, sigma_IR), x) + (N_sky + N_dc) )
     
     return t
 
@@ -299,7 +299,7 @@ def get_precision(props, props_sky, Teff, distance, binning = 10, override = Fal
         x = np.linspace(-0.5, 0.5, 100)
         y = x
     
-        well_fill = t*( N_star * simps(gaus(y, sigma_IR), y) * simps(gaus(x, sigma_IR), x) + (N_sky + N_dc) ) + bias_level
+        well_fill = t*( N_star * simpson(gaus(y, sigma_IR), y) * simpson(gaus(x, sigma_IR), x) + (N_sky + N_dc) ) + bias_level
         well_fill = well_fill/well_depth
     else:
         t = int_time(fwhm, N_star, N_sky, N_dc, N_rn, plate_scale, well_depth, well_fill, bias_level)
@@ -310,7 +310,7 @@ def get_precision(props, props_sky, Teff, distance, binning = 10, override = Fal
 
             x = np.linspace(-0.5, 0.5, 100)
             y = x
-            well_fill = t*( N_star * simps(gaus(y, sigma_IR), y) * simps(gaus(x, sigma_IR), x) + (N_sky + N_dc) ) + bias_level
+            well_fill = t*( N_star * simpson(gaus(y, sigma_IR), y) * simpson(gaus(x, sigma_IR), x) + (N_sky + N_dc) ) + bias_level
             well_fill = well_fill/well_depth
     
     npix = np.pi * ap**2
@@ -427,7 +427,7 @@ def vega_mag(SRFile, props_sky, N_star, sky_radiance, A):
 
     simStar = gridSauce['vega']
 
-    vega = simps(gridSauce['rsr']*atmosphere_trans*simStar, gridSauce.index) # e/s/m2
+    vega = simpson(gridSauce['rsr']*atmosphere_trans*simStar, gridSauce.index) # e/s/m2
     
     vega_dict = {
                 "star [mag]" : -2.5*np.log10(N_star/(vega*A)),
