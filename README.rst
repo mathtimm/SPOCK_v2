@@ -38,7 +38,7 @@ Installation
     You must be part of the SPECULOOS consortium to use **SPOCK_v2**.
 
 
-Install *SPOCK* locally::
+Install **SPOCK_v2** locally::
 
     git clone git@github.com:educrot22/SPOCK_v2.git
 
