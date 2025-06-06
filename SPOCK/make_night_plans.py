@@ -534,7 +534,7 @@ def make_astra_schedule_file(day, nb_days, telescope):
                              "action_type": "SlewToAzimuth",	"action_value": 230,
                              "start_time": location.sun_set_time(t, which='next').iso,
                               "end_time": location.sun_rise_time(t, which='next').iso})
-        #df = pd.concat([df, pd.DataFrame([dome_row])], ignore_index=True)
+        df = pd.concat([df, pd.DataFrame([dome_row])], ignore_index=True)
         # Flats
         def custom_sort(arr, custom_order):
             # Create a dictionary to store the index of each element in the custom order
@@ -563,23 +563,30 @@ def make_astra_schedule_file(day, nb_days, telescope):
                                        "end_time": scheduler_table["start time (UTC)"][0]})
         df = pd.concat([df, pd.DataFrame([flats_row_evening])], ignore_index=True)
         #Targets
-        for i in range(len(scheduler_table)):
+        #for i in range(len(scheduler_table)):
+        #    if scheduler_table['target'][i] == "dome_rot":
+        #        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + " Not adding dom_rot to the targets ")
+        #    else:
+            coords = SkyCoord(str(int(scheduler_table['ra (h)'][i])) + 'h' +
+                              str(int(scheduler_table['ra (m)'][i])) + 'm' +
+                              str(round(scheduler_table['ra (s)'][i], 3)) + 's' + ' ' +
+                              str(int(scheduler_table['dec (d)'][i])) + 'd' +
+                              str(abs(int(scheduler_table['dec (m)'][i]))) + 'm' +
+                              str(abs(round(scheduler_table['dec (s)'][i], 3))) + 's')
+
+
             if scheduler_table['target'][i] == "dome_rot":
-                print(Fore.GREEN + 'INFO: ' + Fore.BLACK + " Not adding dom_rot to the targets ")
+                action_values_target = {'object': name[i], 'filter': filt[i], 'ra': coords.ra.value,
+                                    'dec': coords.dec.value,
+                                    'exptime': int(texp[i]), 'n':int(0)}
             else:
-                coords = SkyCoord(str(int(scheduler_table['ra (h)'][i])) + 'h' +
-                                  str(int(scheduler_table['ra (m)'][i])) + 'm' +
-                                  str(round(scheduler_table['ra (s)'][i], 3)) + 's' + ' ' +
-                                  str(int(scheduler_table['dec (d)'][i])) + 'd' +
-                                  str(abs(int(scheduler_table['dec (m)'][i]))) + 'm' +
-                                  str(abs(round(scheduler_table['dec (s)'][i], 3))) + 's')
                 action_values_target = {'object': name[i], 'filter': filt[i], 'ra': coords.ra.value, 'dec': coords.dec.value,
-                                'exptime': int(texp[i]), 'guiding': True, 'pointing': False}
-                target_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
-                                 "action_type": "object",	"action_value": action_values_target,
-                                 "start_time": (Time(scheduler_table["start time (UTC)"][i] ) + 1*u.min).iso,
-                                        "end_time": scheduler_table["end time (UTC)"][i]})
-                df = pd.concat([df, pd.DataFrame([target_row])], ignore_index=True)
+                            'exptime': int(texp[i]), 'guiding': True, 'pointing': False}
+            target_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
+                             "action_type": "object",	"action_value": action_values_target,
+                             "start_time": (Time(scheduler_table["start time (UTC)"][i] ) + 1*u.min).iso,
+                                    "end_time": scheduler_table["end time (UTC)"][i]})
+            df = pd.concat([df, pd.DataFrame([target_row])], ignore_index=True)
         # Flats
         my_custom_order_morning = my_custom_order_evening[::-1]# temporaty fix for Callisto 
 
@@ -596,7 +603,7 @@ def make_astra_schedule_file(day, nb_days, telescope):
         close_row = pd.Series({"device_type": "Camera",	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "close",	"action_value": {},
                              "start_time": (location.sun_rise_time(t, which='next')-15*u.min).iso,
-                               "end_time": (location.sun_rise_time(t, which='next')-10*u.min).iso})
+                               "end_time": (location.sun_rise_time(t, which='next')+45*u.min).iso})
         df = pd.concat([df, pd.DataFrame([close_row])], ignore_index=True)
         # Calibration
         texp = [int(x) for x in texp]
