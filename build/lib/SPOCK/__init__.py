@@ -3,7 +3,7 @@ __all__ = ['long_term_scheduler','short_term_scheduler','make_night_plans','plot
            'pwd_portal','pwd_appcs','pwd_SNO_Reduc1','user_chart_studio','pwd_chart_studio','path_spock',
            'path_credential_json','login_stargate','pwd_stargate']
 
-__version__ = "1.0.0"
+__version__ = "2.2.0"
 
 import pkg_resources
 import os

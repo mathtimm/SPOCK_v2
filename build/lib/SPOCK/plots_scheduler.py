@@ -1,7 +1,7 @@
 from astroplan import Observer, FixedTarget
 from astroplan.plots import plot_airmass
 from astroplan.utils import time_grid_from_range
-from astropy.coordinates import SkyCoord, EarthLocation, get_moon
+from astropy.coordinates import SkyCoord, EarthLocation, get_body
 from astropy.time import Time
 from astropy import units as u
 import chart_studio
@@ -522,7 +522,7 @@ def airmass_altitude_plot_given_target(name_observatory, day, target, path_targe
     ra = target_list['RA'][idx_target_list]
     # Moon distance
     t_midnight = Time(sun_rise) - ((Time(sun_rise) - Time(sun_set)) / 2)
-    moon = get_moon(time=t_midnight, location=observatory.location)
+    moon = get_body('moon', time=t_midnight, location=observatory.location)
     distance_moon = round(moon.separation(SkyCoord(ra=ra, dec=dec, unit=(u.deg, u.deg))).value, 2)
 
     plot_styles = {'linestyle': '-', 'color': 'k'}

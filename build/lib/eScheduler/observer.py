@@ -8,7 +8,7 @@ import warnings
 
 # Third-party
 from astropy.coordinates import (EarthLocation, SkyCoord, AltAz, get_sun,
-                                 get_moon, Angle, Longitude)
+                                 get_body, Angle, Longitude)
 #from astropy.extern.six import string_types
 import astropy.units as u
 from astropy.time import Time
@@ -750,7 +750,7 @@ class Observer(object):
         times = _generate_24hr_grid(time, start, end, N)
 
         if target is MoonFlag:
-            altaz = self.altaz(times, get_moon(times, location=self.location),
+            altaz = self.altaz(times, get_body('moon', times, location=self.location),
                                grid_times_targets=grid_times_targets)
         elif target is SunFlag:
             altaz = self.altaz(times, get_sun(times),
@@ -1559,7 +1559,7 @@ class Observer(object):
         if not isinstance(time, Time):
             time = Time(time)
 
-        moon = get_moon(time, location=self.location, ephemeris=ephemeris)
+        moon = get_body('moon', time, location=self.location, ephemeris=ephemeris)
         return self.altaz(time, moon)
 
     def sun_altaz(self, time):

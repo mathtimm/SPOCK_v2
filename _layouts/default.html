@@ -8,6 +8,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
+    .highlight-yellow {
+    background-color: lightyellow;
+    color: orangered;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    }
+
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
@@ -93,25 +100,63 @@
       margin: 2rem 0;
     }
 
-    @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
-      }
-
-      .sidebar nav a {
-        margin: 0 1rem;
-      }
-
-      .content {
-        padding: 1rem;
-      }
+  @media (max-width: 768px) {
+    body {
+      flex-direction: column;
     }
+
+    .sidebar {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+    }
+
+    .sidebar img {
+      max-width: 150px;
+      margin: 0 auto 1rem auto;
+    }
+
+    .sidebar nav {
+      width: 100%;
+    }
+
+    .sidebar nav a {
+      display: block;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      text-align: left;
+      padding-left: 0.5rem;
+    }
+
+    .content {
+      padding: 1rem;
+    }
+
+    main {
+      padding: 1rem;
+      box-shadow: none;
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1rem 0;
+      border-left: 6px solid #17a2b8;
+      background-color: #e9f7fc;
+      color: #0c5460;
+    }
+
+    .alert-info {
+      border-left-color: #17a2b8;
+    }
+  }
+
   </style>
 </head>
 
@@ -122,9 +167,16 @@
     <!-- <img src="{{ site.baseurl }}/assets/images/another_logo.png" alt="Another Logo"> -->
     <nav>
       <a href="{{ site.baseurl }}/">Home</a>
-      <a href="{{ site.baseurl }}/docs">Docs</a>
+      <a href="{{ site.baseurl }}/examples/ressources/installation">Installation</a>
+      <a href="{{ site.baseurl }}/examples/tutorials/notebooks/tutorials_SPOCKApp">Tutorials SPOCK App</a>
       <a href="{{ site.baseurl }}/examples/tutorials/notebooks/tutorials_spocktools">Tutorials Tools</a>
       <a href="{{ site.baseurl }}/examples/tutorials/notebooks/tutorials_spockplot">Tutorials Plots</a>
+      <a href="{{ site.baseurl }}/examples/ressources/how">How SPOCK works</a>
+
+      <!-- Auto TOC insertion -->
+      <div id="sub-toc" style="margin-top: 1rem; text-align: left; font-size: 0.9rem;"></div>
+
+
     </nav>
   </div>
 
@@ -141,5 +193,27 @@
       &copy; {{ site.time | date: "%Y" }} SPOCK Project
     </footer>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const content = document.querySelector("main");
+      const toc = document.getElementById("sub-toc");
+
+      if (!content || !toc) return;
+
+      const headings = content.querySelectorAll("h2, h3");
+      if (!headings.length) return;
+
+      let list = "<strong>On this page:</strong><ul style='list-style:none; padding-left:0'>";
+      headings.forEach(h => {
+        const id = h.id || h.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+        h.id = id; // ensure it has an id
+        const indent = h.tagName === "H3" ? " style='margin-left:1em'" : "";
+        list += `<li${indent}><a href="#${id}" style="color:#cce4ff; text-decoration:none;">${h.textContent}</a></li>`;
+      });
+      list += "</ul>";
+      toc.innerHTML = list;
+    });
+  </script>
+
 </body>
 </html>

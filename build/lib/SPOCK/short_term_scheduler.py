@@ -23,8 +23,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import os
 import pandas as pd
 import requests
-from .upload_night_plans import upload_np_artemis, upload_np_saint_ex, upload_np_io, upload_np_gany, upload_np_euro, \
-    upload_np_calli, upload_np_tn, upload_np_ts
+from .upload_night_plans import upload_np, upload_np_tn, upload_np_ts
 from .make_night_plans import make_np, make_astra_schedule_file, offset_target_position
 import subprocess
 import sys
@@ -32,6 +31,7 @@ import shutil
 import SPOCK.ETC as ETC
 from SPOCK import user_portal, pwd_portal, pwd_appcs, path_spock, path_credential_json, target_list_from_stargate_path
 import SPOCK.mphot as mphot
+from requests.exceptions import ConnectionError
 
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
@@ -172,32 +172,40 @@ class Schedules:
         """
 
         if (filename_list_special is None) or (filename_follow_up is None):
-            sh = client.open('SPECULOOS WG6')
-            # Read stars lists
-            if mangos:
-                worksheet_follow_up = sh.worksheet("Annex_Targets_V1-MANGOs")
-            else:
-                worksheet_follow_up = sh.worksheet("Annex_Targets_V1-PLANETS")
-            dataframe = pd.DataFrame(worksheet_follow_up.get_all_records())
-            self.target_table_spc_follow_up = dataframe.rename(columns={"sp_id": "Sp_ID", "gaia_dr2": "Gaia_ID",
-                                                                        "period": "P", "period_e": "P_err",
-                                                                        "duration": "W", "duration_e": "W_err",
-                                                                        "dec": "DEC", "ra": "RA",
-                                                                        "dec_err": "DEC_err", "ra_err": "RA_err",
+            try:
+                sh = client.open('SPECULOOS WG6')
+                # Read stars lists
+                if mangos:
+                    worksheet_follow_up = sh.worksheet("Annex_Targets_V1-MANGOs")
+                else:
+                    worksheet_follow_up = sh.worksheet("Annex_Targets_V1-PLANETS")
+                dataframe = pd.DataFrame(worksheet_follow_up.get_all_records())
+                self.target_table_spc_follow_up = dataframe.rename(columns={"sp_id": "Sp_ID", "gaia_dr2": "Gaia_ID",
+                                                                            "period": "P", "period_e": "P_err",
+                                                                            "duration": "W", "duration_e": "W_err",
+                                                                            "dec": "DEC", "ra": "RA",
+                                                                            "dec_err": "DEC_err", "ra_err": "RA_err",
 
-                                                                        })
-            self.targets_follow_up = target_list_good_coord_format(df=self.target_table_spc_follow_up)
+                                                                            })
+                self.targets_follow_up = target_list_good_coord_format(df=self.target_table_spc_follow_up)
 
-            # Read follow up (planet candidates) list
-            self.target_table_spc_follow_up['W'] /= 24
-            self.target_table_spc_follow_up['W_err'] /= 24
+                # Read follow up (planet candidates) list
+                self.target_table_spc_follow_up['W'] /= 24
+                self.target_table_spc_follow_up['W_err'] /= 24
 
-            worksheet_special = sh.worksheet("Annex_Targets_V2-STARS")
-            dataframe = pd.DataFrame(worksheet_special.get_all_records())
-            self.target_table_spc = dataframe.rename(columns={"spc": "Sp_ID", "gaia": "Gaia_ID", "dec": "DEC",
-                                                              "ra": "RA", "dec_err": "DEC_err", "ra_err": "RA_err",
-                                                              "mag_j": "J", "V_mag": "V"})
-            self.targets = target_list_good_coord_format(df=self.target_table_spc)
+                worksheet_special = sh.worksheet("Annex_Targets_V2-STARS")
+                dataframe = pd.DataFrame(worksheet_special.get_all_records(expected_headers= [
+                                "SPECULOOS", "Annex_Prog", "V_mag", "Alias", "Note", "Active", 
+                                "Next Obs", "spc", "soi", "twomass", "gaia", "wise", "ra", "dec", 
+                                "ra_err", "dec_err", "Filter_spc", "Filter_trap", "texp_spc", 
+                                "texp_trap", "mag_j", "mag_j_err", "SpT", "e_Spt", "Teff", "distance"  ]))
+                self.target_table_spc = dataframe.rename(columns={"spc": "Sp_ID", "gaia": "Gaia_ID", "dec": "DEC",
+                                                                "ra": "RA", "dec_err": "DEC_err", "ra_err": "RA_err",
+                                                                "mag_j": "J", "V_mag": "V"})
+                self.targets = target_list_good_coord_format(df=self.target_table_spc)
+            except ConnectionError:
+                print(Fore.RED + 'ERROR: ' + Fore.BLACK +
+                      ' there is a problem with your internet connection. ')
 
         if filename_list_special is not None:
             self.target_list_special = filename_list_special
@@ -1262,16 +1270,23 @@ def make_plans(day, nb_days, telescope):
 
 
 def upload_plans(day, nb_days, telescope):
-    if telescope.find('Callisto') is not -1:
-        upload_np_calli(day, nb_days)
-    if telescope.find('Ganymede') is not -1:
-        upload_np_gany(day, nb_days)
-    if telescope.find('Io') is not -1:
-        upload_np_io(day, nb_days)
-    if telescope.find('Europa') is not -1:
-        upload_np_euro(day, nb_days)
-    if telescope.find('Artemis') is not -1:
-        upload_np_artemis(day, nb_days)
+    """ upload plans to DATABASE
+
+    Parameters
+    ----------
+    day : date
+        date in fmt 'yyyy-mm-dd'
+    nb_days : int
+        number of days
+    telescope : str
+        name of telescope
+
+    Returns
+    -------
+
+    """
+    if (telescope == 'Io') or telescope == ('Europa') or (telescope == 'Ganymede') or (telescope == 'Callisto') or (telescope =='Artemis') or (telescope == 'Saint-Ex'):
+        upload_np(day,nb_days,telescope)
     if telescope.find('TS_La_Silla') is not -1:
         upload_np_ts(day, nb_days)
     if telescope.find('TN_Oukaimeden') is not -1:

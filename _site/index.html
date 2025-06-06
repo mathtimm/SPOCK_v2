@@ -8,6 +8,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
+    .highlight-yellow {
+    background-color: lightyellow;
+    color: orangered;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    }
+
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
@@ -111,6 +118,18 @@
       .content {
         padding: 1rem;
       }
+      .alert {
+        padding: 1rem;
+        border-radius: 6px;
+        margin: 1rem 0;
+        border-left: 6px solid #17a2b8;
+        background-color: #e9f7fc;
+        color: #0c5460;
+      }
+
+    .alert-info {
+        border-left-color: #17a2b8;
+      }
     }
   </style>
 </head>
@@ -122,9 +141,16 @@
     <!-- <img src="/SPOCK_v2/assets/images/another_logo.png" alt="Another Logo"> -->
     <nav>
       <a href="/SPOCK_v2/">Home</a>
-      <a href="/SPOCK_v2/docs">Docs</a>
+      <a href="/SPOCK_v2/examples/ressources/installation">Installation</a>
+      <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_SPOCKApp">Tutorials SPOCK App</a>
       <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spocktools">Tutorials Tools</a>
       <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spockplot">Tutorials Plots</a>
+      <a href="/SPOCK_v2/examples/ressources/how">How SPOCK works</a>
+
+      <!-- Auto TOC insertion -->
+      <div id="sub-toc" style="margin-top: 1rem; text-align: left; font-size: 0.9rem;"></div>
+
+
     </nav>
   </div>
 
@@ -134,9 +160,9 @@
 
       <p><img src="/SPOCK_v2/assets/images/spock_v2_logo.png" alt="SPOCK Logo" style="width: 800px; height: auto;" /></p>
 
-<h1 id="spock-v2-documentation">SPOCK v2 Documentation</h1>
+<h1 id="spock-v2-documentation-">SPOCK v2 Documentation 🖖</h1>
 
-<p><em>SPOCK</em> (Speculoos Observatories sChedule maker) is a python package
+<p><em>SPOCK</em> (Speculoos Observatories sChedule maKer) is a python package
 developed to handle the planification of observation of the SPECULOOS
 telescopes. The project SPECULOOS -Search for habitable Planets
 EClipsing ULtra-cOOl Stars – searches for potentially habitable
@@ -144,6 +170,13 @@ exoplanets around the smallest and coolest stars of the solar
 neighborhood <a href="https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos">Link to
 site</a>.</p>
 
+<p>📝 The strategy of the SPECULOOS survey and how it is implemented in SPOCK is described in <a href="https://www.aanda.org/articles/aa/full_html/2021/01/aa38827-20/aa38827-20.html">Sebastian et al. 2020</a>. You can find more details in <a href="https://educrot22.github.io/SPOCK_v2/examples/how">How SPOCK works</a>.</p>
+
+<p>🛠️ 📈 SPOCK contains many useful functions and helpful plots, check <a href="https://educrot22.github.io/SPOCK_v2/examples/tutorials/notebooks/tutorials_spocktools">SPOCK tools</a> and <a href="https://educrot22.github.io/SPOCK_v2/examples/tutorials/notebooks/tutorials_spockplot">SPOCK plots</a> for more details.</p>
+
+<p>🧩 To make it more convenient for users, we have also created a GUI-like interface called SPOCKApp that gathers all SPOCK’s functionality with widgets. Check the tab <a href="https://educrot22.github.io/SPOCK_v2/examples/tutorials/notebooks/tutorials_SPOCKApp">SPOCKApp</a> for more info.</p>
+
+<p>⚠️ Only members of the SPECULOOS consortium can use SPOCK. In particular, the two persons in charge of the scheduling are <a href="elsa.ducrot@cea.fr">Elsa Ducrot</a> and <a href="mathilde.timmermans@uliege.be">Mathilde Timmermans</a>.</p>
 
     </main>
 
@@ -151,5 +184,27 @@ site</a>.</p>
       &copy; 2025 SPOCK Project
     </footer>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const content = document.querySelector("main");
+      const toc = document.getElementById("sub-toc");
+
+      if (!content || !toc) return;
+
+      const headings = content.querySelectorAll("h2, h3");
+      if (!headings.length) return;
+
+      let list = "<strong>On this page:</strong><ul style='list-style:none; padding-left:0'>";
+      headings.forEach(h => {
+        const id = h.id || h.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+        h.id = id; // ensure it has an id
+        const indent = h.tagName === "H3" ? " style='margin-left:1em'" : "";
+        list += `<li${indent}><a href="#${id}" style="color:#cce4ff; text-decoration:none;">${h.textContent}</a></li>`;
+      });
+      list += "</ul>";
+      toc.innerHTML = list;
+    });
+  </script>
+
 </body>
 </html>

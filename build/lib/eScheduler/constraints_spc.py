@@ -14,7 +14,7 @@ import warnings
 
 # Third-party
 from astropy.time import Time
-from astropy.coordinates import get_body, get_sun, get_moon, SkyCoord
+from astropy.coordinates import get_body, get_sun, get_body, SkyCoord
 from astropy import table
 
 import numpy as np
@@ -590,7 +590,7 @@ class MoonSeparationConstraint(Constraint):
         # removed the location argument here, which causes small <1 deg
         # innacuracies, but it is needed until astropy PR #5897 is released
         # which should be astropy 1.3.2
-        moon = get_moon(times,
+        moon = get_body('moon', times,
                         ephemeris=self.ephemeris)
         # note to future editors - the order matters here
         # moon.separation(targets) is NOT the same as targets.separation(moon)

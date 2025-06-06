@@ -4,7 +4,7 @@ title: Tutorials Plots
 permalink: /examples/tutorials/notebooks/tutorials_spockplot
 ---
 
-# Plot with SPOCK
+# Plot with SPOCK 📈	
 
 ## 1- Phase plot
 
@@ -18,11 +18,8 @@ Here we present a function to plot the phase coverage of a given target on a ran
 
 * upper boundary of the period range, `pmax = 3.1`
 
-<div class="alert alert-info">
 
-**Note:** It can happen hat *SPOCK* does not find light curve for a target, so the coverage appears null when it's not. This bug will be solved shortly.
-
-</div>
+**Note:** It can happen that *SPOCK* does not find light curve for a target, so the coverage appears null when it's not. This bug will be solved shortly.
 
 
 ```python
@@ -69,7 +66,7 @@ SPOCKplot.phase_coverage_given_target(target='Nemesis-3.01',pmin=0,pmax=3.1)
 
 ### 1.2 Annulus phase plot
 
-First let's download all lighgt  curve for a given target and plot all LCs obtained by the pipeline.
+First let's download all light curve for a given target and plot all LCs obtained by the pipeline.
 
 
 ```python
@@ -172,11 +169,11 @@ SPOCKplot.airmass_altitude_plot_given_target(name_observatory="SSO",\
     
 
 
-## 3- Gant chart of <span style="background-color:lightyellow"><font color='orangered'> **night_blocks** </font></span> 
+## 3- Gant chart of <span style="background-color:lightyellow"><font color='orangered'> night_blocks </font></span> 
 
-SPOCKplot gives the possibility to draw a gant chart of all observations on your local database scheduled with *SPOCK* or on a give date range. The plot will be automatic open in another window and is interactive. When passing on a block <span style="background-color:lightyellow"><font color='orangered'> **night_blocks** </font></span> start time, filter and exposure time will be displayed.
+SPOCKplot gives the possibility to draw a gant chart of all observations on your local database scheduled with *SPOCK* or on a give date range. The plot will be automatic open in another window and is interactive. When passing on a block <span style="background-color:lightyellow"><font color='orangered'> night_blocks </font></span> start time, filter and exposure time will be displayed.
 
-### All <span style="background-color:lightyellow"><font color='orangered'> **night_blocks** </font></span>  ever produced
+### All <span style="background-color:lightyellow"><font color='orangered'> night_blocks </font></span>  ever produced
 
 With ``gantt_chart_all()`` the user plots the night blocks from the whole **local** databse (can take up to 30-40 seconds).
 
@@ -187,7 +184,7 @@ import SPOCK.plots_scheduler as SPOCKplot
 SPOCKplot.gantt_chart_all()
 ```
 
-###  <span style="background-color:lightyellow"><font color='orangered'> **night_blocks** </font></span>  on a specific date range
+###  <span style="background-color:lightyellow"><font color='orangered'> night_blocks </font></span>  on a specific date range
 
 In this case the user must specify `date_start` and `date_end` in addition to a list of SPECULOOS telescopes.
 
@@ -201,4 +198,4 @@ SPOCKplot.gantt_chart(date_start=day,date_end=day+1,telescope=['Artemis','Io'])
 
 ```
 
-<img src="../../../_static/css/gantt.png" width="1000" align=center/>
+<img src="tutorials_spockplot_files/gantt.png" width="1000" align=center/>
