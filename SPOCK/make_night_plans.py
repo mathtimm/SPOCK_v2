@@ -563,7 +563,7 @@ def make_astra_schedule_file(day, nb_days, telescope):
                                        "end_time": scheduler_table["start time (UTC)"][0]})
         df = pd.concat([df, pd.DataFrame([flats_row_evening])], ignore_index=True)
         #Targets
-        #for i in range(len(scheduler_table)):
+        for i in range(len(scheduler_table)):
         #    if scheduler_table['target'][i] == "dome_rot":
         #        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + " Not adding dom_rot to the targets ")
         #    else:
