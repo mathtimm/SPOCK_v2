@@ -12,13 +12,14 @@ target_list_df = pd.read_csv(target_list_from_stargate_path, sep=',')
 
 
 def read_night_plans_server(telescope,date):
-    TargetURL = "http://www.mrao.cam.ac.uk/SPECULOOS/Observations/"+telescope+\
-                "/schedule/Archive_night_blocks/night_blocks_"+telescope+"_"+date+".txt"
+    TargetURL =  "https://www.mrao.cam.ac.uk/SPECULOOS/Observations/" + telescope + \
+                            '/schedule/Archive_night_blocks/night_blocks_' + \
+                            telescope + '_' + date + '.txt'
     resp = requests.get(TargetURL, auth=(user_portal, pwd_portal))
     content = resp.text.replace("\n", "")
     open('text_file.txt', 'wb').write(resp.content)
 
-    df = pd.read_csv('text_file.txt', delimiter=' ', skipinitialspace=True, error_bad_lines=False)
+    df = pd.read_csv('text_file.txt', delimiter=' ', skipinitialspace=True, on_bad_lines='skip')
     return df
 
 def read_all_night_plans_server(file):
@@ -26,7 +27,7 @@ def read_all_night_plans_server(file):
     resp = requests.get(TargetURL, auth=(user_portal, pwd_portal))
     content = resp.text.replace("\n", "")
     open('text_file.txt', 'wb').write(resp.content)
-    df = pd.read_csv('text_file.txt', delimiter=' ', skipinitialspace=True, error_bad_lines=False)
+    df = pd.read_csv('text_file.txt', delimiter=' ', skipinitialspace=True, on_bad_lines='skip')
     return df
 
 def listFD(url, ext=''):
@@ -37,7 +38,7 @@ def listFD(url, ext=''):
 
 def df_all_obs_scheduled(telescope):
     date_night_plan = []
-    url = "http://www.mrao.cam.ac.uk/SPECULOOS/Observations/" + telescope + "/schedule/Archive_night_blocks/"
+    url = "https://www.mrao.cam.ac.uk/SPECULOOS/Observations/" + telescope + "/schedule/Archive_night_blocks/"
     ext = 'txt'
 
     with alive_bar(len(listFD(url, ext))) as bar:
@@ -53,7 +54,7 @@ def df_all_obs_scheduled(telescope):
                 df = pd.concat(frames)
                 df = df.reset_index(drop=True)
                 date_night_plan.append(
-                    file.replace('http://www.mrao.cam.ac.uk/SPECULOOS/Observations/', '').replace(telescope, '').replace(
+                    file.replace('https://www.mrao.cam.ac.uk/SPECULOOS/Observations/', '').replace(telescope, '').replace(
                         '/schedule/Archive_night_blocks//night_blocks_', '').replace('_', '').replace('.txt', ''))
         return df,date_night_plan
 

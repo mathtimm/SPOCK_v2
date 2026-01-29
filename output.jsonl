@@ -1,8 +1,0 @@
-{"device_name":"camera_Callisto","action_type":"open","action_value":{},"start_time":"2025-08-23 22:38:25.210","end_time":"2025-08-24 10:49:15.363"}
-{"device_name":"camera_Callisto","action_type":"flats","action_value":{"filter":["zYJ"],"n":[20]},"start_time":"2025-08-23 22:39:25.210","end_time":"2025-08-23 23:16:00.018"}
-{"device_name":"camera_Callisto","action_type":"object","action_value":{"object":"Sp2151-4017","filter":"zYJ","ra":327.8813166667,"dec":-40.2897680556,"exptime":8,"guiding":true,"pointing":false},"start_time":"2025-08-23 23:17:00.018","end_time":"2025-08-24 04:43:40.018"}
-{"device_name":"camera_Callisto","action_type":"object","action_value":{"object":"dome_rot","filter":"zYJ","ra":336.7206,"dec":-9.0894366667,"exptime":10,"n":0},"start_time":"2025-08-24 04:44:40.018","end_time":"2025-08-24 04:45:40.018"}
-{"device_name":"camera_Callisto","action_type":"object","action_value":{"object":"Sp2343-2906","filter":"zYJ","ra":355.8836041667,"dec":-29.1075969444,"exptime":38,"guiding":true,"pointing":false},"start_time":"2025-08-24 04:46:40.018","end_time":"2025-08-24 10:23:40.018"}
-{"device_name":"camera_Callisto","action_type":"flats","action_value":{"filter":["zYJ"],"n":[20]},"start_time":"2025-08-24 10:24:40.018","end_time":"2025-08-24 10:49:15.363"}
-{"device_name":"camera_Callisto","action_type":"close","action_value":{},"start_time":"2025-08-24 10:49:15.363","end_time":"2025-08-24 11:49:15.363"}
-{"device_name":"camera_Callisto","action_type":"calibration","action_value":{"exptime":[0,8,10,15,30,38,60,120],"n":[10,10,10,10,10,10,10,10],"filter":"Dark"},"start_time":"2025-08-24 10:55:15.363","end_time":"2025-08-24 11:49:15.363"}

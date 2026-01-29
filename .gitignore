@@ -142,8 +142,6 @@ local_files/*
 
 passwords.csv
 
-tutorials.ipynb
-
 plan.txt
 
 dist/

@@ -8,7 +8,7 @@ permalink: /examples/tutorials/notebooks/tutorials_spocktools
 
 ## 1- Transit observability predictions
 
-In this section we present a tool to predict whether the next transits of your favorite exoplanet will be observable from ome of the SPECULOOS site
+In this section we present a tool to predict whether the next transits of your favorite exoplanet will be observable from one of the SPECULOOS site
 
 Only a few basic information are needed:
 

@@ -6,14 +6,13 @@ description: Documentation for the SPOCK project
 ## GitHub Pages base URL
 #baseurl: "."   # Name of your GitHub repo (important!)
 
-url: "https://username.github.io"
+url: "https://educrot22.github.io/"
 baseurl: "/SPOCK_v2"
 
 # Files to include or exclude
 include:
   - headers 
   - assets
-  - /examples/tutorials/notebooks/
 
 exclude:
   - Gemfile

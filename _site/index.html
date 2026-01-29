@@ -100,37 +100,63 @@
       margin: 2rem 0;
     }
 
-    @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-      }
+  @media (max-width: 768px) {
+    body {
+      flex-direction: column;
+    }
 
-      .sidebar {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
-      }
+    .sidebar {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+    }
 
-      .sidebar nav a {
-        margin: 0 1rem;
-      }
+    .sidebar img {
+      max-width: 150px;
+      margin: 0 auto 1rem auto;
+    }
 
-      .content {
-        padding: 1rem;
-      }
-      .alert {
-        padding: 1rem;
-        border-radius: 6px;
-        margin: 1rem 0;
-        border-left: 6px solid #17a2b8;
-        background-color: #e9f7fc;
-        color: #0c5460;
-      }
+    .sidebar nav {
+      width: 100%;
+    }
+
+    .sidebar nav a {
+      display: block;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      text-align: left;
+      padding-left: 0.5rem;
+    }
+
+    .content {
+      padding: 1rem;
+    }
+
+    main {
+      padding: 1rem;
+      box-shadow: none;
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1rem 0;
+      border-left: 6px solid #17a2b8;
+      background-color: #e9f7fc;
+      color: #0c5460;
+    }
 
     .alert-info {
-        border-left-color: #17a2b8;
-      }
+      border-left-color: #17a2b8;
     }
+  }
+
   </style>
 </head>
 
@@ -146,6 +172,8 @@
       <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spocktools">Tutorials Tools</a>
       <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spockplot">Tutorials Plots</a>
       <a href="/SPOCK_v2/examples/ressources/how">How SPOCK works</a>
+      <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spocklt.md">Long-term scheduler</a>
+      <a href="/SPOCK_v2/examples/tutorials/notebooks/tutorials_spockst.md">Short-term scheduler</a>
 
       <!-- Auto TOC insertion -->
       <div id="sub-toc" style="margin-top: 1rem; text-align: left; font-size: 0.9rem;"></div>
@@ -170,18 +198,18 @@ exoplanets around the smallest and coolest stars of the solar
 neighborhood <a href="https://www.speculoos.uliege.be/cms/c_4259452/fr/speculoos">Link to
 site</a>.</p>
 
-<p>📝 The strategy of the SPECULOOS survey and how it is implemented in SPOCK is described in <a href="https://www.aanda.org/articles/aa/full_html/2021/01/aa38827-20/aa38827-20.html">Sebastian et al. 2020</a>. You can find more details in <a href="https://educrot22.github.io/SPOCK_v2/examples/how">How SPOCK works</a>.</p>
+<p>📝 The strategy of the SPECULOOS survey and how it is implemented in SPOCK is described in <a href="https://www.aanda.org/articles/aa/full_html/2021/01/aa38827-20/aa38827-20.html">Sebastian et al. 2020</a>. You can find more details in <a href="https://educrot22.github.io/SPOCK_v2/examples/ressources/how">How SPOCK works</a>. Tutorials on how to use the <a href="https://educrot22.github.io/SPOCK_v2/examples/tutorials/notebooks/tutorials_spocklt/">Long-term scheduler</a> and the <a href="https://educrot22.github.io/SPOCK_v2/examples/tutorials/notebooks/tutorials_spockst/">Short-term scheduler</a> are available.</p>
 
 <p>🛠️ 📈 SPOCK contains many useful functions and helpful plots, check <a href="https://educrot22.github.io/SPOCK_v2/examples/tutorials/notebooks/tutorials_spocktools">SPOCK tools</a> and <a href="https://educrot22.github.io/SPOCK_v2/examples/tutorials/notebooks/tutorials_spockplot">SPOCK plots</a> for more details.</p>
 
 <p>🧩 To make it more convenient for users, we have also created a GUI-like interface called SPOCKApp that gathers all SPOCK’s functionality with widgets. Check the tab <a href="https://educrot22.github.io/SPOCK_v2/examples/tutorials/notebooks/tutorials_SPOCKApp">SPOCKApp</a> for more info.</p>
 
-<p>⚠️ Only members of the SPECULOOS consortium can use SPOCK. In particular, the two persons in charge of the scheduling are <a href="elsa.ducrot@cea.fr">Elsa Ducrot</a> and <a href="mathilde.timmermans@uliege.be">Mathilde Timmermans</a>.</p>
+<p>⚠️ Only members of the SPECULOOS consortium can use <em>SPOCK</em>. In particular, the two persons in charge of the scheduling are <a href="mailto:elsa.ducrot@cea.fr">Elsa Ducrot</a> and <a href="mailto:m.timmermans@bham.ac.uk">Mathilde Timmermans</a>.</p>
 
     </main>
 
     <footer>
-      &copy; 2025 SPOCK Project
+      &copy; 2026 SPOCK Project
     </footer>
   </div>
   <script>
