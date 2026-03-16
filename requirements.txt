@@ -87,7 +87,7 @@ matplotlib==3.10.1
 matplotlib-inline==0.1.7
 mistune==3.1.3
 more-itertools==10.8.0
-mphot==1.2.3
+mphot @ git+https://github.com/ppp-one/mphot.git@main
 narwhals==1.38.0
 nbclassic==1.3.1
 nbclient==0.10.2
