@@ -198,12 +198,6 @@ class Schedules:
 
                 worksheet_special = sh.worksheet("Annex_Targets_V2-STARS")
                 # Read follow up (planet candidates) list
-                # values = worksheet_special.get_all_values()
-                # custom_headers= [
-                #     "SPECULOOS", "Annex_Prog", "V_mag", "Alias", "Note", "Active", 
-                #     "Next Obs", "spc", "soi", "twomass", "gaia", "wise", "ra", "dec", 
-                #     "ra_err", "dec_err", "Filter_spc", "Filter_trap", "texp_spc", 
-                #     "texp_trap", "mag_j", "mag_j_err", "SpT", "e_Spt", "Teff", "distance"  ]
 
                 dataframe = pd.DataFrame(worksheet_special.get_all_records(expected_headers= [
                                 "SPECULOOS", "Annex_Prog", "V_mag", "Alias", "Note", "Active", 
@@ -881,18 +875,6 @@ class Schedules:
                                                 'dec (m)': self.SS1_night_blocks['dec (m)'][0],
                                                 'dec (s)': self.SS1_night_blocks['dec (s)'][0],
                                                 'configuration': self.SS1_night_blocks['configuration'][0]}])
-                    # end_scheduled_table.append({'target': self.SS1_night_blocks['target'][0],
-                    #                             'start time (UTC)': self.SS1_night_blocks['start time (UTC)'][0],
-                    #                             'end time (UTC)': self.SS1_night_blocks['end time (UTC)'][0],
-                    #                             'duration (minutes)': self.SS1_night_blocks['duration (minutes)'][0],
-                    #                             'ra (h)': self.SS1_night_blocks['ra (h)'][0],
-                    #                             'ra (m)': self.SS1_night_blocks['ra (m)'][0],
-                    #                             'ra (s)': self.SS1_night_blocks['ra (s)'][0],
-                    #                             'dec (d)': self.SS1_night_blocks['dec (d)'][0],
-                    #                             'dec (m)': self.SS1_night_blocks['dec (m)'][0],
-                    #                             'dec (s)': self.SS1_night_blocks['dec (s)'][0],
-                    #                             'configuration': self.SS1_night_blocks['configuration'][0]},
-                    #                            ignore_index=True)
                     end_scheduled_table = pd.concat([end_scheduled_table, new_row], ignore_index=True)
             # situation 1
             if (self.SS1_night_blocks['start time (UTC)'][0] <=
@@ -1159,6 +1141,11 @@ class Schedules:
 
             #mphot computation
             efficiencyFile_SPIRIT = path_mphot + '/resources/systems/speculoos_PIRT_1280SciCam_-60.csv'
+            if filt_ == 'J':
+                filt_ = 'SPC_J'
+            elif filt_ == 'H':
+                filt_ = 'SPC_H'
+
             filterFile_SPIRIT = path_mphot + '/resources/filters/'+filt_+'.csv'
             # name to refer to the generated file
             name_SPIRIT, system_response_SPIRIT = mphot.generate_system_response(
@@ -1184,14 +1171,24 @@ class Schedules:
                 "ap_rad": 3
             }
 
-            # print("INFO STAR SPIRIT: ", target_list["Teff"][i].values[0],
-            #                              target_list["distance"][i].values[0])
-            spirit = mphot.get_precision(props_callisto, props_sky,#, source_id=target_list["Gaia_ID"][i].values[0],
-                                        Teff=target_list["Teff"][i].values[0],distance=target_list["distance"][i].values[0])
+            try:
+                spirit = mphot.get_precision(props_callisto, props_sky, 
+                                             Teff=target_list["Teff"][i].values[0], 
+                                             distance=target_list["distance"][i].values[0])
+            except FileNotFoundError:
+                print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Re-running the grid for mphot, can take 30s')
+                spirit = mphot.get_precision(props_callisto, props_sky, Teff=target_list["Teff"][i].values[0],
+                                              distance=target_list["distance"][i].values[0], override_grid=True)
+                raise
             # extract exposure time
             image_precision, binned_precision, components = spirit
             texp = int(components["t [s]"])
-            #filt_ = 'zYJ'
+
+            # change the naming of filter SPC_H and SPC_J back to H and J for the astra output night block
+            if filt_ == 'SPC_J':
+                filt_ = 'J'
+            elif filt_ == 'SPC_H':
+                filt_ = 'H'
 
         else:
             #filters list
@@ -1338,23 +1335,23 @@ def save_schedule(save, over_write, day, telescope):
     if save:
         source = path_spock + '/night_blocks_propositions/' + 'night_blocks_' + telescope + '_' + \
                  day.tt.datetime.strftime("%Y-%m-%d") + '.txt'
-        destination = path_spock + '/DATABASE/' + telescope + '/'
+        #destination = path_spock + '/DATABASE/' + telescope + '/'
         destination_2 = path_spock + '/DATABASE/' + telescope + '/' + 'Archive_night_blocks/'
         if over_write:
-            dest = shutil.copy(source, destination)
+            #dest = shutil.copy(source, destination)
             dest2 = shutil.copy(source, destination_2)
             print(Fore.GREEN + 'INFO:  ' + Fore.BLACK + '\"' + source + '\"' + ' has been over-written to ' +
-                  '\"' + destination + '\"')
+                  '\"' + destination_2 + '\"')
             #make_astra_schedule_file(day, 1, telescope)
         if not over_write:
             try:
-                dest = shutil.move(source, destination)
+                dest = shutil.move(source, destination_2)
                 shutil.move(source, destination_2)
                 print(Fore.GREEN + 'INFO:  ' + Fore.BLACK + '\"' + source + '\"' + ' has been copied to ' +
-                      '\"' + destination + '\"')
+                      '\"' + destination_2 + '\"')
                 #make_astra_schedule_file(day, 1, telescope)
             except shutil.Error:
-                print(Fore.GREEN + 'INFO:  ' + Fore.BLACK + '\"' + destination + 'night_blocks_' +
+                print(Fore.GREEN + 'INFO:  ' + Fore.BLACK + '\"' + destination_2 + 'night_blocks_' +
                       telescope + '_' + day.tt.datetime.strftime("%Y-%m-%d") + '.txt' + '\"' + ' already exists')
     if not save:
         print(Fore.GREEN + 'INFO:  ' + Fore.BLACK + ' Those plans have not been saved')
@@ -1543,259 +1540,3 @@ def prediction(name, ra, dec, timing, period, duration, start_date, ntr):
     df['Observable TS La Silla'] = observable_ts_la_silla[0]
 
     return df
-
-# def make_docx_schedule(observatory, telescope, date_range, name_operator):
-#
-#     if not os.path.exists(path_spock + '/TRAPPIST_schedules_docx'):
-#         os.makedirs(path_spock + '/TRAPPIST_schedules_docx')
-#
-#     df_speculoos = pd.read_csv(target_list_from_stargate_path, delimiter=',')
-#     df_follow_up = pd.read_csv(path_spock + '/target_lists/target_transit_follow_up.txt', delimiter=' ')
-#     df_special = pd.read_csv(path_spock + '/target_lists/target_list_special.txt', delimiter=' ')
-#
-#     df_follow_up['nb_hours_surved'] = [0]*len(df_follow_up)
-#     df_follow_up['nb_hours_threshold'] = [0] * len(df_follow_up)
-#     df_special['nb_hours_surved'] = [0] * len(df_special)
-#     df_special['nb_hours_threshold'] = [0] * len(df_special)
-#
-#     df_pandas = pd.DataFrame({'Sp_ID': pd.concat([df_speculoos['Sp_ID'], df_follow_up['Sp_ID'], df_special['Sp_ID']]),
-#                               'RA': pd.concat([df_speculoos['RA'], df_follow_up['RA'], df_special['RA']]),
-#                               'DEC': pd.concat([df_speculoos['DEC'], df_follow_up['DEC'], df_special['DEC']]),
-#                               'J': pd.concat([df_speculoos['J'], df_follow_up['J'], df_special['J']]),
-#                               'SpT': pd.concat([df_speculoos['SpT'], df_follow_up['SpT'], df_special['SpT']]),
-#                               'nb_hours_surved': pd.concat([df_speculoos['nb_hours_surved'],
-#                                                             df_follow_up['nb_hours_surved'],
-#                                                             df_special['nb_hours_surved']]),
-#                               'nb_hours_threshold': pd.concat([df_speculoos['nb_hours_threshold'],
-#                                                                df_follow_up['nb_hours_threshold'],
-#                                                                df_special['nb_hours_threshold']])})
-#     df_pandas = df_pandas.drop_duplicates()
-#     df = Table.from_pandas(df_pandas)
-#     nb_day_date_range = date_range_in_days(date_range)
-#     doc = Document()
-#     par = doc.add_paragraph()
-#     par_format = par.paragraph_format
-#     par_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-#     par_format.space_beFore = Pt(0)
-#     par_format.space_after = Pt(6)
-#     run = par.add_run(observatory.name)
-#     run.bold = True
-#     font = run.font
-#     font.size = Pt(16)
-#     font.color.rgb = RGBColor(0, 0, 0)
-#     par = doc.add_paragraph()
-#     par_format = par.paragraph_format
-#     par_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-#     par_format.space_beFore = Pt(0)
-#     par_format.space_after = Pt(12)
-#     run = par.add_run('Schedule from ' + Time(date_range[0].iso, out_subfmt='date').iso + ' to ' +
-#                       Time(date_range[1].iso, out_subfmt='date').iso)
-#     run.bold = True
-#     font = run.font
-#     font.size = Pt(16)
-#     font.color.rgb = RGBColor(0, 0, 0)
-#     par = doc.add_paragraph()
-#     par_format = par.paragraph_format
-#     par_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-#     par_format.space_beFore = Pt(0)
-#     par_format.space_after = Pt(12)
-#     run = par.add_run('(Total time = 0hr, technical loss = 0hr, weather loss = 0hr,'
-#                       'Exotime = 0hr, cometime = 0hr, chilean time = 0hr)')
-#     run.bold = True
-#     font = run.font
-#     font.size = Pt(12)
-#     font.color.rgb = RGBColor(255, 0, 0)
-#     par = doc.add_paragraph()
-#     par_format = par.paragraph_format
-#     par_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-#     par_format.space_beFore = Pt(0)
-#     par_format.space_after = Pt(20)
-#     run = par.add_run(name_operator)
-#     run.italic = True
-#     font = run.font
-#     font.size = Pt(12)
-#     font.color.rgb = RGBColor(0, 0, 0)
-#     par = doc.add_paragraph()
-#     par_format = par.paragraph_format
-#     par_format.space_beFore = Pt(16)
-#     par_format.space_after = Pt(0)
-#
-#     for i in range(nb_day_date_range):
-#
-#         date = date_range[0] + i
-#         table_schedule = read_night_block(telescope, date)
-#         sun_set = observatory.sun_set_time(date, which='next').iso
-#         sun_rise = observatory.sun_rise_time(date, which='next').iso
-#         moon_illum = int(round(moon_illumination(date) * 100, 0)) * u.percent
-#         civil_twilights = [Time(observatory.twilight_evening_civil(date, which='next')).iso,
-#                            Time(observatory.twilight_morning_civil(date + 1, which='nearest')).iso]
-#         nautic_twilights = [Time(observatory.twilight_evening_nautical(date, which='next')).iso,
-#                             Time(observatory.twilight_morning_nautical(date + 1, which='nearest')).iso]
-#         astro_twilights = [Time(observatory.twilight_evening_astronomical(date, which='next')).iso,
-#                            Time(observatory.twilight_morning_astronomical(date + 1, which='nearest')).iso]
-#         start_night = table_schedule['start time (UTC)'][0]
-#         end_night = np.array(table_schedule['end time (UTC)'])[-1]
-#         night_duration = round((Time(nautic_twilights[1]) - Time(nautic_twilights[0])).jd * 24, 3) * u.hour
-#
-#         run = par.add_run('Night starting on the ' + Time(date, out_subfmt='date').value)
-#         run.bold = True
-#         run.underline = True
-#         font = run.font
-#         font.size = Pt(12)
-#         font.color.rgb = RGBColor(0, 0, 0)
-#         par = doc.add_paragraph()
-#         par_format = par.paragraph_format
-#         par_format.space_beFore = Pt(0)
-#         par_format.space_after = Pt(0)
-#         run = par.add_run('Moon illumination: ' + str(moon_illum))
-#         run.italic = True
-#         font = run.font
-#         font.size = Pt(12)
-#         font.color.rgb = RGBColor(0, 0, 0)
-#         par = doc.add_paragraph()
-#         par_format = par.paragraph_format
-#         par_format.space_beFore = Pt(0)
-#         par_format.space_after = Pt(0)
-#         run = par.add_run(
-#             'Sunset - Sunrise: ' + '{:02d}'.format(Time(sun_set, out_subfmt='date_hm').datetime.hour) +
-#             'h' + '{:02d}'.format(Time(sun_set, out_subfmt='date_hm').datetime.minute) +
-#             '  / ' + '{:02d}'.format(Time(sun_rise, out_subfmt='date_hm').datetime.hour) + 'h' +
-#             '{:02d}'.format(Time(sun_rise, out_subfmt='date_hm').datetime.minute))
-#         run.italic = True
-#         font = run.font
-#         font.size = Pt(12)
-#         font.color.rgb = RGBColor(0, 0, 0)
-#         par = doc.add_paragraph()
-#         par_format = par.paragraph_format
-#         par_format.space_beFore = Pt(0)
-#         par_format.space_after = Pt(0)
-#         run = par.add_run(
-#             'Civil/Naut./Astro. twilights: ' +
-#             '{:02d}'.format(Time(civil_twilights[0], out_subfmt='date_hm').datetime.hour) + 'h' +
-#             '{:02d}'.format(Time(civil_twilights[0], out_subfmt='date_hm').datetime.minute) +
-#             '-' + '{:02d}'.format(Time(civil_twilights[1], out_subfmt='date_hm').datetime.hour) +
-#             'h' + '{:02d}'.format(Time(civil_twilights[1], out_subfmt='date_hm').datetime.minute) +
-#             ' / ' + '{:02d}'.format(Time(nautic_twilights[0], out_subfmt='date_hm').datetime.hour) +
-#             'h' + '{:02d}'.format(Time(nautic_twilights[0], out_subfmt='date_hm').datetime.minute) +
-#             '-' + '{:02d}'.format(Time(nautic_twilights[1], out_subfmt='date_hm').datetime.hour) +
-#             'h' + '{:02d}'.format(Time(nautic_twilights[1], out_subfmt='date_hm').datetime.minute) +
-#             '  / ' + '{:02d}'.format(Time(astro_twilights[0], out_subfmt='date_hm').datetime.hour) +
-#             'h' + '{:02d}'.format(Time(astro_twilights[0], out_subfmt='date_hm').datetime.minute) +
-#             '-' + '{:02d}'.format(Time(astro_twilights[1], out_subfmt='date_hm').datetime.hour) + 'h' +
-#             '{:02d}'.format(Time(astro_twilights[1], out_subfmt='date_hm').datetime.minute))
-#         run.italic = True
-#         font = run.font
-#         font.size = Pt(12)
-#         font.color.rgb = RGBColor(0, 0, 0)
-#         par = doc.add_paragraph()
-#         par_format = par.paragraph_format
-#         par_format.space_beFore = Pt(0)
-#         par_format.space_after = Pt(0)
-#         run = par.add_run('Start-end of night (Naut. twil.): ' + '{:02d}'.format(Time(start_night).datetime.hour) +
-#                           'h' + '{:02d}'.format(Time(start_night).datetime.minute) +
-#                           ' to ' + '{:02d}'.format(Time(end_night).datetime.hour) + 'h' +
-#                           '{:02d}'.format(Time(end_night).datetime.minute))
-#         run.italic = True
-#         font = run.font
-#         font.size = Pt(12)
-#         font.color.rgb = RGBColor(0, 0, 0)
-#         par = doc.add_paragraph()
-#         par_format = par.paragraph_format
-#         par_format.space_beFore = Pt(0)
-#         par_format.space_after = Pt(3)
-#         run = par.add_run('Night duration (Naut. twil.): ' + str(night_duration))
-#         run.italic = True
-#         font = run.font
-#         font.size = Pt(12)
-#         font.color.rgb = RGBColor(0, 0, 0)
-#
-#         for j in range(len(table_schedule)):
-#             trappist_planets = ['Trappist-1b', 'Trappist-1c', 'Trappist-1d', 'Trappist-1e',
-#                                 'Trappist-1f', 'Trappist-1g', 'Trappist-1h']
-#
-#             if any(table_schedule['target'][j] == p for p in trappist_planets):
-#                 idx_target = np.where((df['Sp_ID'] == 'Sp2306-0502'))[0]
-#             else:
-#                 idx_target = np.where((df['Sp_ID'] == table_schedule['target'][j]))[0]
-#
-#             start_time_target = table_schedule['start time (UTC)'][j]
-#             end_time_target = table_schedule['end time (UTC)'][j]
-#             config = table_schedule['configuration'][j]
-#             try:
-#                 coords = SkyCoord(ra=df['RA'][idx_target].data.data[0] * u.deg,
-#                                   dec=df['DEC'][idx_target].data.data[0] * u.deg)
-#             except IndexError:
-#                 break
-#             dist_moon = '34'
-#
-#             par = doc.add_paragraph()
-#             par_format = par.paragraph_format
-#             par_format.space_beFore = Pt(0)
-#             par_format.space_after = Pt(0)
-#             run = par.add_run(
-#                 'From ' + '{:02d}'.format(Time(start_time_target, out_subfmt='date_hm').datetime.hour) +
-#                 'h' + '{:02d}'.format(Time(start_time_target, out_subfmt='date_hm').datetime.minute) +
-#                 ' to ' + '{:02d}'.format(Time(end_time_target, out_subfmt='date_hm').datetime.hour) +
-#                 'h' + '{:02d}'.format(Time(end_time_target, out_subfmt='date_hm').datetime.minute) +
-#                 ' : ' + str(table_schedule['target'][j]))
-#             run.bold = True
-#             font = run.font
-#             font.size = Pt(12)
-#             font.color.rgb = RGBColor(0, 0, 0)
-#             par = doc.add_paragraph()
-#             par_format = par.paragraph_format
-#             par_format.space_beFore = Pt(0)
-#             par_format.space_after = Pt(0)
-#             run = par.add_run('  Note: Prio_target                                         ')
-#             font = run.font
-#             font.size = Pt(10)
-#             font.color.rgb = RGBColor(0, 0, 0)
-#             par = doc.add_paragraph()
-#             par_format = par.paragraph_format
-#             par_format.space_beFore = Pt(0)
-#             par_format.space_after = Pt(0)
-#             run = par.add_run(
-#                 '  SPECULOOS : ' + str(df['nb_hours_surved'][idx_target].data.data[0]*u.hour) + ' of obs over ' + str(
-#                     df['nb_hours_threshold'][idx_target].data.data[0]*u.hour))
-#             font = run.font
-#             font.size = Pt(10)
-#             font.color.rgb = RGBColor(0, 0, 0)
-#             par = doc.add_paragraph()
-#             par_format = par.paragraph_format
-#             par_format.space_beFore = Pt(0)
-#             par_format.space_after = Pt(0)
-#             run = par.add_run('Jmag= ' + str(df['J'][idx_target].data.data[0]) + ',  SpT= ' + str(
-#                 df['SpT'][idx_target].data[0]))  # + ', Moon at ' + str(dist_moon))
-#             font = run.font
-#             font.size = Pt(12)
-#             font.color.rgb = RGBColor(0, 0, 0)
-#             par = doc.add_paragraph()
-#             par_format = par.paragraph_format
-#             par_format.space_beFore = Pt(0)
-#             par_format.space_after = Pt(3)
-#             run = par.add_run(' RA = ' + str('{:02d}'.format(int(coords.ra.hms[0]))) + " " +
-#                               str('{:02d}'.format(int(coords.ra.hms[1]))) + " " +
-#                               str('{:05.3f}'.format(round(coords.ra.hms[2], 3))) +
-#                               ', DEC = ' + str('{:02d}'.format(int(coords.dec.dms[0]))) + " " +
-#                               str('{:02d}'.format(int(abs(coords.dec.dms[1])))) +
-#                               " " + str('{:05.3f}'.format(round(abs(coords.dec.dms[2]), 3))) +
-#                               ', ' + str(config[2:-2]).replace('\'', ' '))
-#             font = run.font
-#             font.size = Pt(12)
-#             font.color.rgb = RGBColor(0, 0, 0)
-#             par = doc.add_paragraph()
-#             par_format = par.paragraph_format
-#             par_format.space_beFore = Pt(16)
-#             par_format.space_after = Pt(0)
-#
-#     font = run.font
-#     font.size = Pt(12)
-#     font.color.rgb = RGBColor(0, 0, 0)
-#     if telescope == 'TS_La_Silla':
-#         doc.save(path_spock + '/TRAPPIST_schedules_docx/TS_' +
-#                  Time(date_range[0], out_subfmt='date').value.replace('-', '') + '_to_' +
-#                  Time(date_range[1], out_subfmt='date').value .replace('-', '') + '.docx')
-#     if telescope == 'TN_Oukaimeden':
-#         doc.save(path_spock + '/TRAPPIST_schedules_docx/TN_' +
-#                  Time(date_range[0], out_subfmt='date').value.replace('-', '') + '_to_' +
-#                  Time(date_range[1], out_subfmt='date').value .replace('-', '') + '.docx')

@@ -69,13 +69,13 @@ def make_scheduled_table(telescope, day_of_night):
                                     'night_blocks_' + telescope + '_' + day_of_night.tt.datetime[0].strftime(
                                         "%Y-%m-%d") + '.txt'))
         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Path exists and is: ',
-              os.path.join(Path, telescope, 'night_blocks_' + telescope + '_' +
+              os.path.join(Path, telescope,'Archive_night_blocks',  'night_blocks_' + telescope + '_' +
                            day_of_night.tt.datetime[0].strftime("%Y-%m-%d") + '.txt'))
     except TypeError:
         os.path.exists(os.path.join(Path, telescope, 'Archive_night_blocks',
                                     'night_blocks_' + telescope + '_' + day_of_night.tt.datetime.strftime(
                                         "%Y-%m-%d") + '.txt'))
-        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Path exists and is: ', os.path.join(Path, telescope,
+        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Path exists and is: ', os.path.join(Path, telescope,'Archive_night_blocks',
                                                                                          'night_blocks_' + telescope + '_' + day_of_night.tt.datetime.strftime(
                                                                                              "%Y-%m-%d") + '.txt'))
     except NameError:

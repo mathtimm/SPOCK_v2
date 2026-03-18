@@ -1214,23 +1214,14 @@ class Schedules:
             #                                                horizon=-8.19 * u.degree).iso)
             if (self.start_night > self.end_night) or (self.end_night - self.start_night).value > 1:
                 sys.exit('ERROR: Problem with start/end of night  on Saint-Ex !!')
-        # if self.telescope == 'Saint-Ex':
-        #     dura = end_saint_ex - start_saint_ex
-        # else:
+
         self.night_duration = self.end_night - self.start_night
-        # dura = Time(Time(self.observatory.twilight_morning_nautical(day + dt_1day ,which='nearest')).jd - \
-        # Time(self.observatory.twilight_evening_nautical(day ,which='next')).jd,format='jd')
-        # return dura
+
 
     def make_schedule(self, Altitude_constraint=None, Moon_constraint=None):
         self.Altitude_constraint = Altitude_constraint
         self.Moon_constraint = Moon_constraint
         start = time.time()
-        # for telescope in self.telescopes:
-        # self.nb_hours = np.zeros((len(self.target_table_spc['nb_hours_surved']),
-        #                           len(self.target_table_spc['nb_hours_surved'])))
-        # self.nb_hours[0, :] = self.target_table_spc['nb_hours_surved']
-        # self.nb_hours[1, :] = self.target_table_spc['nb_hours_surved']
         self.targets = target_list_good_coord_format(self.target_list)
 
         ## This is to check whether we have target duplications on the telescopes on a same night. 
@@ -1273,22 +1264,6 @@ class Schedules:
                 # self.end_night = self.observatory.sun_rise_time(self.day, which='next', horizon=horizon_for_set_and_rise)
                 self.table_priority_prio(self.day)
                 self.idx_nightly_targets(t)
-                #self.update_hours(self.day,targets)
-                # if self.is_constraints_met_first_target(t):
-                #     self.first_target = self.priority[self.idx_first_target]
-                #     self.first_target_by_day.append(self.first_target)
-                #     self.idx_first_target_by_day.append(self.idx_first_target)
-                # self.update_hours_observed_first(day)
-
-                # if not self.is_constraints_met_first_target(t):
-                #     print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK +
-                #           ' impossible to find the first target that respects the constraints')
-
-                # if (self.idx_second_target is not None) and self.is_constraints_met_second_target(t):
-                #     self.second_target = self.priority[self.idx_second_target]
-                #     self.second_target_by_day.append(self.second_target)
-                #     self.idx_second_target_by_day.append(self.idx_second_target)
-                # self.update_hours_observed_second(day)
 
                 if self.idx_second_target is None:
                     print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + ' no second target')
@@ -1580,9 +1555,6 @@ class Schedules:
 
     def table_priority_prio(self, day):
 
-        # self.priority =  pd.DataFrame(columns=['priority', 'target_name', 'set', 'rise', 'both', 'moon', 'program',
-        #                                        'SNR_ANDOR', 'SNR_SPIRIT', 'boost', 'to_do', 'started', 'completed','SPIRIT_observable'
-        #                    ])
         try:
             self.init_priority_table(self.day)  # initialise priority table
         except ValueError:
@@ -1877,26 +1849,6 @@ class Schedules:
             path_spock + '/night_blocks_propositions/' + 'night_blocks_' + self.telescope + '_' + str(
                 day_fmt) + '.txt'), sep=' ', index_label='target')
 
-    # def is_constraint_hours(self, idx_target):
-    #     """
-    #         Check if number of hours is ok
-
-    #     Parameters
-    #     ----------
-    #         idx_target: int, index of the target you want to check
-
-    #     Returns
-    #     -------
-    #         is_hours_constraint_met_target: boolean, say the hour constraint is ok or not
-
-    #     """
-    #     # nb_hours_observed = self.target_table_spc['nb_hours_surved']
-    #     is_hours_constraint_met_target = True
-    #     a = (1 - self.target_table_spc['nb_hours_surved'][idx_target] /
-    #          (self.target_table_spc['nb_hours_threshold'][idx_target] + 10))
-    #     if a < 5E-2:
-    #         is_hours_constraint_met_target = False
-    #     return is_hours_constraint_met_target
 
     def info_obs_possible(self, day):
         '''
@@ -2058,94 +2010,6 @@ class Schedules:
         
         return nb_hours_dict
 
-    # def update_hours_observed_first(self, day):
-    #     """
-    #         update number of hours observed for the corresponding first target
-
-    #     Parameters
-    #     ----------
-    #         t: int, day of the month
-    #         idx_first_target: int, index of the first target
-    #     Returns
-    #     -------
-    #         self.nb_hours_observed
-    #         self.nb_hours
-    #         self.nb_hours[idx_first_target]
-
-    #     """
-    #     if self.idx_second_target is not None:
-    #         shift = max(self.shift_hours_observation(self.idx_first_target),
-    #                     self.shift_hours_observation(self.idx_second_target)) / 24  # days
-    #     else:
-    #         shift = self.shift_hours_observation(self.idx_first_target) / 24  # days
-
-    #     dur_obs_both_target = self.night_duration(day).value * u.day
-    #     dur_obs_set_target = (self.night_duration(day).value / 2 - shift / self.date_range_in_days) * u.day
-    #     # (self.night_duration(day)/(2*u.day))*u.day+1*((aa.value/30)*u.hour-t/(aa.value/2)*u.hour)
-    #     dur_obs_rise_target = (self.night_duration(day).value / 2 + shift / self.date_range_in_days) * u.day
-    #     # (self.night_duration(day)/(2*u.day))*u.day-1*((aa.value/30)*u.hour-t/(aa.value/2)*u.hour)
-
-    #     if self.first_target['set or rise'] == 'set':
-    #         nb_hours__1rst_old = self.nb_hours[1, self.idx_first_target]  # hours
-    #         a = dur_obs_set_target.value  # in days
-
-    #     if self.first_target['set or rise'] == 'both':
-    #         nb_hours__1rst_old = self.nb_hours[1, self.idx_first_target]  # hours
-    #         a = dur_obs_both_target.value  # in days
-
-    #     if self.first_target['set or rise'] == 'rise':
-    #         nb_hours__1rst_old = self.nb_hours[1, self.idx_first_target]  # hours
-    #         a = dur_obs_rise_target.value  # in days
-
-    #     if self.first_target['set or rise'] == 'None':
-    #         nb_hours__1rst_old = self.nb_hours[1, self.idx_first_target]  # hours
-    #         a = dur_obs_rise_target.value  # in days
-
-    #     self.nb_hours[0, self.idx_first_target] = nb_hours__1rst_old
-    #     self.nb_hours[1, self.idx_first_target] = nb_hours__1rst_old + a * 24
-    #     self.target_table_spc['nb_hours_surved'][self.idx_first_target] = nb_hours__1rst_old + a * 24
-
-    # def update_hours_observed_second(self, day):
-    #     """
-    #         update number of hours observed for the corresponding second target
-
-    #     Parameters
-    #     ----------
-    #         t: int, day of the month
-    #         idx_second_target: int, index of the second target
-    #     Returns
-    #     -------
-    #         self.nb_hours_observed
-    #         self.nb_hours
-    #         self.nb_hours[idx_second_target]
-
-    #     """
-    #     if self.idx_second_target is not None:
-    #         shift = max(self.shift_hours_observation(self.idx_first_target),
-    #                     self.shift_hours_observation(self.idx_second_target)) / 24  # days
-    #     else:
-    #         shift = self.shift_hours_observation(self.idx_first_target) / 24  # days
-    #     dur_obs_both_target = self.night_duration(day).value * u.day
-    #     dur_obs_set_target = (self.night_duration(day).value / 2 - shift / self.date_range_in_days) * u.day
-    #     # (self.night_duration(day)/(2*u.day))*u.day+1*((aa.value/30)*u.hour-t/(aa.value/2)*u.hour)
-    #     dur_obs_rise_target = (self.night_duration(day).value / 2 + shift / self.date_range_in_days) * u.day
-    #     # (self.night_duration(day)/(2*u.day))*u.day-1*((aa.value/30)*u.hour-t/(aa.value/2)*u.hour)
-
-    #     if self.second_target['set or rise'] == 'rise':
-    #         nb_hours__2nd_old = self.nb_hours[1, self.idx_second_target]  # hours
-    #         b = dur_obs_rise_target.value  # in days
-    #     if self.second_target['set or rise'] == 'set':
-    #         nb_hours__2nd_old = self.nb_hours[1, self.idx_second_target]  # hours
-    #         b = dur_obs_set_target.value  # in days
-    #     if self.second_target['set or rise'] == 'both':
-    #         nb_hours__2nd_old = self.nb_hours[1, self.idx_second_target]  # hours
-    #         b = dur_obs_both_target.value  # in days
-
-    #     self.nb_hours[0, self.idx_second_target] = nb_hours__2nd_old
-    #     self.nb_hours[1, self.idx_second_target] = nb_hours__2nd_old + b * 24
-    #     self.target_table_spc['nb_hours_surved'][self.idx_second_target] = nb_hours__2nd_old + b * 24
-
-
     def reference_table(self):
         """
 
@@ -2208,7 +2072,8 @@ class Schedules:
         dist_target = float(self.target_table_spc['dist'][i]) #pc
 
         if telescope == 'Callisto':
-            filt_ = 'zYJ'  # filter to use for the calculation
+
+            filt_ = 'zYJ'  # filter to use for the calculation, for long term it's always zYJ filter for SPIRIT
             # files used to generate SR
             efficiencyFile_SPIRIT = path_mphot + '/resources/systems/speculoos_PIRT_1280SciCam_-60.csv'
             filterFile_SPIRIT = path_mphot + '/resources/filters/zYJ.csv'
@@ -2346,38 +2211,6 @@ class Schedules:
 
 
         return texp
-
-    # def exposure_time_table(self, day):
-    #     """ generate an exposure time table as the form of a file untitled
-
-    #     Parameters
-    #     ----------
-    #     day : date
-    #         date in fmt 'yyyy-mm-dd'
-
-    #     Returns
-    #     -------
-    #     file
-    #         file with most appropriate exposure time for each target "exposure_time_table.csv"
-
-    #     """
-    #     if day is None:
-    #         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Not using moon phase in ETC')
-    #     sso_texp = np.zeros(len(self.target_table_spc))
-    #     sso_spirit_texp = np.zeros(len(self.target_table_spc))
-    #     sno_texp = np.zeros(len(self.target_table_spc))
-    #     saintex_texp = np.zeros(len(self.target_table_spc))
-
-    #     for i in range(len(self.target_table_spc)):
-    #         sso_texp[i] = self.exposure_time(day, i, 'Io')
-    #         sso_spirit_texp[i] = self.exposure_time(day, i, 'Callisto')
-    #         sno_texp[i] = sso_texp[i] #self.exposure_time(day, i, 'Artemis')
-    #         saintex_texp[i] = sso_texp[i] #self.exposure_time(day, i, 'Saint-Ex')
-
-    #         df = pd.DataFrame({'Sp_ID': self.target_table_spc['Sp_ID'],
-    #                            'SSO_texp': sso_texp, 'SSO_SPIRIT_texp': sso_spirit_texp, 'SNO_texp': sno_texp,
-    #                            'Saintex_texp': saintex_texp,  })
-    #         df.to_csv(path_spock + '/SPOCK_files/exposure_time_table_mphot.csv', sep=',', index=False)
 
     def no_obs_with_different_tel(self):
         """ function to avoid observations of a similar target,
@@ -2683,12 +2516,6 @@ def make_docx_schedule(observatory_name, telescope, date_range, name_operator):
         run = par.add_run(' RA = ' + "" + " " + "" + " " + "" + \
                           ', DEC = ' + "" + " " + "" + " " + "" + ', ' + 'filter= ' + ', '  'texp= ')
 
-        # run = par.add_run(' RA = ' + str('{:02d}'.format(int(coords.ra.hms[0]))) + " " +
-        # str('{:02d}'.format(int(coords.ra.hms[1]))) + " " +
-        # str('{:05.3f}'.format(round(coords.ra.hms[2], 3))) + \
-        #     ', DEC = ' + str('{:02d}'.format(int(coords.dec.dms[0]))) + " " +
-        #     str('{:02d}'.format(int(abs(coords.dec.dms[1])))) + " " +
-        #     str('{:05.3f}'.format(round(abs(coords.dec.dms[2]), 3))) + ', ' + str(config[2:-2]).replace('\'',' '))
         font = run.font
         font.size = Pt(12)
         font.color.rgb = RGBColor(0, 0, 0)
