@@ -160,7 +160,6 @@ input_short_term.csv
 
 input.csv
 
-
 TOI_270_transits_from_Paranal_in_2022.csv
 
 DATABASE/
@@ -178,8 +177,6 @@ vendor/
 _site/
 
 .DS_Store
-
-Notebooks/
 
 __pycache__/
 
