@@ -388,7 +388,7 @@ class Schedules:
             
             if (rise_target > start) or (set_target < end):   
                 sys.exit(Fore.RED + 'ERROR: ' + Fore.BLACK
-                        + " Observation impossible because the target is not below the altitude constraint at some point during the given time range. If this is not the case this might be due to the setup of the \"which\" argument in the function target_rise_time(). Ask Elsa.")
+                        + " Observation impossible because the target is below the altitude constraint at some point during the given time range. If this is not the case this might be due to the setup of the \"which\" argument in the function target_rise_time(). Ask Elsa.")
                 
             if (start < self.start_of_observation) or (end > self.end_of_observation):   
                 sys.exit(Fore.RED + 'ERROR: ' + Fore.BLACK
@@ -810,7 +810,10 @@ class Schedules:
 
 
     def locking_observations(self):
+
         night_block = self.SS1_night_blocks.to_pandas()
+
+        os.makedirs(path_spock + '/DATABASE/' + self.telescope + '/Locked_obs/', exist_ok=True)
 
         night_block.to_csv(path_spock + '/DATABASE/' + self.telescope + '/' +
                            'Locked_obs/' + 'lock_night_block_' + self.telescope + '_' +
