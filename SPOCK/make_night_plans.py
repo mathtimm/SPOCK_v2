@@ -473,9 +473,11 @@ def make_astra_schedule_file(day, nb_days, telescope):
             os.makedirs(p)
         scheduler_table = Table.read(path_spock + '/DATABASE/' + str(telescope) + '/Archive_night_blocks' +
                                      '/night_blocks_' + str(telescope) + '_' + str(t_now) + '.txt', format='ascii')
+        is_third_of_month = int(t_now.split('-')[2]) == 3  # True when the plan date is the 3rd of the month
         if (telescope == 'Io') or telescope == ('Europa') or (telescope == 'Ganymede') or (telescope == 'Callisto'):
-            scheduler_table = dome_rotation(telescope=telescope, day_of_night=t_now)  # Intentional dome rotation to
-            # avoid technical pb on Callisto with dome
+            if not is_third_of_month:
+                scheduler_table = dome_rotation(telescope=telescope, day_of_night=t_now)  # Intentional dome rotation to
+                # avoid technical pb on Callisto with dome
         name = scheduler_table['target']
         config = scheduler_table['configuration']
         filt = []
@@ -595,6 +597,28 @@ def make_astra_schedule_file(day, nb_days, telescope):
                              "start_time": (Time(scheduler_table["start time (UTC)"][i] ) + 1*u.min).iso,
                                     "end_time": scheduler_table["end time (UTC)"][i]})
             df = pd.concat([df, pd.DataFrame([target_row])], ignore_index=True)
+
+            # On the 3rd of each month, insert an autofocus action after the first target
+            if is_third_of_month and i == 0 and len(scheduler_table) > 1:
+                autofocus_start = Time(scheduler_table["end time (UTC)"][0]) + 1 * u.min
+                autofocus_end   = Time(scheduler_table["end time (UTC)"][1])
+                autofocus_filter = "zYJ" if telescope == "Callisto" else "I+z"
+                autofocus_row = pd.Series({
+                    "device_name": "camera_" + str(telescope).replace("-", ""),
+                    "action_type": "autofocus",
+                    "action_value": {
+                        "exptime": 3,
+                        "filter": autofocus_filter,
+                        "search_range_is_relative": True,
+                        "search_range": 1000,
+                        "n_steps": [30, 20],
+                        "n_exposures": [1, 1]
+                    },
+                    "start_time": autofocus_start.iso,
+                    "end_time":   autofocus_end.iso})
+                df = pd.concat([df, pd.DataFrame([autofocus_row])], ignore_index=True)
+                print(Fore.GREEN + 'INFO: ' + Fore.BLACK +
+                      f' Autofocus block added for {telescope} on {t_now} (3rd of month)')
         # Flats
         my_custom_order_morning = my_custom_order_evening[::-1]# temporaty fix for Callisto 
 

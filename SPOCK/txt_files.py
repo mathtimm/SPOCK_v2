@@ -345,13 +345,13 @@ def target(t_now,name,date_start,date_end,waitlimit,afinterval,autofocus,count,f
                     idx_target = np.where((df2['Sp_ID'] == name.replace('_2', '')))[0]
             else:
                 idx_target = np.where((df2['Sp_ID'] == name))[0]
-            gaia_id_target = df2['Gaia_ID'][int(idx_target)]
-    if idx_target is None:
+            gaia_id_target = df2['Gaia_ID'][int(idx_target[0])] if len(idx_target) > 0 else 'None'
+    if idx_target is None or len(idx_target) == 0:
         df2 = pd.concat([target_table_spc_follow_up, target_table_spc_special], ignore_index=True)
         idx_target = np.where((df2['Sp_ID'] == name))[0]
         try:
-            gaia_id_target = df2['Gaia_ID'][int(idx_target)]
-        except TypeError:
+            gaia_id_target = df2['Gaia_ID'][int(idx_target[0])] if len(idx_target) > 0 else 'None'
+        except (TypeError, IndexError):
             gaia_id_target = 'None'
     date_start=np.datetime64(date_start)
     date_end=np.datetime64(date_end)
@@ -565,11 +565,11 @@ def target_no_DONUTS(t_now,name,date_start,date_end,waitlimit,afinterval,autofoc
         df2 = pd.read_csv(target_list_from_stargate_path, delimiter=',', index_col=None)
         # idx_target = np.where((df['spc'] == name.replace('_2','')))[0]
         idx_target = np.where((df2['Sp_ID'] == name.replace('_2','')))[0]
-        gaia_id_target = df2['Gaia_ID'][int(idx_target)]  # int(df['gaia'][idx_target].values)
-    if idx_target is None:
+        gaia_id_target = df2['Gaia_ID'][int(idx_target[0])] if len(idx_target) > 0 else 'None'  # int(df['gaia'][idx_target].values)
+    if idx_target is None or len(idx_target) == 0:
         df2 = pd.concat([target_table_spc_follow_up, target_table_spc_special], ignore_index=True)
         idx_target = np.where((df2['Sp_ID'] == name))[0]
-        gaia_id_target = df2['Gaia_ID'][int(idx_target)]
+        gaia_id_target = df2['Gaia_ID'][int(idx_target[0])] if len(idx_target) > 0 else 'None'
 
     date_start = np.datetime64(date_start)
     date_end=np.datetime64(date_end)
@@ -669,10 +669,10 @@ def target_offset(t_now,name,date_start,date_end,waitlimit,afinterval,autofocus,
     else:
         idx_target = np.where((df['Sp_ID'] == name.replace('_2','')))[0]
         gaia_id_target = int(df['Gaia_ID'][idx_target].values)
-    if not idx_target:
+    if idx_target is None or len(idx_target) == 0:
         df2 = pd.concat([target_table_spc_follow_up, target_table_spc_special], ignore_index=True)
         idx_target = np.where((df2['Sp_ID'] == name))[0]
-        gaia_id_target = df2['Gaia_ID'][int(idx_target)]
+        gaia_id_target = df2['Gaia_ID'][int(idx_target[0])] if len(idx_target) > 0 else 'None'
     date_start=np.datetime64(date_start)
     date_end=np.datetime64(date_end)
     binning=1
@@ -786,13 +786,13 @@ def first_target(t_now,name,date_start,date_end,waitlimit,afinterval,autofocus,c
                     idx_target = np.where((df2['Sp_ID'] == name.replace('_2', '')))[0]
             else:
                 idx_target = np.where((df2['Sp_ID'] == name))[0]
-            gaia_id_target = df2['Gaia_ID'][int(idx_target)]
-    if idx_target is None:
+            gaia_id_target = df2['Gaia_ID'][int(idx_target[0])] if len(idx_target) > 0 else 'None'
+    if idx_target is None or len(idx_target) == 0:
         df2 = pd.concat([target_table_spc_special, target_table_spc_follow_up], ignore_index=True)
         try:
             idx_target = np.where((df2['Sp_ID'] == name))[0]
-            gaia_id_target = df2['Gaia_ID'][int(idx_target)]
-        except TypeError:
+            gaia_id_target = df2['Gaia_ID'][int(idx_target[0])] if len(idx_target) > 0 else 'None'
+        except (TypeError, IndexError):
             gaia_id_target = 'None'
 
     date_start=np.datetime64(date_start)
