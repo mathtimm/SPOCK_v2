@@ -195,3 +195,5 @@ notebook_tests.ipynb
 test_filter_J_H.py
 
 ./src/mphot/
+
+SPOCKapp_v2_local.ipynb
