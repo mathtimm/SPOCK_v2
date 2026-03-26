@@ -1987,14 +1987,14 @@ class Schedules:
                         open(path_online_to_local, 'wb').write(nightb.content)
                         nb_online = pd.read_csv(path_online_to_local, delimiter=' ', index_col=False)
                         if target_name in np.array(nb_online["target"]):
-                            duration_obs_target_planned += nb_online.loc[nb_online["target"] == target, "duration (minutes)"]/60
+                            duration_obs_target_planned += nb_online.loc[nb_online["target"] == target_name, "duration (minutes)"].sum()/60
 
 
 
             current_dt += TimeDelta(1, format='jd')
             
         if isinstance(duration_obs_target_planned, pd.Series):
-            duration_obs_target_planned = duration_obs_target_planned.values[0]
+            duration_obs_target_planned = duration_obs_target_planned.sum()
             
         matches = self.target_table_spc[self.target_table_spc['Sp_ID'] == target_name]
         if len(matches) > 0:
