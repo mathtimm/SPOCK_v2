@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Short-term scheduler
-permalink: /examples/tutorials/notebooks/tutorials_spockstbundle install
+title: Short-term Scheduler
+permalink: /examples/tutorials/notebooks/tutorials_spockst/
 ---
 
 # Short-term scheduling
