@@ -2,6 +2,8 @@ TRAPPIST_schedules_docx/
 
 SPOCK/credentials/*
 
+SPOCK/.DS_Store
+
 night_blocks_propositions/
 
 survey_hours/
