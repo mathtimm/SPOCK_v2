@@ -202,6 +202,6 @@ SPOCKapp_v2_local.ipynb
 
 text_file.txt
 
-target_lists/www.mrao.cam.ac.uk/
+./target_lists/www.mrao.cam.ac.uk/
 
 SPOCK/.DS_Store
