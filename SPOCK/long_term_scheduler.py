@@ -1764,8 +1764,10 @@ class Schedules:
                                                                          self.end_night)]
             constraints_all = self.constraints + [TimeConstraint(self.start_night, self.end_night)]
             
-            self.target_table_spc['texp_spc'][self.idx_first_target_spc] = self.priority_ranked['texp_spc'][self.idx_first_target]
-            self.target_table_spc['texp_spc'][self.idx_second_target_spc] = self.priority_ranked['texp_spc'][self.idx_second_target]
+            # self.target_table_spc['texp_spc'][self.idx_first_target_spc] = self.priority_ranked['texp_spc'][self.idx_first_target]
+            # self.target_table_spc['texp_spc'][self.idx_second_target_spc] = self.priority_ranked['texp_spc'][self.idx_second_target]
+            self.target_table_spc['texp_spc'][self.idx_first_target_spc] =  self.exposure_time(day=self.day, i=self.idx_first_target_spc)
+            self.target_table_spc['texp_spc'][self.idx_second_target_spc] =  self.exposure_time(day=self.day, i=self.idx_second_target_spc)
 
         else:
             constraints_set_target = self.constraints + [TimeConstraint(self.start_night,
@@ -2155,7 +2157,7 @@ class Schedules:
 
             # get the precision and components used to calculate it (generates grid if not already present)
             try:
-                #result = mphot.get_precision_gaia(props_telescope_ANDOR, props_sky, source_id=gaia_id, Teff=Teff_target)
+                result_gaia = mphot.get_precision_gaia(props_telescope_ANDOR, props_sky, source_id=gaia_id, Teff=Teff_target)
                 result = mphot.get_precision(props_telescope_ANDOR, props_sky, Teff=Teff_target, distance=dist_target)
             except FileNotFoundError:
                 print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Re-running the grid for mphot, can take 30s')

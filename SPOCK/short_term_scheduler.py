@@ -31,13 +31,25 @@ import subprocess
 import sys
 import shutil
 import SPOCK.ETC as ETC
-from SPOCK import user_portal, pwd_portal, pwd_appcs, path_spock, path_credential_json, target_list_from_stargate_path, path_mphot
+from SPOCK import user_portal, pwd_portal, pwd_appcs, path_spock, path_credential_json, path_credential_json_saint_ex, target_list_from_stargate_path, path_mphot
 from requests.exceptions import ConnectionError
 
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name(path_credential_json, scope)
 client = gspread.authorize(creds)
+
+# Autorisations
+scope_saint_ex = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+# Connexion avec credentials
+creds_saint_ex = ServiceAccountCredentials.from_json_keyfile_name(path_credential_json_saint_ex, scope_saint_ex
+)
+
+client_saint_ex = gspread.authorize(creds_saint_ex)
 
 dt = Time('2018-01-02 00:00:00', scale='tcg') - Time('2018-01-01 00:00:00', scale='tcg')  # 1 day
 constraints = [AltitudeConstraint(min=24 * u.deg), AtNightConstraint()]  # MoonSeparationConstraint(min=30*u.deg)
@@ -140,6 +152,7 @@ class Schedules:
         self.target_list_follow_up = None
         self.target_list_special = None
         self.targets = None
+        self.targets_Saint_Ex = None
         self.target_table_spc = []
         self.start_night = None
         self.end_night = None
@@ -210,14 +223,34 @@ class Schedules:
                 self.targets = target_list_good_coord_format(df=self.target_table_spc)
 
                 # Read Saint-Ex spreadsheet 
-                worksheet_Saint_Ex = sh.worksheet("Annex_Targets_Saint-Ex")
-                dataframe_Saint_Ex = pd.DataFrame(worksheet_Saint_Ex.get_all_records())
+                # Ouvrir la spreadsheet
+                sheet_saint_ex = client.open_by_url(
+                    "https://docs.google.com/spreadsheets/d/1ITToBfgqTL5uRS5zWxZoClhPNVd1UpY0HdOCdJDG0_k/edit?gid=0#gid=0"
+                ).sheet1
+
+                # Récupérer les données
+                data_saint_ex = sheet_saint_ex.get_all_records()
+
+                # Convertir en DataFrame
+                # df = pd.DataFrame(data_saint_ex)
+                # worksheet_Saint_Ex = sh.worksheet("Annex_Targets_Saint-Ex")
+                dataframe_Saint_Ex = pd.DataFrame(data_saint_ex) #pd.DataFrame(worksheet_Saint_Ex.get_all_records())
                 self.target_table_Saint_Ex = dataframe_Saint_Ex.rename(columns={"Host star name": "Sp_ID", "gaia_dr2": "Gaia_ID",
-                                                                            "dec": "DEC", "ra": "RA","Night (local start)":"night_start",
+                                                                            'FOV centre coordinates': "coord_hms_dms","Night (local start)":"night_start",
                                                                             "Start time (UT)": "start_time", "End time (UT)": "end_time",
                                                                             "Sp. Type": "SpT", 'Exposure time':"texp", 
 
                                                                             })
+                coords_saint_ex = self.target_table_Saint_Ex['coord_hms_dms'].apply(
+                    lambda x: SkyCoord(x, unit=(u.hourangle, u.deg))
+                )
+                # change coord to deg and time to astropy Time format
+                self.target_table_Saint_Ex['RA'] = coords_saint_ex.apply(lambda c: c.ra.deg)
+                self.target_table_Saint_Ex['DEC'] = coords_saint_ex.apply(lambda c: c.dec.deg)
+                self.target_table_Saint_Ex["night_start"] = pd.to_datetime(self.target_table_Saint_Ex["night_start"]) + pd.Timedelta(hours=15)
+                self.target_table_Saint_Ex["night_start"] = self.target_table_Saint_Ex["night_start"].apply(Time)
+                self.target_table_Saint_Ex[["start_hour", "start_minute", "start_second"]] = self.target_table_Saint_Ex["start_time"].str.split(":", expand=True)
+                self.target_table_Saint_Ex[["end_hour", "end_minute", "end_second"]] = self.target_table_Saint_Ex["end_time"].str.split(":", expand=True)
                 self.targets_Saint_Ex = target_list_good_coord_format(df=self.target_table_Saint_Ex)
 
             except ConnectionError:
@@ -372,14 +405,45 @@ class Schedules:
         """
         if use_Saint_Ex_spreadsheet is True:
             self.observatory = charge_observatories(self.observatory_name)[0]
-            start = self.start_end_range[0]
-            end = self.start_end_range[1]
+
+            mask = (
+                (self.target_table_Saint_Ex["night_start"] == self.day_of_night) &
+                (self.target_table_Saint_Ex["Sp_ID"] == input_name)
+            )
+
+            row = self.target_table_Saint_Ex.loc[mask].iloc[0]
+            base = Time(row["night_start"])
+            t_start = Time(
+                base.datetime.replace(
+                    hour=int(row["start_hour"]),
+                    minute=int(row["start_minute"]),
+                    second=int(row["start_second"])
+                ),
+                scale="utc"
+            )
+            t_end = Time(
+                base.datetime.replace(
+                    hour=int(row["end_hour"]),
+                    minute=int(row["end_minute"]),
+                    second=int(row["end_second"])
+                ),
+                scale="utc"
+            )
+            
+            if t_start.datetime.hour <12:
+                t_start += 1*u.day
+                t_end += 1*u.day
+                print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + "Observation starts the day after the night start, adding a day")
+            else:
+                print(Fore.GREEN + 'INFO: ' + Fore.BLACK + "Observation starts the same day as the night start")
+            start = t_start #self.start_end_range[0]
+            end = t_end #self.start_end_range[1]
 
             dur_obs_both_target = (self.night_duration() / (2 * u.day)) * 2 * u.day
             constraints_Saint_Ex_target = [AltitudeConstraint(min=self.altitude_constraint * u.deg),
                                         MoonSeparationConstraint(min=self.moon_constraint * u.deg),
                                         TimeConstraint(start, end)]
-            idx_to_insert_target = int(np.where((self.target_table_Saint_Ex['Sp_ID'] == input_name))[0])
+            idx_to_insert_target= self.target_table_Saint_Ex.loc[mask].index[0]
             ## WARNING with Next and Nearest, particularly for Saint-Ex
             rise_target = self.observatory.target_rise_time(self.start_of_observation, self.targets_Saint_Ex[idx_to_insert_target],  which='nearest', 
                                                             horizon= self.altitude_constraint * u.deg)
