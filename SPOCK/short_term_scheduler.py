@@ -411,7 +411,15 @@ class Schedules:
                 (self.target_table_Saint_Ex["Sp_ID"] == input_name)
             )
 
-            row = self.target_table_Saint_Ex.loc[mask].iloc[0]
+            try:
+                row = self.target_table_Saint_Ex.loc[mask].iloc[0]
+            except IndexError:
+                sys.exit(
+                            Fore.RED + "ERROR: " + Fore.RESET +
+                            f"Target {input_name} not found in the Saint-Ex spreadsheet at this date {self.day_of_night}. "
+                            "Please check the name and the date in the spreadsheet."
+                        )
+
             base = Time(row["night_start"])
             t_start = Time(
                 base.datetime.replace(
