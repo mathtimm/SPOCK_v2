@@ -2,6 +2,8 @@ TRAPPIST_schedules_docx/
 
 SPOCK/credentials/*
 
+SPOCK/.DS_Store
+
 night_blocks_propositions/
 
 survey_hours/
@@ -197,3 +199,9 @@ test_filter_J_H.py
 ./src/mphot/
 
 SPOCKapp_v2_local.ipynb
+
+text_file.txt
+
+./target_lists/www.mrao.cam.ac.uk/
+
+SPOCK/.DS_Store

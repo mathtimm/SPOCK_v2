@@ -1240,12 +1240,12 @@ class Schedules:
 
             try:
                 spirit = mphot.get_precision(props_callisto, props_sky, 
-                                             Teff=target_list["Teff"][i].values[0], 
-                                             distance=target_list["distance"][i].values[0])
+                                             Teff=float(target_list["Teff"][i].values[0]), 
+                                             distance=float(target_list["distance"][i].values[0]))
             except FileNotFoundError:
                 print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Re-running the grid for mphot, can take 30s')
-                spirit = mphot.get_precision(props_callisto, props_sky, Teff=target_list["Teff"][i].values[0],
-                                              distance=target_list["distance"][i].values[0], override_grid=True)
+                spirit = mphot.get_precision(props_callisto, props_sky, Teff=float(target_list["Teff"][i].values[0]),
+                                              distance=float(target_list["distance"][i].values[0]), override_grid=True)
                 raise
             # extract exposure time
             image_precision, binned_precision, components = spirit
@@ -1262,6 +1262,11 @@ class Schedules:
             filt_ = target_list['Filter_spc'][i].values[0]
             if (filt_ == 'z\'') or (filt_ == 'r\'') or (filt_ == 'i\'') or (filt_ == 'g\''):
                 filt_ = filt_.replace('\'', '')
+            if filt_ == 'zcut':
+                filt_ = 'z'
+            if filt_ == 'zYJ':
+                print(Fore.YELLOW + 'WARNING: ' + Fore.BLACK + f' Filter zYJ is only available on Callisto, not {self.telescope}. Defaulting to I+z.')
+                filt_ = 'I+z'
             if filt_ != 'I+z':
                 filters = [filt_] + ['I+z', 'z', 'i', 'r', 'g']
             else:
@@ -1303,14 +1308,13 @@ class Schedules:
             # get the precision and components used to calculate it (generates grid if not already present)
             try:
                 andor = mphot.get_precision(props_telescope_ANDOR, props_sky, #source_id=target_list["Gaia_ID"][i].values[0],
-                                            Teff=target_list["Teff"][i].values[0],distance=target_list["distance"][i].values[0])
+                                            Teff=float(target_list["Teff"][i].values[0]),distance=float(target_list["distance"][i].values[0]))
             except FileNotFoundError:
                 print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Re-running the grid for mphot, can take 30s')
                 andor = mphot.get_precision(props_telescope_ANDOR, props_sky, #source_id=target_list["Gaia_ID"][i].values[0],
-                                            Teff=target_list["Teff"][i].values[0], distance=target_list["distance"][i].values[0], override_grid=True)
-            except TypeError:
-                sys.exit(Fore.RED + 'ERROR: ' + Fore.BLACK + ' Please make sure the Teff and Gaia ID are provided in the WG6 spreadsheet')
-                sys.exit(1)
+                                            Teff=float(target_list["Teff"][i].values[0]), distance=float(target_list["distance"][i].values[0]), override_grid=True)
+            except TypeError as e:
+                sys.exit(Fore.RED + 'ERROR: ' + Fore.BLACK + f' Please make sure the Teff and distance are provided in the WG6 spreadsheet. Got Teff={target_list["Teff"][i].values[0]!r}, distance={target_list["distance"][i].values[0]!r}. Original error: {e}')
             # extract exposure time
             image_precision, binned_precision, components = andor
             texp = int(components["t [s]"])
