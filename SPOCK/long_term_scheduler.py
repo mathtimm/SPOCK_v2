@@ -7,7 +7,7 @@ from astropy.time import Time,  TimeDelta
 from astropy.utils.data import clear_download_cache
 
 clear_download_cache()
-from astroplan import FixedTarget, AltitudeConstraint, MoonSeparationConstraint, AtNightConstraint, observability_table, \
+from astroplan import FixedTarget, AltitudeConstraint, AirmassConstraint, MoonSeparationConstraint, AtNightConstraint, observability_table, \
     is_observable, months_observable, time_grid_from_range, LocalTimeConstraint, is_always_observable
 from astroplan import TimeConstraint, Observer, moon_illumination
 from colorama import Fore
@@ -429,8 +429,8 @@ def charge_observatories(Name):
         observatories.append(Observer(location=location_SNO, name="SNO", timezone="UTC"))
 
     if 'Saint-Ex' in str(Name):
-        location_saintex = EarthLocation.from_geodetic(-115.48694444444445 * u.deg, 31.029166666666665 * u.deg,
-                                                       2829.9999999997976 * u.m)
+        location_saintex = EarthLocation.from_geodetic(-115.454764 * u.deg, 31.043417 * u.deg, #-115.48694444444445 * u.deg, 31.029166666666665 * u.deg values used before
+                                                       2778.4 * u.m) # 2829.9999999997976 * u.m value used before
         observatories.append(Observer(location=location_saintex, name="Saint-Ex", timezone="UTC"))
 
     if 'TS_La_Silla' in str(Name):
@@ -768,6 +768,7 @@ class Schedules:
     def __init__(self):
 
         self.Altitude_constraint = 25
+        self.Airmass_constraint = None
         self.constraints = None
         self.date_range = None  # date_range
         self.dur_obs_set_target = None
@@ -1205,9 +1206,9 @@ class Schedules:
                                                                              horizon=-12 * u.degree).iso)
         if self.telescope == "Saint-Ex":
             self.start_night = Time(self.observatory.sun_set_time(day, which='next',
-                                                                              horizon=-12 * u.degree).iso)
+                                                                              horizon=-8.19 * u.degree).iso) # different for Saint-Ex
             self.end_night = Time(self.observatory.sun_rise_time(day, which='next',
-                                                                             horizon=-12 * u.degree).iso)
+                                                                             horizon=-8.19 * u.degree).iso) # different for Saint-Ex
             # self.start_night = Time(self.observatory.sun_set_time(day, which='next',
             #                                                 horizon=-8.19 * u.degree).iso)
             # self.end_night = Time(self.observatory.sun_rise_time(day, which='next',
@@ -1218,9 +1219,10 @@ class Schedules:
         self.night_duration = self.end_night - self.start_night
 
 
-    def make_schedule(self, Altitude_constraint=None, Moon_constraint=None):
+    def make_schedule(self, Altitude_constraint=None, Moon_constraint=None, Airmass_constraint=None):
         self.Altitude_constraint = Altitude_constraint
         self.Moon_constraint = Moon_constraint
+        self.Airmass_constraint = Airmass_constraint
         start = time.time()
         self.targets = target_list_good_coord_format(self.target_list)
 
@@ -1245,9 +1247,14 @@ class Schedules:
                                                                           self.target_table_spc['Sp_ID'])
 
         if self.Altitude_constraint:
-            self.constraints.append(AltitudeConstraint(min=float(self.Altitude_constraint) * u.deg))
+            if self.telescope == 'Saint-Ex':
+                self.constraints.append(AltitudeConstraint(min=float(self.Altitude_constraint) * u.deg, max=90 * u.deg))
+            else:
+                self.constraints.append(AltitudeConstraint(min=float(self.Altitude_constraint) * u.deg))
         if self.Moon_constraint:
             self.constraints.append(MoonSeparationConstraint(min=float(self.Moon_constraint) * u.deg))
+        if self.Airmass_constraint:
+            self.constraints.append(AirmassConstraint(max=float(self.Airmass_constraint)))
 
         if str(self.strategy) == 'continuous':
             self.reverse_df1 = reverse_observability(self.observatory, self.targets, self.constraints, self.time_ranges)
@@ -1582,11 +1589,8 @@ class Schedules:
         horizon_for_set_and_rise = -12 * u.degree # degrees
 
         if self.telescope == 'Saint-Ex':
-            # sunset_time = self.observatory.sun_set_time(day, which='next', horizon=-8.19 * u.degree)
-            # sunrise_time = self.observatory.sun_rise_time(day, which='next', horizon=-8.19 * u.degree)
-
-            sunset_time = self.observatory.sun_set_time(day, which='next', horizon=-12 * u.degree)
-            sunrise_time = self.observatory.sun_rise_time(day, which='next', horizon=-12 * u.degree)
+            sunset_time = self.observatory.sun_set_time(day, which='next', horizon=-8.19 * u.degree)
+            sunrise_time = self.observatory.sun_rise_time(day, which='next', horizon=-8.19 * u.degree)
 
             delta_midnight = np.linspace(0, sunrise_time.jd - sunset_time.jd, nb_reso_grid) * u.day
             frame = AltAz(obstime=sunset_time + delta_midnight, location=self.observatory.location)
@@ -2157,7 +2161,7 @@ class Schedules:
 
             # get the precision and components used to calculate it (generates grid if not already present)
             try:
-                result_gaia = mphot.get_precision_gaia(props_telescope_ANDOR, props_sky, source_id=gaia_id, Teff=Teff_target)
+                #result_gaia = mphot.get_precision_gaia(props_telescope_ANDOR, props_sky, source_id=gaia_id, Teff=Teff_target)
                 result = mphot.get_precision(props_telescope_ANDOR, props_sky, Teff=Teff_target, distance=dist_target)
             except FileNotFoundError:
                 print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Re-running the grid for mphot, can take 30s')

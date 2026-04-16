@@ -4,6 +4,10 @@ import shutil
 from astropy.table import Table
 from astroplan import Observer, FixedTarget
 from astropy.time import Time
+from astropy.time import Time, TimeDelta
+from astropy.coordinates import EarthLocation
+import astropy.units as u
+from astroplan import Observer
 from colorama import Fore
 from .txt_files import startup, startup_no_flats, Path_txt_files, flatexo_gany, flatexo_io, \
     flatexo_euro, first_target_offset, flatexo_artemis_morning, flatexo_artemis_evening, startup_artemis, \
@@ -283,8 +287,8 @@ def make_np(t_now, nb_jours, tel):
         teide = Observer(location=location_SNO, name="SNO", timezone="UTC")
         sun_set_teide = teide.sun_set_time(t, which='next', horizon=-1*u.deg)
         sun_rise_teide = teide.sun_rise_time(t + 1, which='next', horizon=-1*u.deg)
-        location_saintex = EarthLocation.from_geodetic(-115.48694444444445 * u.deg, 31.029166666666665 * u.deg,
-                                                       2829.9999999997976 * u.m)
+        location_saintex = EarthLocation.from_geodetic(-115.454764 * u.deg, 31.043417 * u.deg, #-115.48694444444445 * u.deg, 31.029166666666665 * u.deg values used before
+                                                       2778.4 * u.m) # 2829.9999999997976 * u.m value used before
         san_pedro = Observer(location=location_saintex, name="saintex", timezone="UTC")
         sun_set_san_pedro = san_pedro.sun_set_time(t + 1, which='next', horizon=-1*u.deg)
         sun_rise_san_pedro = san_pedro.sun_rise_time(t + 1, which='next', horizon=-1*u.deg)
@@ -460,6 +464,60 @@ def make_np(t_now, nb_jours, tel):
         shutil.make_archive(p2, 'zip', p)
 
 
+
+def get_open_close_times_saintex(day, num_filters=1):
+    """
+    Compute full open and close observing times for SAINT-EX.
+
+    Parameters
+    ----------
+    day : str or astropy.time.Time
+        Date of observation.
+    num_filters : int, optional
+        Number of filters used (affects timing offsets).
+
+    Returns
+    -------
+    tuple
+        (full_open_iso, full_close_iso)
+    """
+
+    # --- Location setup ---
+    location_saintex = EarthLocation.from_geodetic(-115.454764 * u.deg, 31.043417 * u.deg, #-115.48694444444445 * u.deg, 31.029166666666665 * u.deg values used before
+                                                       2778.4 * u.m) # 2829.9999999997976 * u.m value used before
+    observer = Observer(location=location_saintex, name="SAINT-EX", timezone="UTC")
+
+    t = Time(day)
+
+    # --- Twilight times ---
+    evening_civil = observer.twilight_evening_civil(t, which='nearest')
+    morning_civil = observer.twilight_morning_civil(t, which='next')
+
+    # --- Sun times ---
+    sunrise = observer.sun_rise_time(morning_civil, which="next")
+    sunset = observer.sun_set_time(morning_civil, which="previous")
+
+    # --- Convert to Time objects ---
+    sunrise = Time(sunrise)
+    sunset = Time(sunset)
+
+    # --- Compute full open ---
+    open_offset = (evening_civil - sunset) / 2
+    full_open = sunset + open_offset
+
+    # --- Compute full close ---
+    close_offset = (sunrise - morning_civil) / 2
+    full_close = morning_civil + close_offset
+
+    # --- Adjust for multiple filters ---
+    if num_filters > 1:
+        delta = TimeDelta(7 * 60, format='sec')  # 7 minutes
+        full_open -= delta
+        full_close += delta
+
+    return full_open.iso, full_close.iso
+
+
 def make_astra_schedule_file(day, nb_days, telescope):
     t0 = Time(day)
     dt = Time('2018-01-02 00:00:00', scale='tcg') - Time('2018-01-01 00:00:00', scale='tcg')  # 1 day
@@ -509,8 +567,8 @@ def make_astra_schedule_file(day, nb_days, telescope):
         teide = Observer(location=location_SNO, name="SNO", timezone="UTC")
 
         #San Pedro de Martir
-        location_saintex = EarthLocation.from_geodetic(-115.48694444444445 * u.deg, 31.029166666666665 * u.deg,
-                                                       2829.9999999997976 * u.m)
+        location_saintex = EarthLocation.from_geodetic(-115.454764 * u.deg, 31.043417 * u.deg, #-115.48694444444445 * u.deg, 31.029166666666665 * u.deg values used before
+                                                       2778.4 * u.m) # 2829.9999999997976 * u.m value used before
         san_pedro = Observer(location=location_saintex, name="saintex", timezone="UTC")
 
         if telescope == "Saint-Ex":
@@ -524,10 +582,18 @@ def make_astra_schedule_file(day, nb_days, telescope):
 
 
         ## Built Schedule for ASTRA
-        # Open
-        open_row = [[	"camera_"+str(telescope).replace("-",""),	"open",	 "{}",
-                     (location.sun_set_time(t, which='next', horizon=-1*u.deg)+15*u.min).iso,
-                     (location.sun_rise_time(t, which='next',horizon=-1*u.deg)-15*u.min).iso]]
+        # Open row
+
+        if telescope == "Saint-Ex": # OK we can keep that until we have discuss this matter about open/close times on Saint-Ex
+            numfil = len(list(set(filt)))
+            #print('filters',list(set(filt)),numfil)
+            open_row = [[	"camera_"+str(telescope).replace("-",""),	"open",	 "{}",
+                get_open_close_times_saintex(day=day,num_filters=numfil)[0],
+                get_open_close_times_saintex(day=day,num_filters=numfil)[1]]]
+        else:
+            open_row = [[	"camera_"+str(telescope).replace("-",""),	"open",	 "{}",
+                (location.sun_set_time(t, which='next', horizon=-1*u.deg)+15*u.min).iso,
+                (location.sun_rise_time(t, which='next',horizon=-1*u.deg)-15*u.min).iso]]
         df = pd.DataFrame(open_row, columns=["device_name",	"action_type",	"action_value",
                                              "start_time",	"end_time"])
 
@@ -537,7 +603,8 @@ def make_astra_schedule_file(day, nb_days, telescope):
         #                      "start_time": location.sun_set_time(t, which='next').iso,
         #                       "end_time": location.sun_rise_time(t, which='next').iso})
         # df = pd.concat([df, pd.DataFrame([dome_row])], ignore_index=True)
-        # Flats
+
+        # Flats EVENING
         def custom_sort(arr, custom_order):
             # Create a dictionary to store the index of each element in the custom order
             order_dict = {val: idx for idx, val in enumerate(custom_order)}
@@ -552,24 +619,84 @@ def make_astra_schedule_file(day, nb_days, telescope):
         my_array = list(set(filt)) # + ["z\'", "i\'"]))
         my_custom_order_evening = ["B", "z\'", "V", "r\'", "i\'", "g\'", "I+z", "Exo", "zYJ", "Clear"]
         filt_evening = custom_sort(my_array, my_custom_order_evening)
+        # OK we can keep that until we have discuss this matter about the number of flats on Saint-Ex
         if len(filt_evening) == 1:
-            nb_flats = 30
+            if telescope == "Saint-Ex":
+                nb_flats = 20
+            else:
+                nb_flats = 30
         else:
-            nb_flats = 15
+            if telescope == "Saint-Ex":
+                nb_flats = 10
+            else:
+                nb_flats = 15
         if (telescope == "Callisto"):
             try:
                 filt_evening.remove('I+z')
             except ValueError:
                 (Fore.GREEN + 'INFO: ' + Fore.BLACK + " No I+z to discard for Callisto's Astra plans ")
                 pass
-        flats_row_evening = pd.Series({"device_name": "camera_"+str(telescope).replace("-",""),
+
+        if telescope == "Saint-Ex":
+
+            flats_row_evening = pd.Series({"device_name": "camera_"+str(telescope).replace("-",""),
+                             "action_type": "flats",
+                             "action_value": {"filter": filt_evening, 'n': [nb_flats]*len(filt_evening)},
+                             "start_time": (Time(get_open_close_times_saintex(day=day,num_filters=numfil)[0]) + 1*u.min).iso,
+                                       "end_time": scheduler_table["start time (UTC)"][0]})
+        else:
+            flats_row_evening = pd.Series({"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "flats",
                              "action_value": {"filter": filt_evening, 'n': [nb_flats]*len(filt_evening)},
                              "start_time": (location.sun_set_time(t, which='next', horizon=-1*u.deg)+15*u.min + 1*u.min).iso,
                                        "end_time": scheduler_table["start time (UTC)"][0]})
         df = pd.concat([df, pd.DataFrame([flats_row_evening])], ignore_index=True)
-        #Targets
+        
+        #Targets for ALL and autofocus for Saint-Ex
+
+        len_night_block = len(scheduler_table) - 1
+
         for i in range(len(scheduler_table)):
+
+            # AUTOFOCUS row FOR Saint-Ex
+            if telescope == "Saint-Ex":
+                if i ==0:
+                    # Check if all filters are the same
+                    if len(list(set(filt))) == 1: #If all observations use the same filter autofocus lasts until the global end
+                        autofocus_end_time = Time(scheduler_table["end time (UTC)"][-1]).iso
+                        #print('autofocus uno',autofocus_end_time)
+                    else:  #If multiple filters are used autofocus only lasts until the end of the first block
+                        autofocus_end_time = Time(scheduler_table["start time (UTC)"][0]).iso
+                    diff_open_and_first_target = np.abs((Time(get_open_close_times_saintex(day=day,num_filters=numfil)[0]) + 1*u.min) - Time(scheduler_table["start time (UTC)"][0]))
+                    autofocus_row1 = pd.Series({"device_name": "camera_"+str(telescope).replace("-", ""), "action_type": "autofocus",
+                                            "action_value": {"exptime": 1.0, "filter": filt[0], "focus_measure_operator": "hfr", "g_mag_range": (5, 10),
+                                                    "j_mag_range": (5, 10), "search_range": (10200, 10550), "n_steps": (20,), "n_exposures": [1],
+                                                    "airmass_threshold": 1.1, "selection_method": "maximal", "star_find_threshold": 6},
+                                            "start_time": (Time(scheduler_table["start time (UTC)"][0])-0.4*diff_open_and_first_target).iso, # seems arvitrary
+                                            "end_time": autofocus_end_time})
+
+                    df = pd.concat([df, pd.DataFrame([autofocus_row1])], ignore_index=True)
+                if i > 0 and filt[i] != filt[i-1] and (i != len_night_block-1):
+ 
+                    autofocus_rowmore = pd.Series({"device_name": "camera_"+str(telescope).replace("-", ""), "action_type": "autofocus",
+                                        "action_value": {"exptime": 1.0, "filter": filt[i], "focus_measure_operator": "hfr", "g_mag_range": (5, 10),
+                                                "j_mag_range": (5, 10), "search_range": (10200, 10550), "n_steps": (20,), "n_exposures": [1],
+                                                "airmass_threshold": 1.1, "selection_method": "maximal", "star_find_threshold": 6},
+                                        "start_time": (Time(scheduler_table["start time (UTC)"][i] ) + 0.5*u.min).iso,
+                                        "end_time": scheduler_table["end time (UTC)"][i]})
+                    df = pd.concat([df, pd.DataFrame([autofocus_rowmore])], ignore_index=True)
+
+                if (i > 0) and (filt[i] != filt[i-1]) and (i == len_night_block-1) and (i!= 0):
+                    autofocus_rowmore = pd.Series({"device_name": "camera_"+str(telescope).replace("-", ""), "action_type": "autofocus",
+                                        "action_value": {"exptime": 1.0, "filter": filt[i], "focus_measure_operator": "hfr", "g_mag_range": (5, 10),
+                                                "j_mag_range": (5, 10), "search_range": (10200, 10550), "n_steps": (20,), "n_exposures": [1],
+                                                "airmass_threshold": 1.1, "selection_method": "maximal", "star_find_threshold": 6},
+                                        "start_time": (Time(scheduler_table["start time (UTC)"][i] ) + 0.5*u.min).iso,
+                                        "end_time": Time(scheduler_table["end time (UTC)"][-1]).iso})
+                
+
+                    df = pd.concat([df, pd.DataFrame([autofocus_rowmore])], ignore_index=True)
+
         #    if scheduler_table['target'][i] == "dome_rot":
         #        print(Fore.GREEN + 'INFO: ' + Fore.BLACK + " Not adding dom_rot to the targets ")
         #    else:
@@ -579,7 +706,6 @@ def make_astra_schedule_file(day, nb_days, telescope):
                               str(int(scheduler_table['dec (d)'][i])) + 'd' +
                               str(abs(int(scheduler_table['dec (m)'][i]))) + 'm' +
                               str(abs(round(scheduler_table['dec (s)'][i], 3))) + 's')
-
 
             if scheduler_table['target'][i] == "dome_rot":
                 action_values_target = {'object': name[i], 'filter': filt[i], 'ra': coords.ra.value,
@@ -619,37 +745,64 @@ def make_astra_schedule_file(day, nb_days, telescope):
                 df = pd.concat([df, pd.DataFrame([autofocus_row])], ignore_index=True)
                 print(Fore.GREEN + 'INFO: ' + Fore.BLACK +
                       f' Autofocus block added for {telescope} on {t_now} (3rd of month)')
-        # Flats
-        my_custom_order_morning = my_custom_order_evening[::-1]# temporaty fix for Callisto 
 
+        # Flats MORNING
+        my_custom_order_morning = my_custom_order_evening[::-1]# temporaty fix for Callisto 
         filt_morning = custom_sort(my_array, my_custom_order_morning)
+
         if (telescope == "Callisto"):
             try:
                 filt_evening.remove('I+z')
             except ValueError:
                 (Fore.GREEN + 'INFO: ' + Fore.BLACK + " No I+z to discard for Callisto's Astra plans ")
                 pass
-        flats_row_morning = pd.Series({"device_name": "camera_"+str(telescope).replace("-",""),
+        if telescope == "Saint-Ex":
+
+            flats_row_morning = pd.Series({"device_name": "camera_"+str(telescope).replace("-",""),
+                        "action_type": "flats",
+                                "action_value": {"filter": filt_morning, 'n': [nb_flats]*len(filt_morning)},
+                        "start_time": (Time(scheduler_table["end time (UTC)"][-1])+1*u.min).iso,
+                                "end_time": get_open_close_times_saintex(day=day,num_filters=numfil)[1]})
+
+        else:
+            flats_row_morning = pd.Series({"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "flats",
                                        "action_value": {"filter": filt_morning, 'n': [nb_flats]*len(filt_morning)},
                              "start_time": (Time(scheduler_table["end time (UTC)"][-1]) + 1*u.min).iso,
                                        "end_time": (location.sun_rise_time(t, which='next',horizon=-1*u.deg)-15*u.min).iso})
         df = pd.concat([df, pd.DataFrame([flats_row_morning])], ignore_index=True)
-        # Close
-        close_row = pd.Series({	"device_name": "camera_"+str(telescope).replace("-",""),
+
+        # Close row
+        if telescope == "Saint-Ex":
+            close_row = pd.Series({	"device_name": "camera_"+str(telescope).replace("-",""),
+                                "action_type": "close",	"action_value": {},
+                                "start_time": (Time(get_open_close_times_saintex(day=day,num_filters=numfil)[1],scale='utc')+1*u.min).iso,
+                                "end_time": (Time(get_open_close_times_saintex(day=day,num_filters=numfil)[1],scale='utc')+6*u.min).iso})
+        else:
+            close_row = pd.Series({	"device_name": "camera_"+str(telescope).replace("-",""),
                              "action_type": "close",	"action_value": {},
                              "start_time": (location.sun_rise_time(t, which='next', horizon=-1*u.deg)-15*u.min).iso,
                                "end_time": (location.sun_rise_time(t, which='next', horizon=-1*u.deg)+45*u.min).iso})
         df = pd.concat([df, pd.DataFrame([close_row])], ignore_index=True)
-        # Calibration
+
+        # Calibration row
         texp = [int(x) for x in texp]
         texp += [0, 15, 30, 60, 120]
         texp = list(np.sort(np.unique(texp)))
+        sum_texp_calib = np.sum(texp)*10/60+10 # for SAINT-EX
         if (telescope == "Callisto"):
             calibration_row = pd.DataFrame([{	"device_name": "camera_"+str(telescope).replace("-",""),
                                  "action_type": "calibration",	"action_value": {"exptime":texp, 'n': [10]*len(texp), 'filter':'Dark'},
                                  "start_time": (location.sun_rise_time(t, which='next', horizon=-1*u.deg)-10*u.min+ 1*u.min).iso,
                                          "end_time": (location.sun_rise_time(t, which='next', horizon=-1*u.deg)+45*u.min).iso}])
+        elif telescope == "Saint-Ex":
+            calibration_row = pd.DataFrame([
+                {"device_name": "camera_" + str(telescope).replace("-", ""),
+                 "action_type": "calibration",
+                 "action_value": {"exptime": texp, 'n': [10] * len(texp), 'filter': 'I+z'},
+                 "start_time": (Time(get_open_close_times_saintex(day=day,num_filters=numfil)[1],scale='utc')+7*u.min).iso,
+                 "end_time": (Time(get_open_close_times_saintex(day=day,num_filters=numfil)[1],scale='utc')+7*u.min+sum_texp_calib*u.min).iso}])
+
         else:
             calibration_row = pd.DataFrame([
                 {"device_name": "camera_" + str(telescope).replace("-", ""),
@@ -660,10 +813,14 @@ def make_astra_schedule_file(day, nb_days, telescope):
         # Add calibration row to the dataframe
         df = pd.concat([df, calibration_row], ignore_index=True)
         #df = df.append(calibration_row, ignore_index=True)
+        if telescope == "Saint-Ex":
+            df.sort_values('start_time', inplace=True)
         #To .csv file
-        if (telescope == "Callisto") or (telescope=="Ganymede") or (telescope=="Io") or (telescope=="Europa"):
+        if (telescope == 'Saint-Ex')  or (telescope == "Callisto") or (telescope=="Ganymede") or (telescope=="Io") or (telescope=="Europa"):
             df.to_json(path_spock + '/DATABASE/' + str(telescope) + "/Astra/" +
-                  str(telescope) + '_' + str(t_now) + '.jsonl', orient="records", lines=True)
-        else:
+                    str(telescope) + '_' + str(t_now) + '.jsonl', orient="records", lines=True)
+            df.to_csv(path_spock + '/DATABASE/' + str(telescope) + "/Astra/" +
+                    str(telescope) + '_' + str(t_now) + '.csv', index=None)
+        else: # for Artemisfor now
             df.to_csv(path_spock + '/DATABASE/' + str(telescope) + "/Astra/" +
                   str(telescope) + '_' + str(t_now) + '.csv', index=None)

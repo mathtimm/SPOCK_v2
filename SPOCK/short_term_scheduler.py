@@ -80,9 +80,8 @@ def charge_observatories(name):
         observatories.append(Observer(location=location_SNO, name="SNO", timezone="UTC"))
 
     if 'Saint-Ex' in str(name):
-        location_saintex = \
-            EarthLocation.from_geodetic(-115.48694444444445 * u.deg, 31.029166666666665 * u.deg,
-                                        2829.9999999997976 * u.m)
+        location_saintex = EarthLocation.from_geodetic(-115.454764 * u.deg, 31.043417 * u.deg, #-115.48694444444445 * u.deg, 31.029166666666665 * u.deg values used before
+                                                       2778.4 * u.m) # 2829.9999999997976 * u.m value used before
         observatories.append(Observer(location=location_saintex, name="Saint-Ex", timezone="UTC"))
 
     if 'TS_La_Silla' in str(name):
@@ -133,6 +132,7 @@ class Schedules:
 
     def __init__(self):
         self.altitude_constraint = 25
+        self.airmass_constraint = None
         self.target_list = None
         self.telescopes = []
         self.telescope = []
@@ -403,7 +403,11 @@ class Schedules:
         Create a night block with special target observed in the given time range (self.start_end_range)
 
         """
-        if use_Saint_Ex_spreadsheet is True:
+        # IF TELESCOPE IS SAINT-EX WE USE THE SAINT-EX SPREADSHEET 
+        if use_Saint_Ex_spreadsheet is True: 
+            self.altitude_constraint = 27 
+            self.moon_constraint = 25.5
+            self.airmass_constraint = 2.4
             self.observatory = charge_observatories(self.observatory_name)[0]
 
             mask = (
@@ -448,8 +452,9 @@ class Schedules:
             end = t_end #self.start_end_range[1]
 
             dur_obs_both_target = (self.night_duration() / (2 * u.day)) * 2 * u.day
-            constraints_Saint_Ex_target = [AltitudeConstraint(min=self.altitude_constraint * u.deg),
-                                        MoonSeparationConstraint(min=self.moon_constraint * u.deg),
+            constraints_Saint_Ex_target = [AltitudeConstraint(min=self.altitude_constraint * u.deg, max=90 * u.deg),
+                                        MoonSeparationConstraint(min=self.moon_constraint * u.deg), 
+                                        AirmassConstraint(self.airmass_constraint),
                                         TimeConstraint(start, end)]
             idx_to_insert_target= self.target_table_Saint_Ex.loc[mask].index[0]
             ## WARNING with Next and Nearest, particularly for Saint-Ex
@@ -1533,7 +1538,7 @@ def get_info_follow_up_target(name, target_list_follow_up):
 
 def prediction(name, ra, dec, timing, period, duration, start_date, ntr):
     altitude_constraint = 25
-    altitude_constraint_stx = 28
+    altitude_constraint_stx = 27
 
     start_date = Time(start_date)
 

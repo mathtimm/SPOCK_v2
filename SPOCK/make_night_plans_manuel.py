@@ -653,7 +653,7 @@ def make_astra_schedule_file(day, nb_days, telescope):
         open_row = [[	"camera_"+str(telescope).replace("-",""),	"open",	 "{}",
                      (location.sun_set_time(t, which='next', horizon=-1*u.deg)+15*u.min).iso,
                      (location.sun_rise_time(t, which='next',horizon=-1*u.deg)-15*u.min).iso]]
-        if telescope == "Saint-Ex":
+        if telescope == "Saint-Ex": 
             numfil = len(list(set(filt)))
             #print('filters',list(set(filt)),numfil)
             open_row = [[	"camera_"+str(telescope).replace("-",""),	"open",	 "{}",
