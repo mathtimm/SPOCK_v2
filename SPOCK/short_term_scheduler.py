@@ -238,7 +238,7 @@ class Schedules:
                 self.target_table_Saint_Ex = dataframe_Saint_Ex.rename(columns={"Host star name": "Sp_ID", "gaia_dr2": "Gaia_ID",
                                                                             'FOV centre coordinates': "coord_hms_dms","Night (local start)":"night_start",
                                                                             "Start time (UT)": "start_time", "End time (UT)": "end_time",
-                                                                            "Sp. Type": "SpT", 'Exposure time':"texp", 
+                                                                            "Sp. Type": "SpT", 'Exposure time':"texp", "Filter":"Filter_spc", 
 
                                                                             })
                 coords_saint_ex = self.target_table_Saint_Ex['coord_hms_dms'].apply(
@@ -477,9 +477,7 @@ class Schedules:
                 self.target_table_Saint_Ex['Filter'][idx_to_insert_target] = \
                     self.exposure_time(input_name=self.target_table_Saint_Ex['Sp_ID'][idx_to_insert_target],
                                     target_list=self.target_table_Saint_Ex)
-            if self.telescope == 'Artemis':
-                self.target_table_Saint_Ex['Filter'][idx_to_insert_target] = \
-                    self.target_table_Saint_Ex['Filter'][idx_to_insert_target].replace('\'', '')
+
             observable = is_observable(constraints_Saint_Ex_target, self.observatory, self.targets_Saint_Ex[idx_to_insert_target],
                                     time_range=(start, end))
             
