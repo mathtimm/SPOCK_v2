@@ -12,8 +12,7 @@ The long-term scheduler is designed to **optimize the planning of targets**
 on the SPECULOOS telescopes (SSO, SNO, Saint-Ex, TS, TN), while following the
 observing strategy defined by the consortium.
 
-> **Note**  
- Before inserting new observations and uploading them, please make sure that the **SPECULOOS consortium has been informed**.
+> **Note:** Before inserting new observations and uploading them, please make sure that the **SPECULOOS consortium has been informed**.
 
 ---
 
