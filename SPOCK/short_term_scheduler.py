@@ -485,7 +485,7 @@ class Schedules:
                 blocks = []
                 a = ObservingBlock(self.targets_Saint_Ex[idx_to_insert_target], dur_obs_both_target, -1,
                                 constraints=constraints_Saint_Ex_target,
-                                configuration={"filt": str(self.target_table_Saint_Ex['Filter'][idx_to_insert_target]),
+                                configuration={"filt": str(self.target_table_Saint_Ex['Filter_spc'][idx_to_insert_target]),
                                                 "texp": str(self.target_table_Saint_Ex['texp'][idx_to_insert_target])})
                 blocks.append(a)
                 transitioner = Transitioner(slew_rate=11 * u.deg / u.second)
