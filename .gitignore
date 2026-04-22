@@ -2,6 +2,8 @@ TRAPPIST_schedules_docx/
 
 SPOCK/credentials/*
 
+SPOCK/.DS_Store
+
 night_blocks_propositions/
 
 survey_hours/
@@ -160,7 +162,6 @@ input_short_term.csv
 
 input.csv
 
-
 TOI_270_transits_from_Paranal_in_2022.csv
 
 DATABASE/
@@ -179,9 +180,28 @@ _site/
 
 .DS_Store
 
-Notebooks/
-
 __pycache__/
+
 *.pyc
 
 *.png
+
+test_*.py
+
+test_*.ipynb
+
+SaintEx.csv
+
+notebook_tests.ipynb
+
+test_filter_J_H.py
+
+./src/mphot/
+
+SPOCKapp_v2_local.ipynb
+
+text_file.txt
+
+./target_lists/www.mrao.cam.ac.uk/
+
+SPOCK/.DS_Store

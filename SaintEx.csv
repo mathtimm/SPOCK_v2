@@ -1,8 +1,0 @@
-device_type,device_name,action_type,action_value,start_time,end_time
-Camera,camera_SaintEx,open,{},2025-06-05 02:54:12.853,2025-06-05 12:26:21.144
-Camera,camera_SaintEx,flats,"{'filter': ['I+z'], 'n': [20]}",2025-06-05 02:55:12.854,2025-06-05 03:22:14.010
-Camera,camera_SaintEx,autofocus,"{'exptime': 1.0, 'filter': 'I+z', 'focus_measure_operator': 'hfr', 'g_mag_range': (5, 10), 'j_mag_range': (5, 10), 'search_range': (10200, 10550), 'n_steps': (20,), 'n_exposures': 1, 'airmass_threshold': 1.1, 'selection_method': 'maximal', 'star_find_threshold': 6}",2025-06-05 02:55:12.854,2025-06-05 11:58:00.000
-Camera,camera_SaintEx,object,"{'object': 'Sp1757+7042', 'filter': 'I+z', 'ra': 269.31424, 'dec': 70.70031, 'exptime': 36, 'guiding': True, 'pointing': False}",2025-06-05 03:23:14.010,2025-06-05 11:58:00.000
-Camera,camera_SaintEx,flats,"{'filter': ['I+z'], 'n': [20]}",2025-06-05 11:59:00.000,2025-06-05 12:26:21.144
-Camera,camera_SaintEx,close,{},2025-06-05 12:27:21.144,2025-06-05 12:32:21.144
-Camera,camera_SaintEx,calibration,"{'exptime': [0, 15, 30, 36, 60, 120], 'n': [10, 10, 10, 10, 10, 10]}",2025-06-05 12:33:21.144,2025-06-05 13:26:51.144

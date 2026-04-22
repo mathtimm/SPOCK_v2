@@ -1,0 +1,37 @@
+[project]
+name = "mphot"
+version = "1.2.3"
+authors = [
+  {name = "Peter Pedersen"},
+]
+repository = "https://github.com/ppp-one/mphot"
+readme = "README.md"
+license = { text = "MIT License" }
+requires-python = ">=3.11"
+dependencies = ["numpy", "pandas", "scipy", "matplotlib", "ipython", "astroquery"]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[project.optional-dependencies]
+dev = ["black", "pytest"]
+test = ["pytest"]
+docs = [
+    "sphinx",
+    "matplotlib",
+    "myst-nb",
+    "sphinx-book-theme",
+    "sphinx-design",
+    "ipywidgets",
+    "sphinx-copybutton",
+    "docformatter[tomli]",
+    "toml",
+]
+
+[project.urls]
+Documentation = "https://mphot.readthedocs.io"
+Repository = "https://github.com/ppp-one/mphot"

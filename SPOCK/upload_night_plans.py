@@ -13,13 +13,15 @@ import paramiko
 
 # Create the SSH clients for Cambridge archive, SSO hub, and SNO hub
 ssh_client_cambridge = paramiko.SSHClient()
-# ssh_client_cambridge.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh_client_cambridge.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 ssh_client_cambridge.load_system_host_keys()
 
 ssh_client_SSO_hub = paramiko.SSHClient()
+ssh_client_SSO_hub.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 ssh_client_SSO_hub.load_system_host_keys()
 
 ssh_client_SNO_hub = paramiko.SSHClient()
+ssh_client_SNO_hub.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 ssh_client_SNO_hub.load_system_host_keys()
 
 

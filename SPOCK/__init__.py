@@ -5,7 +5,9 @@ __all__ = ['long_term_scheduler','short_term_scheduler','make_night_plans','plot
 
 __version__ = "2.2.0"
 
-import pkg_resources
+#import pkg_resources
+from importlib.resources import files
+from pathlib import Path
 import os
 import requests
 import yaml
@@ -44,11 +46,13 @@ def index_list1_list2(list1, list2):  # list 2 longer than list 1
     return idx_list1_in_list2, idx_list2_in_list1
 
 def _get_files():
-    data_path = pkg_resources.resource_filename('SPOCK', 'credentials/')
+    data_path = Path(files("SPOCK").joinpath("credentials"))
     if not os.path.exists(data_path):
         os.makedirs(data_path)
     filename_pwd = os.path.join(data_path, 'passwords.csv')
-    print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Please add password.csv file in: ' + data_path)
+    print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Please add password.csv file in: ' + str(data_path))
+
+#    print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' Please add password.csv file in: ' + data_path)
     if os.path.exists(filename_pwd):
         print(Fore.GREEN + 'INFO: ' + Fore.BLACK + ' OK Password file exists')
         # ************************ Read passwords ************************
@@ -65,6 +69,7 @@ def _get_files():
             pwd_chart_studio = Inputs['pwd_chart_studio'][0]
             path_spock = Inputs['path_spock'][0]
             path_credential_json = Inputs['credential_json'][0]
+            path_credential_json_saint_ex = Inputs['credential_json_saint_ex'][0]
             login_stargate = Inputs['login_stargate'][0]
             pwd_stargate = Inputs['pwd_stargate'][0]
             path_mphot = Inputs['path_mphot'][0]
@@ -118,7 +123,7 @@ def _get_files():
         #     open(path_spock + '/survey_hours/' + file, 'wb').write(resp.content)
 
         return pwd_appcs, pwd_HUB, user_portal, pwd_portal, pwd_appcs, pwd_SNO_Reduc1, user_chart_studio,\
-               pwd_chart_studio, path_spock, path_credential_json, login_stargate, pwd_stargate, path_mphot
+               pwd_chart_studio, path_spock, path_credential_json, path_credential_json_saint_ex, login_stargate, pwd_stargate, path_mphot
 
         # **********************************************************************************************************
     else:
@@ -226,7 +231,7 @@ def change_fmt_stargate_TL(file_name):
 
     return path_spock + '/target_lists/stargate/' + 'TL_spock_' + file_name
 
-pwd_appcs,pwd_HUB, user_portal, pwd_portal, pwd_appcs, pwd_SNO_Reduc1, user_chart_studio, pwd_chart_studio, path_spock, path_credential_json, login_stargate, pwd_stargate, path_mphot = _get_files()
+pwd_appcs,pwd_HUB, user_portal, pwd_portal, pwd_appcs, pwd_SNO_Reduc1, user_chart_studio, pwd_chart_studio, path_spock, path_credential_json, path_credential_json_saint_ex, login_stargate, pwd_stargate, path_mphot = _get_files()
 
 today = date.today() - timedelta(days=1)
 today = today.strftime("%Y-%m-%d")
